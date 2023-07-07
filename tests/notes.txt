@@ -1,0 +1,8 @@
+Some tests I should do:
+
+mapping.py
+- check if the column name matters
+- make sure mapping is done properly
+    - on for each mapping option
+    - edge cases for non 1:1 mappings
+    

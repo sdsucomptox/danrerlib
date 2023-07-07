@@ -37,6 +37,9 @@ def build_gene_mapping():
                     zfin_to_ensembl_V<version_number>.txt
     '''
 
+    # last updated: July 7, 2023
+    # last checked: July 7, 2023.
+
     try:
         # read in all the data files we have
         zfin_to_ncbi = raw_data_dir / Path('zfin_to_ncbi_V' + str(version_number) + '.txt')
@@ -87,6 +90,9 @@ def build_ortho_mapping():
                     zfin_to_ensembl_V<version_number>.txt
     '''
 
+    # last updated: July 7, 2023
+    # last checked: July 7, 2023.
+
     try:
 
         # read in the gene data and human ortholog information
@@ -122,25 +128,7 @@ def build_ortho_mapping():
         print('The database should be accessible via the current working directory.')
         print('It cannot be found. Therefore, the build cannot be completed.')
 
-
-def convert_ids_keep_mapping(gene_list, id_from, id_to):
-
-    # read in the master mapping file
-    master_mapping = pd.read_csv(file_dir / master_mapping_file_path, sep = '\t')
-    
-    # handle the case that NCBI Gene ID is not a string when it should be
-    gene_list = gene_list.astype(str) if (id_from == 'NCBI Gene ID') and (gene_list.dtype == int) else gene_list
-
-    # grab the columns we want
-    df_desired_columns = master_mapping[[id_from, id_to]]
-    filtered_df = df_desired_columns[df_desired_columns[id_from].isin(gene_list)]
-
-    # get the list of mapped genes 
-    return filtered_df.drop_duplicates()
-
-
-
-def convert_ids(gene_list: any, id_from: str, id_to: str) -> pd.Series:
+def convert_ids(gene_list: any, id_from: str, id_to: str, keep_mapping = False) -> pd.Series or pd.DataFrame:
     '''
     Convert a list of Gene IDs.
     Parameters: 
@@ -151,6 +139,10 @@ def convert_ids(gene_list: any, id_from: str, id_to: str) -> pd.Series:
     Other:
         Gene ID Type Options: NCBI Gene ID, ZFIN ID, Symbol, Ensembl ID
     '''
+
+    # last updated: July 7, 2023
+    # last checked: July 7, 2023.]
+    # tutorial? yes
 
     try: 
         # some error handling
@@ -168,36 +160,74 @@ def convert_ids(gene_list: any, id_from: str, id_to: str) -> pd.Series:
 
         # get the rows where our ids come from
         filtered_df = df_desired_columns[df_desired_columns[id_from].isin(gene_list)]
+        # reset index
+        filtered_df = filtered_df.reset_index(drop=True)
 
-        # get the list of mapped genes 
-        mapped_genes = filtered_df[id_to]
-
-        return mapped_genes.drop_duplicates()
+        if keep_mapping:
+            mapped_genes = filtered_df
+            return mapped_genes.drop_duplicates()
+        else:
+            mapped_genes = filtered_df[id_to]
+            return mapped_genes.drop_duplicates()
     
     except InvalidGeneTypeError:
         pass
 
+def add_mapped_column(data: pd.DataFrame, id_from: str, id_to: str, 
+                      column_name_with_ids = None, keep_old_ids = True, position = 0):
+    '''
+    Parameters:
+        data - a pandas DataFrame containing a column that has Gene IDs of some type
+        id_from - the current Gene ID type must be: NCBI Gene ID, ZFIN ID, 
+                Ensembl ID, or Symbol
+        id_to - the Gene ID type to convert to, must be: NCBI Gene ID, ZFIN ID,
+                Ensembl ID, or Symbol 
+        column_name_with_ids - the name of the column containing the Gene IDs (if
+                               the column name does not match id_from)
+        keep_old_ids - if you would like to keep the old Gene ID column
+        position - 
+    '''
 
+    try:
+        # some error handling
+        # -------------------    
+        if type(data) != pd.DataFrame:
+            raise TypeError
+        _check_valid_gene_id_type([id_from, id_to])
+        _check_column_name_matches_id_choice(data, id_from, column_name_with_ids)
 
-def add_mapped_column(data: pd.DataFrame, id_from: str, id_to: str, keep_old_ids = True, position = 0):
+        if column_name_with_ids:
+            # rename data column to the id in options
+            data = data.rename(columns={column_name_with_ids:id_from})
+
+        gene_list = data[id_from]
+        if id_from == 'NCBI Gene ID':
+            data['NCBI Gene ID'] = gene_list.astype(str) if (id_from == 'NCBI Gene ID') and (gene_list.dtype == int) else gene_list
+
+        # convert the ids in the gene list
+        converted_ids = convert_ids(gene_list, id_from, id_to, keep_mapping=True)
+
+        # add the converted genes to the dataset
+        data = pd.merge(data, converted_ids, on=id_from, how='outer')
+
+        # move the id_to column next to the id_from column
+        id_from_col_location = data.columns.get_loc(id_from)
+        column_names = data.columns.to_list()
+        column_names.remove(id_to)
+        column_names.insert(id_from_col_location+1, id_to)
+        data = data.reindex(columns=column_names)
+
+        if keep_old_ids == False:
+            data = data.drop(id_from, axis = 1)
+
+        if column_name_with_ids:
+            # rename column back to original name
+            data = data.rename(columns={id_from:column_name_with_ids})
+
+        return data.drop_duplicates()
     
-    if type(data) != pd.DataFrame:
-        raise TypeError
-    
-    # get the gene list from the given data
-    gene_list = data[id_from]
-
-    # convert the ids in the gene list
-    converted_ids = convert_ids_keep_mapping(gene_list, id_from, id_to)
-
-    # # add the converted genes to the dataset
-    data = pd.merge(data, converted_ids, on=id_from, how='outer')
-
-    if keep_old_ids == False:
-        data = data.drop(id_from, axis = 1)
-
-    return data.drop_duplicates()
-
+    except InvalidGeneTypeError:
+        pass
 
 def get_ortho_ids(gene_list, id_from, id_to):
 
@@ -249,10 +279,10 @@ def add_ortholog_column(data: pd.DataFrame, id_from: str, id_to: str, keep_old_i
 
     return data.drop_duplicates()
 
-#-------
+# PRIVATE FUNCTIONS
+# -----------------
 
 def _make_sure_is_pandas_series(gene_list):
-    
     if type(gene_list) != pd.Series:
         if type(gene_list) == pd.DataFrame:
             gene_list = gene_list.squeeze()
@@ -278,19 +308,65 @@ def _check_valid_gene_id_type(gene_id_types):
         print('Reminder: Gene ID types are case and spelling sensitive.')
         raise InvalidGeneTypeError
 
+def _check_column_name_matches_id_choice(data: pd.DataFrame, id_from: str, column_name: str):
+    data_cols = data.columns
+    if column_name:
+        if column_name not in data_cols:
+            print('The column name you specified does not exist in your dataset.')
+            raise InvalidGeneTypeError
+    else:    
+        if id_from not in data_cols:
+            print('The Gene ID type you chose does not match a column name in the given')
+            print('dataset. Please either change the column name in the dataset or provide')
+            print('the matching column name in the column_name parameter.')
+            raise InvalidGeneTypeError
+
 def main():
     # gene_id_type = ['bka', 'NCBI Gene ID']
     # _check_valid_gene_id_type(gene_id_type)
-    list_of_gene_ids = [ 
-        100000252, 100000750, 100001198, 100001260, 100002225, 100002263, 
-        100002756, 100003223, 100007521, 100149273, 100149794, 100170795,
-        100321746, 100329897, 100330617,
-    ]
-    list_of_ids = np.array(list_of_gene_ids)
-    out_ids = convert_ids(list_of_ids, 'NCBI Gene ID', 'ZFIN ID')
-    print(out_ids)
+    cwd = Path().absolute()
+    data_file = cwd / Path('tutorials/data/test_data/01_TPP.txt')
+    data = pd.read_csv(data_file, sep = '\t')
+    id_from = 'NCBI Gene ID'
+    id_to = 'ZFIN ID'
+    out = add_mapped_column(data, id_from, id_to)
+    print(out.head(3))
+
+
+    pass
 
 
 
 if __name__ == '__main__':
     main()
+
+
+
+
+# def convert_ids_keep_mapping(gene_list, id_from, id_to):
+
+#     # last updated: July 7, 2023
+#     # last checked: July 7, 2023.]
+#     # tutorial? yes
+
+#     try:
+#         # some error handling
+#         # -------------------
+#         _check_valid_gene_id_type([id_from, id_to])
+#         gene_list = _make_sure_is_pandas_series(gene_list)
+#         # handle the case that NCBI Gene ID is not a string when it should be
+#         gene_list = gene_list.astype(str) if (id_from == 'NCBI Gene ID') and (gene_list.dtype == int) else gene_list
+
+#         # read in the master mapping file
+#         master_mapping = pd.read_csv(file_dir / master_mapping_file_path, sep = '\t')
+#         master_mapping['NCBI Gene ID'] = master_mapping['NCBI Gene ID'].astype(str)
+
+#         # grab the columns we want
+#         df_desired_columns = master_mapping[[id_from, id_to]]
+#         filtered_df = df_desired_columns[df_desired_columns[id_from].isin(gene_list)]
+
+#         # get the list of mapped genes 
+#         return filtered_df.drop_duplicates()
+    
+#     except InvalidGeneTypeError:
+#         pass
