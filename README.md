@@ -12,5 +12,6 @@ ZebrafishLibrary/
 |           |   datafile.txt
 |       
 └───tests/
+└───tutorials/
 
 ```
