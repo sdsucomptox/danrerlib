@@ -49,7 +49,9 @@ def convert_ids(gene_list: any, id_from: str, id_to: str, keep_mapping = False) 
 
         # read in the master mapping file
         master_mapping = pd.read_csv(FILE_DIR / MASTER_MAPPING_FILE_PATH, sep = '\t')
-        master_mapping[NCBI_ID] = master_mapping[NCBI_ID].astype(str)
+        master_mapping[NCBI_ID] = master_mapping[NCBI_ID].to_numpy()
+        # master_mapping[NCBI_ID] = master_mapping[NCBI_ID].astype(str)
+        # master_mapping[NCBI_ID] 
         df_desired_columns = master_mapping[[id_from, id_to]]
 
         # get the rows where our ids come from
@@ -62,6 +64,7 @@ def convert_ids(gene_list: any, id_from: str, id_to: str, keep_mapping = False) 
             return mapped_genes.drop_duplicates()
         else:
             mapped_genes = filtered_df[id_to]
+            mapped_genes = mapped_genes.dropna()
             return mapped_genes.drop_duplicates()
     
     except InvalidGeneTypeError:
@@ -100,6 +103,9 @@ def add_mapped_column(data: pd.DataFrame, id_from: str, id_to: str,
         gene_list = data[id_from]
         if id_from == NCBI_ID:
             data[NCBI_ID] = gene_list.astype(str) if (id_from == NCBI_ID) and (gene_list.dtype == int) else gene_list
+            data[NCBI_ID] = data[NCBI_ID].to_numpy()
+            # data[NCBI_ID] = gene_list.replace('nan', np.nan) if (id_from == NCBI_ID) and (gene_list.dtype == int) else gene_list
+        
 
         # convert the ids in the gene list
         converted_ids = convert_ids(gene_list, id_from, id_to, keep_mapping=True)
@@ -130,19 +136,21 @@ def add_mapped_column(data: pd.DataFrame, id_from: str, id_to: str,
 # -------------------
 
 def convert_to_human(gene_list, zfish_gene_type, 
-                     keep_mapping = False, keep_missing_orthos = True):
+                     keep_mapping = False, keep_missing_orthos = False):
     id_to = HUMAN_ID
     human_ids = get_ortho_ids(gene_list, zfish_gene_type, id_to, 
                               keep_mapping, keep_missing_orthos)
     return human_ids
 
-def convert_to_zebrafish(gene_list, zfish_gene_type, keep_mapping = False):
+def convert_to_zebrafish(gene_list, zfish_gene_type, 
+                         keep_mapping = False, keep_missing_orthos = False):
     id_from = HUMAN_ID
-    zebrafish_ids = get_ortho_ids(gene_list, id_from, zfish_gene_type, keep_mapping)
+    zebrafish_ids = get_ortho_ids(gene_list, id_from, zfish_gene_type, 
+                                  keep_mapping, keep_missing_orthos)
     return zebrafish_ids
 
 def get_ortho_ids(gene_list: list, id_from: str, id_to: str, 
-                  keep_mapping = False, keep_missing_orthos = True):
+                  keep_mapping = False, keep_missing_orthos = False):
     '''
     Parameters:
         data - a pandas DataFrame containing a column that has Gene IDs of some type
@@ -165,6 +173,7 @@ def get_ortho_ids(gene_list: list, id_from: str, id_to: str,
         _check_valid_gene_id_type_for_orthology(id_from, id_to)
         gene_list = _make_sure_is_pandas_series(gene_list, id_from)
         gene_list = gene_list.drop_duplicates()
+        # gene_list = gene_list.to_numpy()
         gene_list = gene_list.astype(str)
 
         # if id_from is a zebrafish gene, make sure it is in ZFIN ID format
@@ -241,8 +250,9 @@ def add_mapped_ortholog_column(data: pd.DataFrame, id_from: str, id_to: str,
         # get the gene list from the given data
         gene_list = data[id_from]
         if id_from == NCBI_ID:
-                data[NCBI_ID] = (gene_list.astype(str) if (id_from == NCBI_ID) 
-                                and (gene_list.dtype == int) else gene_list)
+                # data[NCBI_ID] = gene_list.astype(str)
+                data[NCBI_ID] = (gene_list.astype(str) if (id_from == NCBI_ID) and (gene_list.dtype == int) else gene_list)
+                data[NCBI_ID] = data[NCBI_ID].to_numpy()
 
         gene_list_with_orthos = get_ortho_ids(gene_list, id_from, id_to, keep_mapping=True)
 
@@ -374,6 +384,11 @@ def build_ortho_mapping():
 
 # PRIVATE FUNCTIONS
 # -----------------
+def convert_to_str(value):
+    if value == 'nan':
+        return np.nan  # Preserve NaN values
+    else:
+        return str(value)
 
 def _make_sure_is_pandas_series(gene_list, id_from):
     if type(gene_list) != pd.Series:
@@ -442,3 +457,15 @@ def _check_column_name_matches_id_choice(data: pd.DataFrame, id_from: str, colum
             print('dataset. Please either change the column name in the dataset or provide')
             print('the matching column name in the column_name parameter.')
             raise InvalidGeneTypeError
+
+if __name__ == '__main__':
+    ids = ['ZDB-GENE-030131-2931',
+    'ZDB-GENE-081031-55',
+    'ZDB-GENE-081031-61',
+    'ZDB-GENE-110420-1',
+    'ZDB-GENE-200107-1',
+    'ZDB-GENE-200107-2',
+    'ZDB-GENE-071004-33',
+    'ZDB-GENE-081105-47']
+    out = convert_ids(ids, ZFIN_ID, NCBI_ID)
+    print(out.dropna())

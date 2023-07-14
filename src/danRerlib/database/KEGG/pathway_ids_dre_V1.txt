@@ -1,0 +1,178 @@
+Pathway ID	Pathway Description
+dre01100	Metabolic pathways
+dre01200	Carbon metabolism
+dre01210	2-Oxocarboxylic acid metabolism
+dre01212	Fatty acid metabolism
+dre01230	Biosynthesis of amino acids
+dre01232	Nucleotide metabolism
+dre01250	Biosynthesis of nucleotide sugars
+dre01240	Biosynthesis of cofactors
+dre00010	Glycolysis / Gluconeogenesis
+dre00020	Citrate cycle (TCA cycle)
+dre00030	Pentose phosphate pathway
+dre00040	Pentose and glucuronate interconversions
+dre00051	Fructose and mannose metabolism
+dre00052	Galactose metabolism
+dre00053	Ascorbate and aldarate metabolism
+dre00500	Starch and sucrose metabolism
+dre00520	Amino sugar and nucleotide sugar metabolism
+dre00620	Pyruvate metabolism
+dre00630	Glyoxylate and dicarboxylate metabolism
+dre00640	Propanoate metabolism
+dre00650	Butanoate metabolism
+dre00562	Inositol phosphate metabolism
+dre00190	Oxidative phosphorylation
+dre00910	Nitrogen metabolism
+dre00920	Sulfur metabolism
+dre00061	Fatty acid biosynthesis
+dre00062	Fatty acid elongation
+dre00071	Fatty acid degradation
+dre00100	Steroid biosynthesis
+dre00120	Primary bile acid biosynthesis
+dre00140	Steroid hormone biosynthesis
+dre00561	Glycerolipid metabolism
+dre00564	Glycerophospholipid metabolism
+dre00565	Ether lipid metabolism
+dre00600	Sphingolipid metabolism
+dre00590	Arachidonic acid metabolism
+dre00591	Linoleic acid metabolism
+dre00592	alpha-Linolenic acid metabolism
+dre01040	Biosynthesis of unsaturated fatty acids
+dre00230	Purine metabolism
+dre00240	Pyrimidine metabolism
+dre00250	Alanine, aspartate and glutamate metabolism
+dre00260	Glycine, serine and threonine metabolism
+dre00270	Cysteine and methionine metabolism
+dre00280	Valine, leucine and isoleucine degradation
+dre00290	Valine, leucine and isoleucine biosynthesis
+dre00310	Lysine degradation
+dre00220	Arginine biosynthesis
+dre00330	Arginine and proline metabolism
+dre00340	Histidine metabolism
+dre00350	Tyrosine metabolism
+dre00360	Phenylalanine metabolism
+dre00380	Tryptophan metabolism
+dre00400	Phenylalanine, tyrosine and tryptophan biosynthesis
+dre00410	beta-Alanine metabolism
+dre00430	Taurine and hypotaurine metabolism
+dre00440	Phosphonate and phosphinate metabolism
+dre00450	Selenocompound metabolism
+dre00470	D-Amino acid metabolism
+dre00480	Glutathione metabolism
+dre00510	N-Glycan biosynthesis
+dre00513	Various types of N-glycan biosynthesis
+dre00512	Mucin type O-glycan biosynthesis
+dre00515	Mannose type O-glycan biosynthesis
+dre00514	Other types of O-glycan biosynthesis
+dre00532	Glycosaminoglycan biosynthesis - chondroitin sulfate / dermatan sulfate
+dre00534	Glycosaminoglycan biosynthesis - heparan sulfate / heparin
+dre00533	Glycosaminoglycan biosynthesis - keratan sulfate
+dre00531	Glycosaminoglycan degradation
+dre00563	Glycosylphosphatidylinositol (GPI)-anchor biosynthesis
+dre00601	Glycosphingolipid biosynthesis - lacto and neolacto series
+dre00603	Glycosphingolipid biosynthesis - globo and isoglobo series
+dre00604	Glycosphingolipid biosynthesis - ganglio series
+dre00511	Other glycan degradation
+dre00730	Thiamine metabolism
+dre00740	Riboflavin metabolism
+dre00750	Vitamin B6 metabolism
+dre00760	Nicotinate and nicotinamide metabolism
+dre00770	Pantothenate and CoA biosynthesis
+dre00780	Biotin metabolism
+dre00785	Lipoic acid metabolism
+dre00790	Folate biosynthesis
+dre00670	One carbon pool by folate
+dre00830	Retinol metabolism
+dre00860	Porphyrin metabolism
+dre00130	Ubiquinone and other terpenoid-quinone biosynthesis
+dre00900	Terpenoid backbone biosynthesis
+dre00232	Caffeine metabolism
+dre00524	Neomycin, kanamycin and gentamicin biosynthesis
+dre00980	Metabolism of xenobiotics by cytochrome P450
+dre00982	Drug metabolism - cytochrome P450
+dre00983	Drug metabolism - other enzymes
+dre03020	RNA polymerase
+dre03022	Basal transcription factors
+dre03040	Spliceosome
+dre03010	Ribosome
+dre00970	Aminoacyl-tRNA biosynthesis
+dre03013	Nucleocytoplasmic transport
+dre03015	mRNA surveillance pathway
+dre03008	Ribosome biogenesis in eukaryotes
+dre03060	Protein export
+dre04141	Protein processing in endoplasmic reticulum
+dre04130	SNARE interactions in vesicular transport
+dre04120	Ubiquitin mediated proteolysis
+dre04122	Sulfur relay system
+dre03050	Proteasome
+dre03018	RNA degradation
+dre03030	DNA replication
+dre03410	Base excision repair
+dre03420	Nucleotide excision repair
+dre03430	Mismatch repair
+dre03440	Homologous recombination
+dre03450	Non-homologous end-joining
+dre03460	Fanconi anemia pathway
+dre03082	ATP-dependent chromatin remodeling
+dre03083	Polycomb repressive complex
+dre03250	Viral life cycle - HIV-1
+dre03260	Virion - Human immunodeficiency virus
+dre03264	Virion - Flavivirus
+dre03265	Virion - Lyssavirus
+dre03266	Virion - Herpesvirus
+dre03267	Virion - Adenovirus
+dre02010	ABC transporters
+dre04010	MAPK signaling pathway
+dre04012	ErbB signaling pathway
+dre04310	Wnt signaling pathway
+dre04330	Notch signaling pathway
+dre04340	Hedgehog signaling pathway
+dre04350	TGF-beta signaling pathway
+dre04370	VEGF signaling pathway
+dre04371	Apelin signaling pathway
+dre04068	FoxO signaling pathway
+dre04020	Calcium signaling pathway
+dre04070	Phosphatidylinositol signaling system
+dre04150	mTOR signaling pathway
+dre04080	Neuroactive ligand-receptor interaction
+dre04060	Cytokine-cytokine receptor interaction
+dre04512	ECM-receptor interaction
+dre04514	Cell adhesion molecules
+dre04144	Endocytosis
+dre04145	Phagosome
+dre04142	Lysosome
+dre04146	Peroxisome
+dre04140	Autophagy - animal
+dre04136	Autophagy - other
+dre04137	Mitophagy - animal
+dre04110	Cell cycle
+dre04114	Oocyte meiosis
+dre04210	Apoptosis
+dre04216	Ferroptosis
+dre04217	Necroptosis
+dre04115	p53 signaling pathway
+dre04218	Cellular senescence
+dre04510	Focal adhesion
+dre04520	Adherens junction
+dre04530	Tight junction
+dre04540	Gap junction
+dre04814	Motor proteins
+dre04810	Regulation of actin cytoskeleton
+dre04620	Toll-like receptor signaling pathway
+dre04621	NOD-like receptor signaling pathway
+dre04622	RIG-I-like receptor signaling pathway
+dre04623	Cytosolic DNA-sensing pathway
+dre04625	C-type lectin receptor signaling pathway
+dre04672	Intestinal immune network for IgA production
+dre04910	Insulin signaling pathway
+dre04920	Adipocytokine signaling pathway
+dre03320	PPAR signaling pathway
+dre04912	GnRH signaling pathway
+dre04914	Progesterone-mediated oocyte maturation
+dre04916	Melanogenesis
+dre04260	Cardiac muscle contraction
+dre04261	Adrenergic signaling in cardiomyocytes
+dre04270	Vascular smooth muscle contraction
+dre04744	Phototransduction
+dre05168	Herpes simplex virus 1 infection
+dre05132	Salmonella infection
