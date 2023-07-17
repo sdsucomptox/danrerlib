@@ -1,0 +1,356 @@
+Pathway ID	Pathway Description
+dreM01100	Metabolic pathways
+dreM01200	Carbon metabolism
+dreM01210	2-Oxocarboxylic acid metabolism
+dreM01212	Fatty acid metabolism
+dreM01230	Biosynthesis of amino acids
+dreM01232	Nucleotide metabolism
+dreM01250	Biosynthesis of nucleotide sugars
+dreM01240	Biosynthesis of cofactors
+dreM00010	Glycolysis / Gluconeogenesis
+dreM00020	Citrate cycle (TCA cycle)
+dreM00030	Pentose phosphate pathway
+dreM00040	Pentose and glucuronate interconversions
+dreM00051	Fructose and mannose metabolism
+dreM00052	Galactose metabolism
+dreM00053	Ascorbate and aldarate metabolism
+dreM00500	Starch and sucrose metabolism
+dreM00520	Amino sugar and nucleotide sugar metabolism
+dreM00620	Pyruvate metabolism
+dreM00630	Glyoxylate and dicarboxylate metabolism
+dreM00640	Propanoate metabolism
+dreM00650	Butanoate metabolism
+dreM00562	Inositol phosphate metabolism
+dreM00190	Oxidative phosphorylation
+dreM00910	Nitrogen metabolism
+dreM00920	Sulfur metabolism
+dreM00061	Fatty acid biosynthesis
+dreM00062	Fatty acid elongation
+dreM00071	Fatty acid degradation
+dreM00100	Steroid biosynthesis
+dreM00120	Primary bile acid biosynthesis
+dreM00140	Steroid hormone biosynthesis
+dreM00561	Glycerolipid metabolism
+dreM00564	Glycerophospholipid metabolism
+dreM00565	Ether lipid metabolism
+dreM00600	Sphingolipid metabolism
+dreM00590	Arachidonic acid metabolism
+dreM00591	Linoleic acid metabolism
+dreM00592	alpha-Linolenic acid metabolism
+dreM01040	Biosynthesis of unsaturated fatty acids
+dreM00230	Purine metabolism
+dreM00240	Pyrimidine metabolism
+dreM00250	Alanine, aspartate and glutamate metabolism
+dreM00260	Glycine, serine and threonine metabolism
+dreM00270	Cysteine and methionine metabolism
+dreM00280	Valine, leucine and isoleucine degradation
+dreM00290	Valine, leucine and isoleucine biosynthesis
+dreM00310	Lysine degradation
+dreM00220	Arginine biosynthesis
+dreM00330	Arginine and proline metabolism
+dreM00340	Histidine metabolism
+dreM00350	Tyrosine metabolism
+dreM00360	Phenylalanine metabolism
+dreM00380	Tryptophan metabolism
+dreM00400	Phenylalanine, tyrosine and tryptophan biosynthesis
+dreM00410	beta-Alanine metabolism
+dreM00430	Taurine and hypotaurine metabolism
+dreM00440	Phosphonate and phosphinate metabolism
+dreM00450	Selenocompound metabolism
+dreM00470	D-Amino acid metabolism
+dreM00480	Glutathione metabolism
+dreM00510	N-Glycan biosynthesis
+dreM00513	Various types of N-glycan biosynthesis
+dreM00512	Mucin type O-glycan biosynthesis
+dreM00515	Mannose type O-glycan biosynthesis
+dreM00514	Other types of O-glycan biosynthesis
+dreM00532	Glycosaminoglycan biosynthesis - chondroitin sulfate / dermatan sulfate
+dreM00534	Glycosaminoglycan biosynthesis - heparan sulfate / heparin
+dreM00533	Glycosaminoglycan biosynthesis - keratan sulfate
+dreM00531	Glycosaminoglycan degradation
+dreM00563	Glycosylphosphatidylinositol (GPI)-anchor biosynthesis
+dreM00601	Glycosphingolipid biosynthesis - lacto and neolacto series
+dreM00603	Glycosphingolipid biosynthesis - globo and isoglobo series
+dreM00604	Glycosphingolipid biosynthesis - ganglio series
+dreM00511	Other glycan degradation
+dreM00730	Thiamine metabolism
+dreM00740	Riboflavin metabolism
+dreM00750	Vitamin B6 metabolism
+dreM00760	Nicotinate and nicotinamide metabolism
+dreM00770	Pantothenate and CoA biosynthesis
+dreM00780	Biotin metabolism
+dreM00785	Lipoic acid metabolism
+dreM00790	Folate biosynthesis
+dreM00670	One carbon pool by folate
+dreM00830	Retinol metabolism
+dreM00860	Porphyrin metabolism
+dreM00130	Ubiquinone and other terpenoid-quinone biosynthesis
+dreM00900	Terpenoid backbone biosynthesis
+dreM00232	Caffeine metabolism
+dreM00524	Neomycin, kanamycin and gentamicin biosynthesis
+dreM00980	Metabolism of xenobiotics by cytochrome P450
+dreM00982	Drug metabolism - cytochrome P450
+dreM00983	Drug metabolism - other enzymes
+dreM03020	RNA polymerase
+dreM03022	Basal transcription factors
+dreM03040	Spliceosome
+dreM03010	Ribosome
+dreM00970	Aminoacyl-tRNA biosynthesis
+dreM03013	Nucleocytoplasmic transport
+dreM03015	mRNA surveillance pathway
+dreM03008	Ribosome biogenesis in eukaryotes
+dreM03060	Protein export
+dreM04141	Protein processing in endoplasmic reticulum
+dreM04130	SNARE interactions in vesicular transport
+dreM04120	Ubiquitin mediated proteolysis
+dreM04122	Sulfur relay system
+dreM03050	Proteasome
+dreM03018	RNA degradation
+dreM03030	DNA replication
+dreM03410	Base excision repair
+dreM03420	Nucleotide excision repair
+dreM03430	Mismatch repair
+dreM03440	Homologous recombination
+dreM03450	Non-homologous end-joining
+dreM03460	Fanconi anemia pathway
+dreM03082	ATP-dependent chromatin remodeling
+dreM03083	Polycomb repressive complex
+dreM03250	Viral life cycle - HIV-1
+dreM03260	Virion - Human immunodeficiency virus
+dreM03264	Virion - Flavivirus
+dreM03265	Virion - Lyssavirus
+dreM03266	Virion - Herpesvirus
+dreM03267	Virion - Adenovirus
+dreM02010	ABC transporters
+dreM04010	MAPK signaling pathway
+dreM04012	ErbB signaling pathway
+dreM04014	Ras signaling pathway
+dreM04015	Rap1 signaling pathway
+dreM04310	Wnt signaling pathway
+dreM04330	Notch signaling pathway
+dreM04340	Hedgehog signaling pathway
+dreM04350	TGF-beta signaling pathway
+dreM04390	Hippo signaling pathway
+dreM04392	Hippo signaling pathway - multiple species
+dreM04370	VEGF signaling pathway
+dreM04371	Apelin signaling pathway
+dreM04630	JAK-STAT signaling pathway
+dreM04064	NF-kappa B signaling pathway
+dreM04668	TNF signaling pathway
+dreM04066	HIF-1 signaling pathway
+dreM04068	FoxO signaling pathway
+dreM04020	Calcium signaling pathway
+dreM04070	Phosphatidylinositol signaling system
+dreM04072	Phospholipase D signaling pathway
+dreM04071	Sphingolipid signaling pathway
+dreM04024	cAMP signaling pathway
+dreM04022	cGMP-PKG signaling pathway
+dreM04151	PI3K-Akt signaling pathway
+dreM04152	AMPK signaling pathway
+dreM04150	mTOR signaling pathway
+dreM04080	Neuroactive ligand-receptor interaction
+dreM04060	Cytokine-cytokine receptor interaction
+dreM04061	Viral protein interaction with cytokine and cytokine receptor
+dreM04512	ECM-receptor interaction
+dreM04514	Cell adhesion molecules
+dreM04144	Endocytosis
+dreM04145	Phagosome
+dreM04142	Lysosome
+dreM04146	Peroxisome
+dreM04140	Autophagy - animal
+dreM04136	Autophagy - other
+dreM04137	Mitophagy - animal
+dreM04110	Cell cycle
+dreM04114	Oocyte meiosis
+dreM04210	Apoptosis
+dreM04215	Apoptosis - multiple species
+dreM04216	Ferroptosis
+dreM04217	Necroptosis
+dreM04115	p53 signaling pathway
+dreM04218	Cellular senescence
+dreM04510	Focal adhesion
+dreM04520	Adherens junction
+dreM04530	Tight junction
+dreM04540	Gap junction
+dreM04550	Signaling pathways regulating pluripotency of stem cells
+dreM04814	Motor proteins
+dreM04810	Regulation of actin cytoskeleton
+dreM04640	Hematopoietic cell lineage
+dreM04610	Complement and coagulation cascades
+dreM04611	Platelet activation
+dreM04613	Neutrophil extracellular trap formation
+dreM04620	Toll-like receptor signaling pathway
+dreM04621	NOD-like receptor signaling pathway
+dreM04622	RIG-I-like receptor signaling pathway
+dreM04623	Cytosolic DNA-sensing pathway
+dreM04625	C-type lectin receptor signaling pathway
+dreM04650	Natural killer cell mediated cytotoxicity
+dreM04612	Antigen processing and presentation
+dreM04660	T cell receptor signaling pathway
+dreM04658	Th1 and Th2 cell differentiation
+dreM04659	Th17 cell differentiation
+dreM04657	IL-17 signaling pathway
+dreM04662	B cell receptor signaling pathway
+dreM04664	Fc epsilon RI signaling pathway
+dreM04666	Fc gamma R-mediated phagocytosis
+dreM04670	Leukocyte transendothelial migration
+dreM04672	Intestinal immune network for IgA production
+dreM04062	Chemokine signaling pathway
+dreM04911	Insulin secretion
+dreM04910	Insulin signaling pathway
+dreM04922	Glucagon signaling pathway
+dreM04923	Regulation of lipolysis in adipocytes
+dreM04920	Adipocytokine signaling pathway
+dreM03320	PPAR signaling pathway
+dreM04929	GnRH secretion
+dreM04912	GnRH signaling pathway
+dreM04913	Ovarian steroidogenesis
+dreM04915	Estrogen signaling pathway
+dreM04914	Progesterone-mediated oocyte maturation
+dreM04917	Prolactin signaling pathway
+dreM04921	Oxytocin signaling pathway
+dreM04926	Relaxin signaling pathway
+dreM04935	Growth hormone synthesis, secretion and action
+dreM04918	Thyroid hormone synthesis
+dreM04919	Thyroid hormone signaling pathway
+dreM04928	Parathyroid hormone synthesis, secretion and action
+dreM04916	Melanogenesis
+dreM04924	Renin secretion
+dreM04614	Renin-angiotensin system
+dreM04925	Aldosterone synthesis and secretion
+dreM04927	Cortisol synthesis and secretion
+dreM04260	Cardiac muscle contraction
+dreM04261	Adrenergic signaling in cardiomyocytes
+dreM04270	Vascular smooth muscle contraction
+dreM04970	Salivary secretion
+dreM04971	Gastric acid secretion
+dreM04972	Pancreatic secretion
+dreM04976	Bile secretion
+dreM04973	Carbohydrate digestion and absorption
+dreM04974	Protein digestion and absorption
+dreM04975	Fat digestion and absorption
+dreM04979	Cholesterol metabolism
+dreM04977	Vitamin digestion and absorption
+dreM04978	Mineral absorption
+dreM04962	Vasopressin-regulated water reabsorption
+dreM04960	Aldosterone-regulated sodium reabsorption
+dreM04961	Endocrine and other factor-regulated calcium reabsorption
+dreM04964	Proximal tubule bicarbonate reclamation
+dreM04966	Collecting duct acid secretion
+dreM04724	Glutamatergic synapse
+dreM04727	GABAergic synapse
+dreM04725	Cholinergic synapse
+dreM04728	Dopaminergic synapse
+dreM04726	Serotonergic synapse
+dreM04720	Long-term potentiation
+dreM04730	Long-term depression
+dreM04723	Retrograde endocannabinoid signaling
+dreM04721	Synaptic vesicle cycle
+dreM04722	Neurotrophin signaling pathway
+dreM04744	Phototransduction
+dreM04740	Olfactory transduction
+dreM04742	Taste transduction
+dreM04750	Inflammatory mediator regulation of TRP channels
+dreM04360	Axon guidance
+dreM04380	Osteoclast differentiation
+dreM04211	Longevity regulating pathway
+dreM04213	Longevity regulating pathway - multiple species
+dreM04710	Circadian rhythm
+dreM04713	Circadian entrainment
+dreM04714	Thermogenesis
+dreM05200	Pathways in cancer
+dreM05202	Transcriptional misregulation in cancer
+dreM05206	MicroRNAs in cancer
+dreM05205	Proteoglycans in cancer
+dreM05204	Chemical carcinogenesis - DNA adducts
+dreM05207	Chemical carcinogenesis - receptor activation
+dreM05208	Chemical carcinogenesis - reactive oxygen species
+dreM05203	Viral carcinogenesis
+dreM05230	Central carbon metabolism in cancer
+dreM05231	Choline metabolism in cancer
+dreM05235	PD-L1 expression and PD-1 checkpoint pathway in cancer
+dreM05210	Colorectal cancer
+dreM05212	Pancreatic cancer
+dreM05225	Hepatocellular carcinoma
+dreM05226	Gastric cancer
+dreM05214	Glioma
+dreM05216	Thyroid cancer
+dreM05221	Acute myeloid leukemia
+dreM05220	Chronic myeloid leukemia
+dreM05217	Basal cell carcinoma
+dreM05218	Melanoma
+dreM05211	Renal cell carcinoma
+dreM05219	Bladder cancer
+dreM05215	Prostate cancer
+dreM05213	Endometrial cancer
+dreM05224	Breast cancer
+dreM05222	Small cell lung cancer
+dreM05223	Non-small cell lung cancer
+dreM05166	Human T-cell leukemia virus 1 infection
+dreM05170	Human immunodeficiency virus 1 infection
+dreM05161	Hepatitis B
+dreM05160	Hepatitis C
+dreM05171	Coronavirus disease - COVID-19
+dreM05164	Influenza A
+dreM05162	Measles
+dreM05168	Herpes simplex virus 1 infection
+dreM05163	Human cytomegalovirus infection
+dreM05167	Kaposi sarcoma-associated herpesvirus infection
+dreM05169	Epstein-Barr virus infection
+dreM05165	Human papillomavirus infection
+dreM05110	Vibrio cholerae infection
+dreM05120	Epithelial cell signaling in Helicobacter pylori infection
+dreM05130	Pathogenic Escherichia coli infection
+dreM05132	Salmonella infection
+dreM05131	Shigellosis
+dreM05135	Yersinia infection
+dreM05133	Pertussis
+dreM05134	Legionellosis
+dreM05150	Staphylococcus aureus infection
+dreM05152	Tuberculosis
+dreM05100	Bacterial invasion of epithelial cells
+dreM05146	Amoebiasis
+dreM05144	Malaria
+dreM05145	Toxoplasmosis
+dreM05140	Leishmaniasis
+dreM05142	Chagas disease
+dreM05143	African trypanosomiasis
+dreM05310	Asthma
+dreM05322	Systemic lupus erythematosus
+dreM05323	Rheumatoid arthritis
+dreM05320	Autoimmune thyroid disease
+dreM05321	Inflammatory bowel disease
+dreM05330	Allograft rejection
+dreM05332	Graft-versus-host disease
+dreM05340	Primary immunodeficiency
+dreM05010	Alzheimer disease
+dreM05012	Parkinson disease
+dreM05014	Amyotrophic lateral sclerosis
+dreM05016	Huntington disease
+dreM05017	Spinocerebellar ataxia
+dreM05020	Prion disease
+dreM05022	Pathways of neurodegeneration - multiple diseases
+dreM05030	Cocaine addiction
+dreM05031	Amphetamine addiction
+dreM05032	Morphine addiction
+dreM05033	Nicotine addiction
+dreM05034	Alcoholism
+dreM05417	Lipid and atherosclerosis
+dreM05418	Fluid shear stress and atherosclerosis
+dreM05410	Hypertrophic cardiomyopathy
+dreM05412	Arrhythmogenic right ventricular cardiomyopathy
+dreM05414	Dilated cardiomyopathy
+dreM05415	Diabetic cardiomyopathy
+dreM05416	Viral myocarditis
+dreM04930	Type II diabetes mellitus
+dreM04940	Type I diabetes mellitus
+dreM04950	Maturity onset diabetes of the young
+dreM04936	Alcoholic liver disease
+dreM04932	Non-alcoholic fatty liver disease
+dreM04931	Insulin resistance
+dreM04933	AGE-RAGE signaling pathway in diabetic complications
+dreM04934	Cushing syndrome
+dreM01521	EGFR tyrosine kinase inhibitor resistance
+dreM01524	Platinum drug resistance
+dreM01523	Antifolate resistance
+dreM01522	Endocrine resistance
