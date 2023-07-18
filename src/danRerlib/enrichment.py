@@ -170,7 +170,8 @@ def enrich_KEGG(gene_universe: str, gene_id_type = NCBI_ID,
                 org = 'dre', method = 'logistic',
                 sig_gene_cutoff_pvalue = 0.05,
                 sig_conceptID_cutoff_pvalue = None,
-                sig_conceptID_cutoff_FDR = None):
+                sig_conceptID_cutoff_FDR = None,
+                order_by_p_value = True):
     
     # TODO
     # - make it so that the first column is assumed to be the Gene ID
@@ -249,9 +250,10 @@ def enrich_KEGG(gene_universe: str, gene_id_type = NCBI_ID,
         result = result[result["P-value"] <= sig_conceptID_cutoff_pvalue]
     if method == 'logistic' and sig_conceptID_cutoff_FDR:
         result = result[result["FDR"] <= sig_conceptID_cutoff_FDR]
-    sorted_df = result.sort_values(by='P-value', ascending=True)  
-    sorted_df = sorted_df.reset_index(drop=True)
-    return sorted_df
+    if order_by_p_value:
+        result = result.sort_values(by='P-value', ascending=True)  
+    result = result.reset_index(drop=True)
+    return result
 
 def _check_gene_universe(gene_universe):
     if (NCBI_ID not in gene_universe.columns 
