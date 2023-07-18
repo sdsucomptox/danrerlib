@@ -1,9 +1,9 @@
 # Set up python environment
-import numpy as np
-import pandas as pd
+from settings import *
 
-import mapping_zfin
+import mapping
 import KEGG
+
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import statsmodels.stats.multitest as smm
@@ -12,17 +12,15 @@ from scipy.stats import chi2
 from scipy.stats import fisher_exact
 
 def logistic(gene_universe, gene_set, concept_type, concept_id, sig_cutoff = 0.05):
-
-    # only include genes in the gene set that are in 
-    # our gene universe (full gene de)
-    gene_set = gene_set[gene_set['NCBI Gene ID'].isin(gene_universe['NCBI Gene ID'])]
+    
+    gene_set = gene_set[gene_set[NCBI_ID].isin(gene_universe[NCBI_ID])]
 
     # create essential dataframe
     # --------------------------
 
-    master_df = gene_universe[['NCBI Gene ID', 'PValue']]
+    master_df = gene_universe[[NCBI_ID, 'PValue']]
     # determine which genes are in the gene set
-    master_df['In Gene Set'] = master_df['NCBI Gene ID'].isin(gene_set['NCBI Gene ID']).astype(int)
+    master_df['In Gene Set'] = master_df[NCBI_ID].isin(gene_set[NCBI_ID]).astype(int)
     # determine which genes have significant differential expression
     master_df['Sig'] = np.where(master_df['PValue'] < sig_cutoff, 1, 0)
     # determine which genes are in gene set and also significant
@@ -59,9 +57,9 @@ def logistic(gene_universe, gene_set, concept_type, concept_id, sig_cutoff = 0.0
     odds_ratio = np.exp(beta)
 
     if odds_ratio > 1:
-        direction = 'enriched'
+        enriched = 'enriched'
     else:
-        direction = 'depleted'
+        enriched = 'depleted'
 
     # organize important stats
     # ------------------------
@@ -69,14 +67,14 @@ def logistic(gene_universe, gene_set, concept_type, concept_id, sig_cutoff = 0.0
     data = {
         'Concept Type': concept_type,
         'Concept ID': concept_id,
-        '# Gene in Concept in Universe': len(gene_set),
+        '# Genes in Concept in Universe': len(gene_set),
         '# Sig Genes Belong to Concept': master_df['Sig and in Gene Set'].sum(),
         'Proportion of Genes': master_df['Sig and in Gene Set'].sum()/len(gene_set),
         'Coeff': beta,
         'P-value': p_value,
         'FDR': p_values_adjusted,
         'Odds Ratio': odds_ratio,
-        'Direction': direction
+        'Enriched': enriched
     }
 
     df = pd.DataFrame(data)
@@ -84,17 +82,23 @@ def logistic(gene_universe, gene_set, concept_type, concept_id, sig_cutoff = 0.0
     return df
 
 def fishers(gene_universe, gene_set, concept_type, concept_id, sig_cutoff = 0.05):
+    '''
+    gene_universe - all genes 
+    gene_set - genes in the concept of interest
+    concept_type - the database (KEGG, GO, etc)
+    concept_id - the id (e.g. the KEGG pathway id)
+    '''
 
     # only include genes in the gene set that are in 
     # our gene universe (full gene de)
-    gene_set = gene_set[gene_set['NCBI Gene ID'].isin(gene_universe['NCBI Gene ID'])]
+    gene_set = gene_set[gene_set[NCBI_ID].isin(gene_universe[NCBI_ID])]
 
     # create essential dataframe
     # --------------------------
 
-    master_df = gene_universe[['NCBI Gene ID', 'PValue']]
+    master_df = gene_universe[[NCBI_ID, 'PValue']]
     # determine which genes are in the gene set
-    master_df['In Gene Set'] = master_df['NCBI Gene ID'].isin(gene_set['NCBI Gene ID']).astype(int)
+    master_df['In Gene Set'] = master_df[NCBI_ID].isin(gene_set[NCBI_ID]).astype(int)
     # determine which genes have significant differential expression
     master_df['Sig'] = np.where(master_df['PValue'] < sig_cutoff, 1, 0)
     # determine which genes are in gene set and also significant
@@ -153,32 +157,96 @@ def fishers(gene_universe, gene_set, concept_type, concept_id, sig_cutoff = 0.05
 
     return df
 
-def perform_enrichment(concept_type: str, concept_ids: list, gene_universe_path: str, method = 'logistic'):
-    # GENE UNIVERSE
+def enrich_KEGG(gene_universe: str,
+                database =  'pathway', concept_ids = None, 
+                gene_id_type = NCBI_ID,
+                org = 'dreM', method = 'logistic'):
+    # TODO
+    # - make it so that the first column is assumed to be the Gene ID
+    #  and the second column is the p-value
+    # - support different zebrafish Gene ID inputs
+    
+    # only include genes in the gene set that are in 
+    # our gene universe (full gene de)
+    if type(gene_universe) != pd.DataFrame:
+        gene_universe = pd.DataFrame(gene_universe)
+    
+    # quality control TODO:
+    _check_gene_universe(gene_universe)
 
-    gene_universe = pd.read_csv(gene_universe_path, sep='\t')
-    gene_universe['NCBI Gene ID'] = gene_universe['NCBI Gene ID'].astype(str)
+    # identify concept
+    concept_dict = {
+        'pathway': KEGG.get_genes_in_pathway,
+        'disease': KEGG.get_genes_in_disease
+    }
 
-    # GENE SET
-    resuling_df_list = []    
+    get_genes_function = concept_dict[database]
+    concept_type = 'KEGG ' + database
+
+    # identify enrichment method
+    methods_dict = {
+        'logistic': logistic,
+        'fishers': fishers
+    }
+
+    # Get the function based on the method name
+    enrich_method_function = methods_dict[method]
+
+    # Check if the method is valid
+    if method not in methods_dict:
+        raise ValueError(f"Invalid method: {method}")
+    
+    org_pathway_list_dict = {
+        'dre' : KEGG.zebrafish_pathways_path,
+        'dreM': KEGG.mapped_zebrafish_pathways_path,
+        'hsa' : KEGG.human_pathways_path
+    }
+
+    concept_ids_included = True
+    if concept_ids == None:
+        if database == 'pathway':
+            path = org_pathway_list_dict[org]
+        elif database == 'disease':
+            raise ValueError('Testing the full list of diseases is not yet supported.')
+        
+        all_ids = pd.read_csv(path, sep='\t')
+        concept_ids = all_ids['Pathway ID']
+        concept_ids_included = False
+
+    resulting_df_list = []    
     for concept_id in concept_ids:
-        gene_set, human_only = KEGG.download_pathway(concept_id)
-        if human_only:
-            # get the zebrafish orthologs
-            gene_set = mapping_zfin.add_ortholog_column(gene_set, 'Human NCBI Gene ID', 'ZFIN ID')
-            gene_set = mapping_zfin.add_mapped_column(gene_set, 'ZFIN ID', 'NCBI Gene ID')
-        else:
-            gene_set = mapping_zfin.add_mapped_column(gene_set, 'ZFIN ID', 'NCBI Gene ID')
+        gene_set =  get_genes_function(concept_id, org)
+        if type(gene_set) != pd.DataFrame:
+            gene_set = pd.DataFrame(gene_set)
 
-        if method == 'logistic':
-            out = logistic(gene_universe, gene_set, concept_type, concept_id)
-        elif method == 'fishers':
-            out = fishers(gene_universe, gene_set, concept_type, concept_id)
-
+        out = enrich_method_function(gene_universe, gene_set, concept_type, concept_id)
         
         # Append the DataFrame to the list
-        resuling_df_list.append(out)
+        resulting_df_list.append(out)
 
     # Concatenate the list of DataFrames into a single DataFrame
-    result = pd.concat(resuling_df_list, ignore_index=True)
-    return result
+    result = pd.concat(resulting_df_list, ignore_index=True)
+    if concept_ids_included == False:
+        result = result[result["P-value"] <= 0.05]
+    sorted_df = result.sort_values(by='P-value', ascending=True)  
+    return sorted_df
+
+def _check_gene_universe(gene_universe):
+    if (NCBI_ID not in gene_universe.columns 
+        and 'PValue' not in gene_universe.columns):
+        raise ValueError('Required columns do not exist.')
+
+# def testing():
+
+#     cwd = Path().absolute() 
+#     test_data_path = cwd / Path('tutorials/data/test_data/example_diff_express_data.txt')
+#     gene_univese_full_data = pd.read_csv(test_data_path, sep='\t')
+
+#     concept_ids = ['dreM00010', 'dreM00020']
+#     df = enrich_KEGG('pathway', concept_ids, gene_univese_full_data)
+#     print(df)
+
+#     return None
+
+# if __name__ == '__main__':
+#     testing()

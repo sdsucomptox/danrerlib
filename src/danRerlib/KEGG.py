@@ -1,7 +1,5 @@
-import pandas as pd
-import urllib.error
-import urllib.request
 from settings import *
+
 import mapping
 
 zebrafish_pathways_path = KEGG_DATA_DIR / Path('pathway_ids_dre_V' + str(VERSION_NUM) + '.txt')
@@ -31,7 +29,7 @@ def get_genes_in_pathway(pathway_id, org = None):
     except ValueError:
         pass
 
-def get_genes_in_disease(disease_id, org = 'dreM', API = True):
+def get_genes_in_disease(disease_id, org = 'dreM'):
     '''
     organism options:
         hsa - will return human genes in the disease
@@ -42,6 +40,7 @@ def get_genes_in_disease(disease_id, org = 'dreM', API = True):
     There are so many disease pathways I opted to just use the API
     instead of saving all the genes in each pathway to a file
     '''
+    API = True
     if API:
         url = 'https://rest.kegg.jp/link/hsa/' + disease_id
         column_names = ['trash', HUMAN_ID]
@@ -214,42 +213,42 @@ def _build_dre_mapped(human_pathways_path, human_pathways_dir, dre_mapped_dir):
 #     else:
 #         return False
 
-def _get_only_id(df: pd.DataFrame) -> pd.Series:
-    id_column = df['Pathway ID']
-    ids = id_column.str[3:]
-    return ids
+# def _get_only_id(df: pd.DataFrame) -> pd.Series:
+#     id_column = df['Pathway ID']
+#     ids = id_column.str[3:]
+#     return ids
 
-def _download_url(url_to_download: str, file_path: str, column_names = None) -> None:
-    response = None
-    file_to_save = None
+# def _download_url(url_to_download: str, file_path: str, column_names = None) -> None:
+#     response = None
+#     file_to_save = None
 
-    try:
-        request = urllib.request.Request(url_to_download)
-        response = urllib.request.urlopen(request)
+#     try:
+#         request = urllib.request.Request(url_to_download)
+#         response = urllib.request.urlopen(request)
 
-        file_to_save = open(file_path, 'wb')
+#         file_to_save = open(file_path, 'wb')
 
-        if column_names != None:
-            header_string = '\t'.join(column_names) + '\n'
-            file_to_save.write(header_string.encode())
+#         if column_names != None:
+#             header_string = '\t'.join(column_names) + '\n'
+#             file_to_save.write(header_string.encode())
 
-        # Because response.read() returns a bytes object and because we
-        # opened the file with the 'wb' option, we can write those bytes
-        # directly to the file without first decoding them to a
-        # string.
-        file_to_save.write(response.read())
+#         # Because response.read() returns a bytes object and because we
+#         # opened the file with the 'wb' option, we can write those bytes
+#         # directly to the file without first decoding them to a
+#         # string.
+#         file_to_save.write(response.read())
 
-    except urllib.error.HTTPError as e:
-        print('Failed to download contents of URL')
-        print('Status code: {}'.format(e.code))
-        print()
+#     except urllib.error.HTTPError as e:
+#         print('Failed to download contents of URL')
+#         print('Status code: {}'.format(e.code))
+#         print()
 
-    finally:
-        if file_to_save != None:
-            file_to_save.close()
+#     finally:
+#         if file_to_save != None:
+#             file_to_save.close()
         
-        if response != None:
-            response.close()
+#         if response != None:
+#             response.close()
 
 
 

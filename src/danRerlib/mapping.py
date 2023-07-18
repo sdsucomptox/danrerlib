@@ -5,10 +5,6 @@ data has been downloaded directly from NCBI and ZFIN. Check
 out the database README for more information. 
 '''
 
-import pandas as pd
-import numpy as np
-from pathlib import Path
-
 from settings import *
 
 class DatabaseNotFoundError(Exception):
@@ -44,6 +40,7 @@ def convert_ids(gene_list: any, id_from: str, id_to: str, keep_mapping = False) 
         _check_valid_zebrafish_gene_id_type([id_from, id_to])
         gene_list = _make_sure_is_pandas_series(gene_list, id_from)
         # just in case the NCBI Gene IDs are not strings
+        # FLAG ? 
         gene_list = gene_list.astype(str) if (id_from == NCBI_ID) and (gene_list.dtype == int) else gene_list
         gene_list = gene_list.drop_duplicates()
 
