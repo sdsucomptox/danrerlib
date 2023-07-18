@@ -72,11 +72,13 @@ def logistic(gene_universe: pd.DataFrame, gene_set: pd.DataFrame,
             enriched = 'depleted'
     
     else:
+        # place holders to avoid errors when finding logistic regression if the
+        # values don't exist
         beta = 2
         p_value = 1
         p_values_adjusted = 1
         odds_ratio = 1
-        enriched = '2'
+        enriched = 'depleted'
 
 
     # organize important stats
