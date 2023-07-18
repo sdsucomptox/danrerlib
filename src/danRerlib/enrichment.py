@@ -11,7 +11,15 @@ import scipy.stats
 from scipy.stats import chi2
 from scipy.stats import fisher_exact
 
-def logistic(gene_universe, gene_set, concept_type, concept_id, sig_cutoff = 0.05):
+def logistic(gene_universe: pd.DataFrame, gene_set: pd.DataFrame, 
+             concept_type: str, concept_id: str, 
+             sig_cutoff = 0.05) -> pd.DataFrame:
+    '''
+    This function performs gene enrichment using the logistic regression method. A 
+    p-value cutoff is required for this method and the default is taken to be 0.05
+    '''
+    # TODO:
+    # - include a log2FC cutoff as well?
     
     gene_set = gene_set[gene_set[NCBI_ID].isin(gene_universe[NCBI_ID])]
 
@@ -157,10 +165,13 @@ def fishers(gene_universe, gene_set, concept_type, concept_id, sig_cutoff = 0.05
 
     return df
 
-def enrich_KEGG(gene_universe: str,
+def enrich_KEGG(gene_universe: str, gene_id_type = NCBI_ID,
                 database =  'pathway', concept_ids = None, 
-                gene_id_type = NCBI_ID,
-                org = 'dreM', method = 'logistic'):
+                org = 'dre', method = 'logistic',
+                sig_gene_cutoff_pvalue = 0.05,
+                sig_conceptID_cutoff_pvalue = None,
+                sig_conceptID_cutoff_FDR = None):
+    
     # TODO
     # - make it so that the first column is assumed to be the Gene ID
     #  and the second column is the p-value
@@ -173,6 +184,12 @@ def enrich_KEGG(gene_universe: str,
     
     # quality control TODO:
     _check_gene_universe(gene_universe)
+
+    if gene_id_type != NCBI_ID:
+        raise ValueError('NCBI Gene ID is the only currently supported type.')
+
+    # quality control concept ids:
+    _check_valid_org(org)
 
     # identify concept
     concept_dict = {
@@ -201,9 +218,8 @@ def enrich_KEGG(gene_universe: str,
         'dreM': KEGG.mapped_zebrafish_pathways_path,
         'hsa' : KEGG.human_pathways_path
     }
-
-    concept_ids_included = True
-    if concept_ids == None:
+    
+    if concept_ids is None:
         if database == 'pathway':
             path = org_pathway_list_dict[org]
         elif database == 'disease':
@@ -211,7 +227,8 @@ def enrich_KEGG(gene_universe: str,
         
         all_ids = pd.read_csv(path, sep='\t')
         concept_ids = all_ids['Pathway ID']
-        concept_ids_included = False
+    else: 
+        concept_ids = _check_concept_ids(concept_ids, org)
 
     resulting_df_list = []    
     for concept_id in concept_ids:
@@ -219,34 +236,83 @@ def enrich_KEGG(gene_universe: str,
         if type(gene_set) != pd.DataFrame:
             gene_set = pd.DataFrame(gene_set)
 
-        out = enrich_method_function(gene_universe, gene_set, concept_type, concept_id)
+        out = enrich_method_function(gene_universe, gene_set, 
+                                     concept_type, concept_id,
+                                     sig_cutoff = sig_gene_cutoff_pvalue)
         
         # Append the DataFrame to the list
         resulting_df_list.append(out)
 
     # Concatenate the list of DataFrames into a single DataFrame
     result = pd.concat(resulting_df_list, ignore_index=True)
-    if concept_ids_included == False:
-        result = result[result["P-value"] <= 0.05]
+    if sig_conceptID_cutoff_pvalue:
+        result = result[result["P-value"] <= sig_conceptID_cutoff_pvalue]
+    if method == 'logistic' and sig_conceptID_cutoff_FDR:
+        result = result[result["FDR"] <= sig_conceptID_cutoff_FDR]
     sorted_df = result.sort_values(by='P-value', ascending=True)  
+    sorted_df = sorted_df.reset_index(drop=True)
     return sorted_df
 
 def _check_gene_universe(gene_universe):
     if (NCBI_ID not in gene_universe.columns 
         and 'PValue' not in gene_universe.columns):
         raise ValueError('Required columns do not exist.')
+    
+def _check_concept_ids(concept_ids, org):
+    if type(concept_ids) == pd.DataFrame:
+        if concept_ids.shape[1] != 1:
+            raise ValueError('Concept IDs given should be a 1 dimensional list.')
+        else:
+            column_name = concept_ids.columns[0]
+            concept_ids = concept_ids[column_name].to_list()
 
-# def testing():
+    modified_list = []
+    warn = False
+    for id in concept_ids:
+        new_id = str(id)
+        if new_id[0].isdigit():
+            id_len = len(new_id)
+            if id_len < 5:
+                new_id = org + '0' * (5-id_len) + new_id
+            elif id_len == 5:
+                pass
+            else:
+                raise ValueError('The ID given is greater than 5 numeric values.')
+        elif new_id[0].isalpha():
+            if len(new_id) >= 5 and new_id[-5:].isdigit():
+                org_from_id = new_id[:-5]
+                if org_from_id != org:
+                    new_id = org + new_id[-5:]
+                    warn = True
+        else:
+            raise ValueError
+        modified_list.append(new_id)
+    if warn:
+        print('WARNING: The organism you specified does not match the prefix')
+        print(f'         in the given concept IDs. The organism chosen, {org}, is')
+        print('         used, not the organism in the concept IDs.')
+    concept_ids = modified_list
+    return concept_ids
 
-#     cwd = Path().absolute() 
-#     test_data_path = cwd / Path('tutorials/data/test_data/example_diff_express_data.txt')
-#     gene_univese_full_data = pd.read_csv(test_data_path, sep='\t')
+def _check_valid_org(org):
+    valid_orgs = ['dre', 'hsa', 'dreM']
+    if org not in valid_orgs:
+        raise ValueError('Invalid organism chosen. Options are: [\'dre\', \'hsa\', \'dreM\']')
 
-#     concept_ids = ['dreM00010', 'dreM00020']
-#     df = enrich_KEGG('pathway', concept_ids, gene_univese_full_data)
-#     print(df)
 
-#     return None
+def testing():
 
-# if __name__ == '__main__':
-#     testing()
+    # cwd = Path().absolute() 
+    # test_data_path = cwd / Path('tutorials/data/test_data/example_diff_express_data.txt')
+    # gene_univese_full_data = pd.read_csv(test_data_path, sep='\t')
+
+    concept_ids = ['dreM00010', 'dreM00020']
+    concept_ids = ['10', '20']
+    org = 'dreM'
+    df = _check_concept_ids(concept_ids, org)
+    print(df)
+
+    return None
+
+if __name__ == '__main__':
+    testing()
