@@ -34,40 +34,50 @@ def logistic(gene_universe: pd.DataFrame, gene_set: pd.DataFrame,
     # determine which genes are in gene set and also significant
     master_df['Sig and in Gene Set'] = np.where((master_df['Sig'] == 1) & (master_df['In Gene Set'] == 1), 1, 0)
 
-    # add important for test to dataframe
-    # -----------------------------------
+    proportion_of_genes = master_df['Sig and in Gene Set'].sum()/len(gene_set)
 
-    # Y is defined as 1 for genes in gene set, and 0 
-    # for all other genes
-    master_df['Y'] = master_df['In Gene Set']
-    master_df['x'] = -np.log10(master_df['PValue'])
+    if proportion_of_genes != 0:
 
-    # perform logistic regression
-    # ---------------------------   
+        # Y is defined as 1 for genes in gene set, and 0 
+        # for all other genes
+        master_df['Y'] = master_df['In Gene Set']
+        master_df['x'] = -np.log10(master_df['PValue'])
 
-    log_reg = smf.logit("Y ~ x", data=master_df).fit(disp=0)
-    # Access the summary results
-    summary = log_reg.summary()
+        # perform logistic regression
+        # ---------------------------   
 
-    # get important stats
-    # -------------------
+        log_reg = smf.logit("Y ~ x", data=master_df).fit(disp=0)
+        # Access the summary results
+        summary = log_reg.summary()
 
-    # Get the beta coefficient (slope)
-    beta = log_reg.params['x']
+        # get important stats
+        # -------------------
 
-    # Get the p-value
-    p_value = log_reg.pvalues['x']
+        # Get the beta coefficient (slope)
+        beta = log_reg.params['x']
 
-    # Calculate FDR-adjusted p-values
-    p_values_adjusted = smm.multipletests(p_value, method='fdr_bh')[1]
+        # Get the p-value
+        p_value = log_reg.pvalues['x']
 
-    # Get the odds ratio
-    odds_ratio = np.exp(beta)
+        # Calculate FDR-adjusted p-values
+        p_values_adjusted = smm.multipletests(p_value, method='fdr_bh')[1]
 
-    if odds_ratio > 1:
-        enriched = 'enriched'
+        np.seterr(over='ignore')
+        # Get the odds ratio
+        odds_ratio = np.exp(beta)
+
+        if odds_ratio > 1:
+            enriched = 'enriched'
+        else:
+            enriched = 'depleted'
+    
     else:
-        enriched = 'depleted'
+        beta = 2
+        p_value = 1
+        p_values_adjusted = 1
+        odds_ratio = 1
+        enriched = '2'
+
 
     # organize important stats
     # ------------------------
@@ -77,16 +87,14 @@ def logistic(gene_universe: pd.DataFrame, gene_set: pd.DataFrame,
         'Concept ID': concept_id,
         '# Genes in Concept in Universe': len(gene_set),
         '# Sig Genes Belong to Concept': master_df['Sig and in Gene Set'].sum(),
-        'Proportion of Genes': master_df['Sig and in Gene Set'].sum()/len(gene_set),
+        'Proportion of Genes': proportion_of_genes,
         'Coeff': beta,
         'P-value': p_value,
         'FDR': p_values_adjusted,
         'Odds Ratio': odds_ratio,
         'Enriched': enriched
     }
-
-    df = pd.DataFrame(data)
-
+    df = pd.DataFrame(data, index = [0])
     return df
 
 def fishers(gene_universe, gene_set, concept_type, concept_id, sig_cutoff = 0.05):
@@ -161,7 +169,7 @@ def fishers(gene_universe, gene_set, concept_type, concept_id, sig_cutoff = 0.05
         'Direction': direction
     }
 
-    df = pd.DataFrame(data, index = [0])
+    df = pd.DataFrame([data])
 
     return df
 
@@ -192,7 +200,7 @@ def enrich_KEGG(gene_universe: str, gene_id_type = NCBI_ID,
     # quality control concept ids:
     _check_valid_org(org)
 
-    # identify concept
+    # identify concept function to use
     concept_dict = {
         'pathway': KEGG.get_genes_in_pathway,
         'disease': KEGG.get_genes_in_disease
@@ -201,7 +209,7 @@ def enrich_KEGG(gene_universe: str, gene_id_type = NCBI_ID,
     get_genes_function = concept_dict[database]
     concept_type = 'KEGG ' + database
 
-    # identify enrichment method
+    # identify enrichment method (function)
     methods_dict = {
         'logistic': logistic,
         'fishers': fishers
