@@ -1,0 +1,152 @@
+:py:mod:`danRerLib.KEGG`
+========================
+
+.. py:module:: danRerLib.KEGG
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   danRerLib.KEGG.get_genes_in_pathway
+   danRerLib.KEGG.get_genes_in_disease
+   danRerLib.KEGG._check_for_organism
+   danRerLib.KEGG._check_if_pathway_id_exists
+   danRerLib.KEGG.build_kegg_database
+   danRerLib.KEGG._download_zebrafish_pathway_ids
+   danRerLib.KEGG._download_human_pathway_ids
+   danRerLib.KEGG._create_mapped_zebrafish_pathway_ids
+   danRerLib.KEGG._download_disease_ids
+   danRerLib.KEGG._download_human_pathway_genes
+   danRerLib.KEGG._download_zebrafish_pathway_genes
+   danRerLib.KEGG._build_dre_mapped
+   danRerLib.KEGG.testing
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   danRerLib.KEGG.zebrafish_pathways_path
+   danRerLib.KEGG.human_pathways_path
+   danRerLib.KEGG.mapped_zebrafish_pathways_path
+   danRerLib.KEGG.zebrafish_pathways_dir
+   danRerLib.KEGG.human_pathways_dir
+   danRerLib.KEGG.dre_mapped_dir
+   danRerLib.KEGG.human_disease_path
+
+
+.. py:data:: zebrafish_pathways_path
+
+   
+
+.. py:data:: human_pathways_path
+
+   
+
+.. py:data:: mapped_zebrafish_pathways_path
+
+   
+
+.. py:data:: zebrafish_pathways_dir
+
+   
+
+.. py:data:: human_pathways_dir
+
+   
+
+.. py:data:: dre_mapped_dir
+
+   
+
+.. py:data:: human_disease_path
+
+   
+
+.. py:function:: get_genes_in_pathway(pathway_id, org=None)
+
+   organism options:
+       dre : true danio rerio pathways from KEGG
+       hsa : true human pathways from KEGG
+       dreM : mapped danio rerio pathways from human
+
+
+.. py:function:: get_genes_in_disease(disease_id, org='dreM')
+
+   organism options:
+       hsa - will return human genes in the disease
+       dre - will return human genes mapped to zebrafish in the disease
+       dreM - will return human genes mapped to zebrafish in the disease
+   note: dre and dreM produce the same result as human disease is not
+         characterized for zebrafish on KEGG
+   There are so many disease pathways I opted to just use the API
+   instead of saving all the genes in each pathway to a file
+
+
+.. py:function:: _check_for_organism(pathway_id, org)
+
+
+.. py:function:: _check_if_pathway_id_exists(pathway_id, org)
+
+
+.. py:function:: build_kegg_database()
+
+   A DATABASE BUILDING FUNCTION
+   ONLY RUN ON VERSION UPDATE!!
+   this takes a while, be careful:)
+
+
+.. py:function:: _download_zebrafish_pathway_ids(zebrafish_pathways_path)
+
+   A DATABASE BUILDING FUNCTION
+   ONLY RUN ON VERSION UPDATE!!
+   download the list of zebrafish pathways and pathway names
+
+
+.. py:function:: _download_human_pathway_ids(human_pathways_path)
+
+   A DATABASE BUILDING FUNCTION
+   ONLY RUN ON VERSION UPDATE!!
+
+
+.. py:function:: _create_mapped_zebrafish_pathway_ids(mapped_zebrafish_pathways_path, human_pathways_path)
+
+   A DATABASE BUILDING FUNCTION
+   ONLY RUN ON VERSION UPDATE!!
+
+
+.. py:function:: _download_disease_ids(human_disease_path)
+
+   A DATABASE BUILDING FUNCTION
+   ONLY RUN ON VERSION UPDATE!!
+
+
+.. py:function:: _download_human_pathway_genes(human_pathways_path, human_pathways_dir)
+
+   A DATABASE BUILDING FUNCTION
+   ONLY RUN ON VERSION UPDATE!!
+
+
+.. py:function:: _download_zebrafish_pathway_genes(zebrafish_pathways_path, zebrafish_pathways_dir)
+
+   A DATABASE BUILDING FUNCTION
+   ONLY RUN ON VERSION UPDATE!!
+
+
+.. py:function:: _build_dre_mapped(human_pathways_path, human_pathways_dir, dre_mapped_dir)
+
+   A DATABASE BUILDING FUNCTION
+   ONLY RUN ON VERSION UPDATE!!
+
+
+.. py:function:: testing()
+
+

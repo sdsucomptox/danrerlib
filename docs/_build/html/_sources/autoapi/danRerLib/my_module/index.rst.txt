@@ -1,0 +1,26 @@
+:py:mod:`danRerLib.my_module`
+=============================
+
+.. py:module:: danRerLib.my_module
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   danRerLib.my_module.greet
+   danRerLib.my_module.add
+
+
+
+.. py:function:: greet(name)
+
+
+.. py:function:: add(a, b)
+
+

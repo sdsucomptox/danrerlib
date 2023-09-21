@@ -1,0 +1,34 @@
+:py:mod:`danRerLib.utils`
+=========================
+
+.. py:module:: danRerLib.utils
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   danRerLib.utils.pretty_print_series
+   danRerLib.utils.save_data
+   danRerLib.utils.download_url
+   danRerLib.utils.download_url_to_file
+
+
+
+.. py:function:: pretty_print_series(series: pandas.Series)
+
+
+.. py:function:: save_data(data: pd.Series or pd.DataFrame, location)
+
+
+.. py:function:: download_url(url_to_download: str) -> list
+
+
+.. py:function:: download_url_to_file(url_to_download: str, output_file_path: str) -> None
+
+

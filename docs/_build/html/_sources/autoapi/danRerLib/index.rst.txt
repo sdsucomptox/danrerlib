@@ -1,0 +1,28 @@
+:py:mod:`danRerLib`
+===================
+
+.. py:module:: danRerLib
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   GO/index.rst
+   KEGG/index.rst
+   enrichment/index.rst
+   mapping/index.rst
+   my_module/index.rst
+   settings/index.rst
+   utils/index.rst
+
+
+Package Contents
+----------------
+
+.. py:data:: __version__
+
+   
+

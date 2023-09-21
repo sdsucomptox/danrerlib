@@ -1,11 +1,11 @@
 
 ```
-ZebrafishLibrary/
+danRerLib/
 │   README.md
 |   setup.py
 │   LICENSE
 └───src/
-│   └───danRer.lib
+│   └───danRerLib
 │       │   __init__.py
 │       │   example.py
 |       └───database/
@@ -13,5 +13,6 @@ ZebrafishLibrary/
 |       
 └───tests/
 └───tutorials/
+└───docs/
 
 ```

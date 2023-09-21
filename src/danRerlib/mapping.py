@@ -5,7 +5,7 @@ data has been downloaded directly from NCBI and ZFIN. Check
 out the database README for more information. 
 '''
 
-from settings import *
+from danRerLib.settings import *
 
 class DatabaseNotFoundError(Exception):
     "Raised when the the database directory is not found"

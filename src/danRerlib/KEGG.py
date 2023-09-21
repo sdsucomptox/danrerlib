@@ -1,6 +1,6 @@
-from settings import *
+from danRerLib.settings import *
 
-import mapping
+import danRerLib.mapping as mapping
 
 zebrafish_pathways_path = KEGG_DATA_DIR / Path('pathway_ids_dre_V' + str(VERSION_NUM) + '.txt')
 human_pathways_path = KEGG_DATA_DIR / Path('pathway_ids_hsa_V' + str(VERSION_NUM) + '.txt')

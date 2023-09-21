@@ -1,5 +1,6 @@
 from settings import *
-import mapping, utils
+import danRerLib.mapping as mapping
+import danRerLib.utils as utils
 
 GO_IDS_PATH = GO_DATA_DIR / Path('GO_ids_V' + str(VERSION_NUM) + '.txt')
 GO_PATH_dre = GO_DATA_DIR / Path('GO_dre_V' + str(VERSION_NUM) + '.txt')

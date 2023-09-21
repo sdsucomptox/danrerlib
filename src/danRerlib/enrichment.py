@@ -1,9 +1,9 @@
 # Set up python environment
-from settings import *
+from danRerLib.settings import *
 
-import mapping
-import KEGG
-import GO
+import danRerLib.mapping as mapping
+import danRerLib.KEGG as KEGG
+import danRerLib.GO as GO
 
 import statsmodels.api as sm
 import statsmodels.formula.api as smf

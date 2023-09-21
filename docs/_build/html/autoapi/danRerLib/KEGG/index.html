@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>danRerLib.KEGG &mdash; danrerlib  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="danRerLib.enrichment" href="../enrichment/index.html" />
+    <link rel="prev" title="danRerLib.GO" href="../GO/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            danrerlib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Example usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../GO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.GO</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.KEGG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../enrichment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.enrichment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mapping/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.mapping</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../my_module/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.my_module</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../settings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.settings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.utils</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">danrerlib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.KEGG</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/danRerLib/KEGG/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-danRerLib.KEGG">
+<span id="danrerlib-kegg"></span><h1><a class="reference internal" href="#module-danRerLib.KEGG" title="danRerLib.KEGG"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.KEGG</span></code></a><a class="headerlink" href="#module-danRerLib.KEGG" title="Permalink to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.get_genes_in_pathway" title="danRerLib.KEGG.get_genes_in_pathway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_genes_in_pathway</span></code></a>(pathway_id[, org])</p></td>
+<td><p>organism options:</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG.get_genes_in_disease" title="danRerLib.KEGG.get_genes_in_disease"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_genes_in_disease</span></code></a>(disease_id[, org])</p></td>
+<td><p>organism options:</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._check_for_organism" title="danRerLib.KEGG._check_for_organism"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_for_organism</span></code></a>(pathway_id, org)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._check_if_pathway_id_exists" title="danRerLib.KEGG._check_if_pathway_id_exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_if_pathway_id_exists</span></code></a>(pathway_id, org)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.build_kegg_database" title="danRerLib.KEGG.build_kegg_database"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_kegg_database</span></code></a>()</p></td>
+<td><p>A DATABASE BUILDING FUNCTION</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._download_zebrafish_pathway_ids" title="danRerLib.KEGG._download_zebrafish_pathway_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_download_zebrafish_pathway_ids</span></code></a>(zebrafish_pathways_path)</p></td>
+<td><p>A DATABASE BUILDING FUNCTION</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._download_human_pathway_ids" title="danRerLib.KEGG._download_human_pathway_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_download_human_pathway_ids</span></code></a>(human_pathways_path)</p></td>
+<td><p>A DATABASE BUILDING FUNCTION</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._create_mapped_zebrafish_pathway_ids" title="danRerLib.KEGG._create_mapped_zebrafish_pathway_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_create_mapped_zebrafish_pathway_ids</span></code></a>(...)</p></td>
+<td><p>A DATABASE BUILDING FUNCTION</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._download_disease_ids" title="danRerLib.KEGG._download_disease_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_download_disease_ids</span></code></a>(human_disease_path)</p></td>
+<td><p>A DATABASE BUILDING FUNCTION</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._download_human_pathway_genes" title="danRerLib.KEGG._download_human_pathway_genes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_download_human_pathway_genes</span></code></a>(human_pathways_path, ...)</p></td>
+<td><p>A DATABASE BUILDING FUNCTION</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._download_zebrafish_pathway_genes" title="danRerLib.KEGG._download_zebrafish_pathway_genes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_download_zebrafish_pathway_genes</span></code></a>(...)</p></td>
+<td><p>A DATABASE BUILDING FUNCTION</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._build_dre_mapped" title="danRerLib.KEGG._build_dre_mapped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_build_dre_mapped</span></code></a>(human_pathways_path, ...)</p></td>
+<td><p>A DATABASE BUILDING FUNCTION</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.testing" title="danRerLib.KEGG.testing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testing</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.zebrafish_pathways_path" title="danRerLib.KEGG.zebrafish_pathways_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zebrafish_pathways_path</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG.human_pathways_path" title="danRerLib.KEGG.human_pathways_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">human_pathways_path</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.mapped_zebrafish_pathways_path" title="danRerLib.KEGG.mapped_zebrafish_pathways_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapped_zebrafish_pathways_path</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG.zebrafish_pathways_dir" title="danRerLib.KEGG.zebrafish_pathways_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zebrafish_pathways_dir</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.human_pathways_dir" title="danRerLib.KEGG.human_pathways_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">human_pathways_dir</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG.dre_mapped_dir" title="danRerLib.KEGG.dre_mapped_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dre_mapped_dir</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.human_disease_path" title="danRerLib.KEGG.human_disease_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">human_disease_path</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="danRerLib.KEGG.zebrafish_pathways_path">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">zebrafish_pathways_path</span></span><a class="headerlink" href="#danRerLib.KEGG.zebrafish_pathways_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="danRerLib.KEGG.human_pathways_path">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">human_pathways_path</span></span><a class="headerlink" href="#danRerLib.KEGG.human_pathways_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="danRerLib.KEGG.mapped_zebrafish_pathways_path">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">mapped_zebrafish_pathways_path</span></span><a class="headerlink" href="#danRerLib.KEGG.mapped_zebrafish_pathways_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="danRerLib.KEGG.zebrafish_pathways_dir">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">zebrafish_pathways_dir</span></span><a class="headerlink" href="#danRerLib.KEGG.zebrafish_pathways_dir" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="danRerLib.KEGG.human_pathways_dir">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">human_pathways_dir</span></span><a class="headerlink" href="#danRerLib.KEGG.human_pathways_dir" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="danRerLib.KEGG.dre_mapped_dir">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">dre_mapped_dir</span></span><a class="headerlink" href="#danRerLib.KEGG.dre_mapped_dir" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="danRerLib.KEGG.human_disease_path">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">human_disease_path</span></span><a class="headerlink" href="#danRerLib.KEGG.human_disease_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG.get_genes_in_pathway">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG.get_genes_in_pathway" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>organism options:</dt><dd><p>dre : true danio rerio pathways from KEGG
+hsa : true human pathways from KEGG
+dreM : mapped danio rerio pathways from human</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG.get_genes_in_disease">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_disease</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disease_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dreM'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG.get_genes_in_disease" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>organism options:</dt><dd><p>hsa - will return human genes in the disease
+dre - will return human genes mapped to zebrafish in the disease
+dreM - will return human genes mapped to zebrafish in the disease</p>
+</dd>
+<dt>note: dre and dreM produce the same result as human disease is not</dt><dd><p>characterized for zebrafish on KEGG</p>
+</dd>
+</dl>
+<p>There are so many disease pathways I opted to just use the API
+instead of saving all the genes in each pathway to a file</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG._check_for_organism">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_check_for_organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._check_for_organism" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG._check_if_pathway_id_exists">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_check_if_pathway_id_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._check_if_pathway_id_exists" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG.build_kegg_database">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">build_kegg_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG.build_kegg_database" title="Permalink to this definition"></a></dt>
+<dd><p>A DATABASE BUILDING FUNCTION
+ONLY RUN ON VERSION UPDATE!!
+this takes a while, be careful:)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG._download_zebrafish_pathway_ids">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_zebrafish_pathway_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zebrafish_pathways_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._download_zebrafish_pathway_ids" title="Permalink to this definition"></a></dt>
+<dd><p>A DATABASE BUILDING FUNCTION
+ONLY RUN ON VERSION UPDATE!!
+download the list of zebrafish pathways and pathway names</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG._download_human_pathway_ids">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_human_pathway_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._download_human_pathway_ids" title="Permalink to this definition"></a></dt>
+<dd><p>A DATABASE BUILDING FUNCTION
+ONLY RUN ON VERSION UPDATE!!</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG._create_mapped_zebrafish_pathway_ids">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_create_mapped_zebrafish_pathway_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapped_zebrafish_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._create_mapped_zebrafish_pathway_ids" title="Permalink to this definition"></a></dt>
+<dd><p>A DATABASE BUILDING FUNCTION
+ONLY RUN ON VERSION UPDATE!!</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG._download_disease_ids">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_disease_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_disease_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._download_disease_ids" title="Permalink to this definition"></a></dt>
+<dd><p>A DATABASE BUILDING FUNCTION
+ONLY RUN ON VERSION UPDATE!!</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG._download_human_pathway_genes">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_human_pathway_genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._download_human_pathway_genes" title="Permalink to this definition"></a></dt>
+<dd><p>A DATABASE BUILDING FUNCTION
+ONLY RUN ON VERSION UPDATE!!</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG._download_zebrafish_pathway_genes">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_zebrafish_pathway_genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zebrafish_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zebrafish_pathways_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._download_zebrafish_pathway_genes" title="Permalink to this definition"></a></dt>
+<dd><p>A DATABASE BUILDING FUNCTION
+ONLY RUN ON VERSION UPDATE!!</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG._build_dre_mapped">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_build_dre_mapped</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dre_mapped_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._build_dre_mapped" title="Permalink to this definition"></a></dt>
+<dd><p>A DATABASE BUILDING FUNCTION
+ONLY RUN ON VERSION UPDATE!!</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG.testing">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">testing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG.testing" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../GO/index.html" class="btn btn-neutral float-left" title="danRerLib.GO" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../enrichment/index.html" class="btn btn-neutral float-right" title="danRerLib.enrichment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ashley Schwartz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
