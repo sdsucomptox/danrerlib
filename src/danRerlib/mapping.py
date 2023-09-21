@@ -18,7 +18,7 @@ class InvalidGeneTypeError(Exception):
 # GENE MAPPING FUNCTIONS
 # ----------------------
 
-def convert_ids(gene_list: any, id_from: str, id_to: str, keep_mapping = False) -> pd.Series or pd.DataFrame:
+def convert_ids(gene_list: any, id_from: str, id_to: str, keep_mapping = False, out_format = None) -> pd.Series or pd.DataFrame:
     '''
     Convert a list of Gene IDs.
     Parameters: 
@@ -62,13 +62,20 @@ def convert_ids(gene_list: any, id_from: str, id_to: str, keep_mapping = False) 
         else:
             mapped_genes = filtered_df[id_to]
             mapped_genes = mapped_genes.dropna()
-            return mapped_genes.drop_duplicates()
+            mapped_genes = mapped_genes.drop_duplicates()
+
+            if out_format == list:
+                mapped_genes = mapped_genes.to_list()
+            return mapped_genes
+        
+
     
     except InvalidGeneTypeError:
         pass
 
 def add_mapped_column(data: pd.DataFrame, id_from: str, id_to: str, 
-                      column_name_with_ids = None, keep_old_ids = True):
+                      column_name_with_ids = None, keep_old_ids = True,
+                      drop_na = False):
     '''
     Parameters:
         data - a pandas DataFrame containing a column that has Gene IDs of some type
@@ -79,6 +86,8 @@ def add_mapped_column(data: pd.DataFrame, id_from: str, id_to: str,
         column_name_with_ids - the name of the column containing the Gene IDs (if
                                the column name does not match id_from)
         keep_old_ids - if you would like to keep the old Gene ID column
+        drop_na - if you would like to drop any rows that have a NA in the resulting
+                  mapped column
     '''
 
     # last updated: July 13, 2023
@@ -123,6 +132,9 @@ def add_mapped_column(data: pd.DataFrame, id_from: str, id_to: str,
         if column_name_with_ids:
             # rename column back to original name
             data = data.rename(columns={id_from:column_name_with_ids})
+        
+        if drop_na:
+            data = data.dropna(subset=[id_to])
 
         return data.drop_duplicates()
     
@@ -222,7 +234,8 @@ def get_ortho_ids(gene_list: list, id_from: str, id_to: str,
         pass
 
 def add_mapped_ortholog_column(data: pd.DataFrame, id_from: str, id_to: str, 
-                               column_name_with_ids = None, keep_old_ids = True):
+                               column_name_with_ids = None, keep_old_ids = True,
+                               drop_na = False):
     '''
     Parameters:
         gene_list - a list of Gene IDs with supported formats list, pd.Series,
@@ -250,6 +263,10 @@ def add_mapped_ortholog_column(data: pd.DataFrame, id_from: str, id_to: str,
                 # data[NCBI_ID] = gene_list.astype(str)
                 data[NCBI_ID] = (gene_list.astype(str) if (id_from == NCBI_ID) and (gene_list.dtype == int) else gene_list)
                 data[NCBI_ID] = data[NCBI_ID].to_numpy()
+        if id_from == HUMAN_ID:
+                # data[NCBI_ID] = gene_list.astype(str)
+                data[HUMAN_ID] = (gene_list.astype(str) if (id_from == HUMAN_ID) and (gene_list.dtype == int) else gene_list)
+                data[HUMAN_ID] = data[HUMAN_ID].to_numpy()
 
         gene_list_with_orthos = get_ortho_ids(gene_list, id_from, id_to, keep_mapping=True)
 
@@ -269,6 +286,9 @@ def add_mapped_ortholog_column(data: pd.DataFrame, id_from: str, id_to: str,
         if column_name_with_ids:
             # rename column back to original name
             data = data.rename(columns={id_from:column_name_with_ids})
+        
+        if drop_na:
+            data = data.dropna(subset=[id_to])
 
         return data.drop_duplicates()
     

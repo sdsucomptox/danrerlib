@@ -15,7 +15,7 @@ human_disease_path = KEGG_DATA_DIR / Path('disease_ids_V'+ str(VERSION_NUM) + '.
 def get_genes_in_pathway(pathway_id, org = None):
     '''
     organism options:
-        dre : tru danio rerio pathways from KEGG
+        dre : true danio rerio pathways from KEGG
         hsa : true human pathways from KEGG
         dreM : mapped danio rerio pathways from human
     '''
@@ -47,9 +47,14 @@ def get_genes_in_disease(disease_id, org = 'dreM'):
         gene_df = pd.read_csv(url, names=column_names, sep='\t')
         genes = gene_df[HUMAN_ID].str[4:]
         if org == 'hsa':
+            if type(genes) != pd.DataFrame:
+                genes = genes.to_frame()
             return genes
         elif org == 'dre' or org == 'dreM':
             genes = mapping.convert_to_zebrafish(genes, NCBI_ID)
+            if type(genes) != pd.DataFrame:
+                genes = genes.to_frame()
+                genes[NCBI_ID] = genes[NCBI_ID].values.astype(np.int64)
             return genes
     
 def _check_for_organism(pathway_id, org):
@@ -254,6 +259,8 @@ def _build_dre_mapped(human_pathways_path, human_pathways_dir, dre_mapped_dir):
 
 def testing():
     id = 'H00001'
+    test_data_dir = FILE_DIR / Path('../../tutorials/data/test_data/')
+    file_path = test_data_dir / Path('kegg_pathways.txt')
     print(get_genes_in_disease(id, 'dre'))
 
 if __name__ == '__main__':

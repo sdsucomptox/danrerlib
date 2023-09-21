@@ -11,7 +11,7 @@ All downloaded files are treated as raw data as they are taken straight from the
 | `zfin_to_ncbi_V1.txt` | `gene_2023.06.27.txt` | mapping of ZFIN gene ids to NCBI gene ids | ZFIN | [ZFIN downloads](https://zfin.org/downloads) -> Sequence Data -> ZFIN Marker associations to NCBI Gene data | need to remove date at top of file | 
 | `zfin_to_ensembl_V1.txt` | `ensembl_1_to_1_2023.06.27.txt` | mapping of ZFIN gene ids to ensembl gene ids | ZFIN | [ZFIN downloads](https://zfin.org/downloads) -> Sequence Data -> ZFIN Marker associations to Ensembl IDs | need to remove date at top of file | 
 | `zfish_human_orthology_V1.txt` | `human_orthos_2023.06.27.txt` | mapping of ZFIN ids to human NCBI ids | ZFIN | [ZFIN downloads](https://zfin.org/downloads) -> Orthology Data -> Human and Zebrafish Orthology | need to remove date at top of file |
-| `Homo_sapiens.gene_info_V1` | `Homo_sapiens.gene_info.gx` | full list of all human genes | NCBI | [NCBI API](https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/) and downloaded homo sapiens file [Homo_sapiens.gene_info.gz]https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/Homo_sapiens.gene_info.gz | needs to be unzipped | 
+| `Homo_sapiens.gene_info_V1` | `Homo_sapiens.gene_info.gx` | full list of all human genes | NCBI | [NCBI API](https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/) and downloaded homo sapiens file [Homo_sapiens.gene_info.gz](https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/Homo_sapiens.gene_info.gz) | needs to be unzipped | 
 
 ## Generated Files
 
