@@ -34,3 +34,13 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
+
+def skip_private(app, what, name, obj, skip, options):
+    if name.startswith('_'):
+        return True
+    return None
+
+
+def setup(sphinx):
+    sphinx.connect("autoapi-skip-member", skip_private)
+

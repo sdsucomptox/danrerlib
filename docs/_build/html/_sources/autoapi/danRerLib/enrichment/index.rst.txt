@@ -31,7 +31,7 @@ Functions
 
 
 
-.. py:function:: logistic(gene_universe: pd.DataFrame, gene_set: pd.DataFrame, gene_id_type: str, concept_type: str, concept_id: str, concept_name: str, sig_cutoff=0.05) -> pd.DataFrame
+.. py:function:: logistic(gene_universe: danRerLib.settings.pd.DataFrame, gene_set: danRerLib.settings.pd.DataFrame, gene_id_type: str, concept_type: str, concept_id: str, concept_name: str, sig_cutoff=0.05) -> danRerLib.settings.pd.DataFrame
 
    This function performs gene enrichment using the logistic regression method. A
    p-value cutoff is required for this method and the default is taken to be 0.05

@@ -52,12 +52,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib</span></code></a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#subpackages">Subpackages</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../GO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.GO</span></code></a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.KEGG</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../enrichment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.enrichment</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../mapping/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.mapping</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../my_module/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.my_module</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../settings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.settings</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.utils</span></code></a></li>
 </ul>
@@ -209,7 +209,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG.get_genes_in_pathway">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG.get_genes_in_pathway" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#get_genes_in_pathway"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG.get_genes_in_pathway" title="Permalink to this definition"></a></dt>
 <dd><dl class="simple">
 <dt>organism options:</dt><dd><p>dre : true danio rerio pathways from KEGG
 hsa : true human pathways from KEGG
@@ -220,7 +220,7 @@ dreM : mapped danio rerio pathways from human</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG.get_genes_in_disease">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_disease</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disease_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dreM'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG.get_genes_in_disease" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_disease</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disease_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dreM'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#get_genes_in_disease"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG.get_genes_in_disease" title="Permalink to this definition"></a></dt>
 <dd><dl class="simple">
 <dt>organism options:</dt><dd><p>hsa - will return human genes in the disease
 dre - will return human genes mapped to zebrafish in the disease
@@ -235,17 +235,17 @@ instead of saving all the genes in each pathway to a file</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._check_for_organism">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_check_for_organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._check_for_organism" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_check_for_organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_check_for_organism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._check_for_organism" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._check_if_pathway_id_exists">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_check_if_pathway_id_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._check_if_pathway_id_exists" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_check_if_pathway_id_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_check_if_pathway_id_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._check_if_pathway_id_exists" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG.build_kegg_database">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">build_kegg_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG.build_kegg_database" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">build_kegg_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#build_kegg_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG.build_kegg_database" title="Permalink to this definition"></a></dt>
 <dd><p>A DATABASE BUILDING FUNCTION
 ONLY RUN ON VERSION UPDATE!!
 this takes a while, be careful:)</p>
@@ -253,7 +253,7 @@ this takes a while, be careful:)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._download_zebrafish_pathway_ids">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_zebrafish_pathway_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zebrafish_pathways_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._download_zebrafish_pathway_ids" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_zebrafish_pathway_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zebrafish_pathways_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_download_zebrafish_pathway_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._download_zebrafish_pathway_ids" title="Permalink to this definition"></a></dt>
 <dd><p>A DATABASE BUILDING FUNCTION
 ONLY RUN ON VERSION UPDATE!!
 download the list of zebrafish pathways and pathway names</p>
@@ -261,49 +261,49 @@ download the list of zebrafish pathways and pathway names</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._download_human_pathway_ids">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_human_pathway_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._download_human_pathway_ids" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_human_pathway_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_download_human_pathway_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._download_human_pathway_ids" title="Permalink to this definition"></a></dt>
 <dd><p>A DATABASE BUILDING FUNCTION
 ONLY RUN ON VERSION UPDATE!!</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._create_mapped_zebrafish_pathway_ids">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_create_mapped_zebrafish_pathway_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapped_zebrafish_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._create_mapped_zebrafish_pathway_ids" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_create_mapped_zebrafish_pathway_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapped_zebrafish_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_create_mapped_zebrafish_pathway_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._create_mapped_zebrafish_pathway_ids" title="Permalink to this definition"></a></dt>
 <dd><p>A DATABASE BUILDING FUNCTION
 ONLY RUN ON VERSION UPDATE!!</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._download_disease_ids">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_disease_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_disease_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._download_disease_ids" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_disease_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_disease_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_download_disease_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._download_disease_ids" title="Permalink to this definition"></a></dt>
 <dd><p>A DATABASE BUILDING FUNCTION
 ONLY RUN ON VERSION UPDATE!!</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._download_human_pathway_genes">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_human_pathway_genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._download_human_pathway_genes" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_human_pathway_genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_download_human_pathway_genes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._download_human_pathway_genes" title="Permalink to this definition"></a></dt>
 <dd><p>A DATABASE BUILDING FUNCTION
 ONLY RUN ON VERSION UPDATE!!</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._download_zebrafish_pathway_genes">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_zebrafish_pathway_genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zebrafish_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zebrafish_pathways_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._download_zebrafish_pathway_genes" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_zebrafish_pathway_genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zebrafish_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zebrafish_pathways_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_download_zebrafish_pathway_genes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._download_zebrafish_pathway_genes" title="Permalink to this definition"></a></dt>
 <dd><p>A DATABASE BUILDING FUNCTION
 ONLY RUN ON VERSION UPDATE!!</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._build_dre_mapped">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_build_dre_mapped</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dre_mapped_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG._build_dre_mapped" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_build_dre_mapped</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dre_mapped_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_build_dre_mapped"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._build_dre_mapped" title="Permalink to this definition"></a></dt>
 <dd><p>A DATABASE BUILDING FUNCTION
 ONLY RUN ON VERSION UPDATE!!</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG.testing">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">testing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG.testing" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">testing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#testing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG.testing" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>

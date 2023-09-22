@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>danRerLib.mapping &mdash; danrerlib  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            danrerlib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../example.html">Example usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">danrerlib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">danRerLib.mapping</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for danRerLib.mapping</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This script contains all the tools necessary to map zebrafish</span>
+<span class="sd">gene ids from the varying identification types. The mapping </span>
+<span class="sd">data has been downloaded directly from NCBI and ZFIN. Check</span>
+<span class="sd">out the database README for more information. </span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">danRerLib.settings</span> <span class="kn">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="DatabaseNotFoundError"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.DatabaseNotFoundError">[docs]</a><span class="k">class</span> <span class="nc">DatabaseNotFoundError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="s2">&quot;Raised when the the database directory is not found&quot;</span>
+    <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="InvalidGeneTypeError"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.InvalidGeneTypeError">[docs]</a><span class="k">class</span> <span class="nc">InvalidGeneTypeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="s2">&quot;Raised when the the database directory is not found&quot;</span>
+    <span class="k">pass</span></div>
+
+<span class="c1"># GENE MAPPING FUNCTIONS</span>
+<span class="c1"># ----------------------</span>
+
+<div class="viewcode-block" id="convert_ids"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.convert_ids">[docs]</a><span class="k">def</span> <span class="nf">convert_ids</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">,</span> <span class="n">keep_mapping</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">out_format</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a list of Gene IDs.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        gene_list (array-like): A list of Gene IDs with supported formats like list, pd.Series,</span>
+<span class="sd">            pd.DataFrame, or np.array.</span>
+<span class="sd">        id_from (str): The current Gene ID type.</span>
+<span class="sd">        id_to (str): The Gene ID type to convert to.</span>
+<span class="sd">        keep_mapping (bool, optional): Whether to keep a mapping of the original IDs to the</span>
+<span class="sd">            converted IDs. Default is False.</span>
+<span class="sd">        out_format (str, optional): The desired output format for the result. Default is None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.Series or pd.DataFrame: A pandas Series or DataFrame containing the converted Gene IDs.</span>
+
+<span class="sd">    Other:</span>
+<span class="sd">        Gene ID Type Options: NCBI Gene ID, ZFIN ID, Symbol, Ensembl ID</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># last updated: July 7, 2023</span>
+    <span class="c1"># last checked: July 7, 2023.]</span>
+    <span class="c1"># tutorial? yes</span>
+
+    <span class="k">try</span><span class="p">:</span> 
+        <span class="c1"># some error handling</span>
+        <span class="c1"># -------------------</span>
+        <span class="n">_check_valid_zebrafish_gene_id_type</span><span class="p">([</span><span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">])</span>
+        <span class="n">gene_list</span> <span class="o">=</span> <span class="n">_make_sure_is_pandas_series</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">id_from</span><span class="p">)</span>
+        <span class="c1"># just in case the NCBI Gene IDs are not strings</span>
+        <span class="c1"># FLAG ? </span>
+        <span class="n">gene_list</span> <span class="o">=</span> <span class="n">gene_list</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">id_from</span> <span class="o">==</span> <span class="n">NCBI_ID</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">gene_list</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">gene_list</span>
+        <span class="n">gene_list</span> <span class="o">=</span> <span class="n">gene_list</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+
+        <span class="c1"># read in the master mapping file</span>
+        <span class="n">master_mapping</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">FILE_DIR</span> <span class="o">/</span> <span class="n">MASTER_MAPPING_FILE_PATH</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">master_mapping</span><span class="p">[</span><span class="n">NCBI_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_mapping</span><span class="p">[</span><span class="n">NCBI_ID</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="c1"># master_mapping[NCBI_ID] = master_mapping[NCBI_ID].astype(str)</span>
+        <span class="c1"># master_mapping[NCBI_ID] </span>
+        <span class="n">df_desired_columns</span> <span class="o">=</span> <span class="n">master_mapping</span><span class="p">[[</span><span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">]]</span>
+
+        <span class="c1"># get the rows where our ids come from</span>
+        <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">df_desired_columns</span><span class="p">[</span><span class="n">df_desired_columns</span><span class="p">[</span><span class="n">id_from</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">gene_list</span><span class="p">)]</span>
+        <span class="c1"># reset index</span>
+        <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">filtered_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">keep_mapping</span><span class="p">:</span>
+            <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">filtered_df</span>
+            <span class="k">return</span> <span class="n">mapped_genes</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">filtered_df</span><span class="p">[</span><span class="n">id_to</span><span class="p">]</span>
+            <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">mapped_genes</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+            <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">mapped_genes</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">out_format</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+                <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">mapped_genes</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">mapped_genes</span>
+        
+
+    
+    <span class="k">except</span> <span class="n">InvalidGeneTypeError</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="add_mapped_column"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.add_mapped_column">[docs]</a><span class="k">def</span> <span class="nf">add_mapped_column</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">,</span> <span class="n">column_name_with_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_old_ids</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_na</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add a new column to a pandas DataFrame with mapped Gene IDs.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        data (pd.DataFrame): A pandas DataFrame containing a column that has Gene IDs of some type.</span>
+<span class="sd">        id_from (str): The current Gene ID type. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.</span>
+<span class="sd">        id_to (str): The Gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.</span>
+<span class="sd">        column_name_with_ids (str, optional): The name of the column containing the Gene IDs if it doesn&#39;t match id_from.</span>
+<span class="sd">        keep_old_ids (bool, optional): Whether to keep the old Gene ID column. Default is True.</span>
+<span class="sd">        drop_na (bool, optional): Whether to drop rows with NA values in the resulting mapped column. Default is False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        - This function adds a new column to the input DataFrame containing the mapped Gene IDs.</span>
+<span class="sd">        - The new column will have the name &#39;Gene ID (Mapped)&#39; unless specified otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># last updated: July 13, 2023</span>
+    <span class="c1"># last checked: July 13, 2023</span>
+    <span class="c1"># tutorial? yes</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># some error handling</span>
+        <span class="c1"># -------------------    </span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="n">_check_valid_zebrafish_gene_id_type</span><span class="p">([</span><span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">])</span>
+        <span class="n">_check_column_name_matches_id_choice</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">column_name_with_ids</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">column_name_with_ids</span><span class="p">:</span>
+            <span class="c1"># rename data column to the id in options</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">column_name_with_ids</span><span class="p">:</span><span class="n">id_from</span><span class="p">})</span>
+
+        <span class="n">gene_list</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">id_from</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">id_from</span> <span class="o">==</span> <span class="n">NCBI_ID</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">NCBI_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">gene_list</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">id_from</span> <span class="o">==</span> <span class="n">NCBI_ID</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">gene_list</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">gene_list</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">NCBI_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">NCBI_ID</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+            <span class="c1"># data[NCBI_ID] = gene_list.replace(&#39;nan&#39;, np.nan) if (id_from == NCBI_ID) and (gene_list.dtype == int) else gene_list</span>
+        
+
+        <span class="c1"># convert the ids in the gene list</span>
+        <span class="n">converted_ids</span> <span class="o">=</span> <span class="n">convert_ids</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">,</span> <span class="n">keep_mapping</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># add the converted genes to the dataset</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">converted_ids</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">id_from</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span>
+
+        <span class="c1"># move the id_to column next to the id_from column</span>
+        <span class="n">id_from_col_location</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">id_from</span><span class="p">)</span>
+        <span class="n">column_names</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+        <span class="n">column_names</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">id_to</span><span class="p">)</span>
+        <span class="n">column_names</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">id_from_col_location</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">id_to</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">column_names</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">keep_old_ids</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">id_from</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">column_name_with_ids</span><span class="p">:</span>
+            <span class="c1"># rename column back to original name</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">id_from</span><span class="p">:</span><span class="n">column_name_with_ids</span><span class="p">})</span>
+        
+        <span class="k">if</span> <span class="n">drop_na</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">id_to</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+    
+    <span class="k">except</span> <span class="n">InvalidGeneTypeError</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+<span class="c1"># ORTHOLOGY FUNCTIONS</span>
+<span class="c1"># -------------------</span>
+
+<div class="viewcode-block" id="convert_to_human"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.convert_to_human">[docs]</a><span class="k">def</span> <span class="nf">convert_to_human</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">zfish_gene_type</span><span class="p">,</span> 
+                     <span class="n">keep_mapping</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">keep_missing_orthos</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">id_to</span> <span class="o">=</span> <span class="n">HUMAN_ID</span>
+    <span class="n">human_ids</span> <span class="o">=</span> <span class="n">get_ortho_ids</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">zfish_gene_type</span><span class="p">,</span> <span class="n">id_to</span><span class="p">,</span> 
+                              <span class="n">keep_mapping</span><span class="p">,</span> <span class="n">keep_missing_orthos</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">human_ids</span></div>
+
+<div class="viewcode-block" id="convert_to_zebrafish"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.convert_to_zebrafish">[docs]</a><span class="k">def</span> <span class="nf">convert_to_zebrafish</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">zfish_gene_type</span><span class="p">,</span> 
+                         <span class="n">keep_mapping</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">keep_missing_orthos</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">id_from</span> <span class="o">=</span> <span class="n">HUMAN_ID</span>
+    <span class="n">zebrafish_ids</span> <span class="o">=</span> <span class="n">get_ortho_ids</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">zfish_gene_type</span><span class="p">,</span> 
+                                  <span class="n">keep_mapping</span><span class="p">,</span> <span class="n">keep_missing_orthos</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">zebrafish_ids</span></div>
+
+<div class="viewcode-block" id="get_ortho_ids"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.get_ortho_ids">[docs]</a><span class="k">def</span> <span class="nf">get_ortho_ids</span><span class="p">(</span><span class="n">gene_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">id_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">id_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                  <span class="n">keep_mapping</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">keep_missing_orthos</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">        data - a pandas DataFrame containing a column that has Gene IDs of some type</span>
+<span class="sd">        id_from - the current Gene ID type must be: NCBI Gene ID, ZFIN ID, </span>
+<span class="sd">                Ensembl ID, Symbol, or Human NCBI Gene ID</span>
+<span class="sd">        id_to - the Gene ID type to convert to, must be: NCBI Gene ID, ZFIN ID,</span>
+<span class="sd">                Ensembl ID, Symbol, or Human NCBI Gene ID</span>
+<span class="sd">        column_name_with_ids - the name of the column containing the Gene IDs (if</span>
+<span class="sd">                               the column name does not match id_from)</span>
+<span class="sd">        keep_old_ids - if you would like to keep the old Gene ID column</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># last updated: July 13, 2023</span>
+    <span class="c1"># last checked: July 13, 2023</span>
+    <span class="c1"># tutorial? yes</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># some error handling</span>
+        <span class="c1"># -------------------    </span>
+        <span class="n">_check_valid_gene_id_type_for_orthology</span><span class="p">(</span><span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">)</span>
+        <span class="n">gene_list</span> <span class="o">=</span> <span class="n">_make_sure_is_pandas_series</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">id_from</span><span class="p">)</span>
+        <span class="n">gene_list</span> <span class="o">=</span> <span class="n">gene_list</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="c1"># gene_list = gene_list.to_numpy()</span>
+        <span class="n">gene_list</span> <span class="o">=</span> <span class="n">gene_list</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+        <span class="c1"># if id_from is a zebrafish gene, make sure it is in ZFIN ID format</span>
+        <span class="n">original_id_from</span> <span class="o">=</span> <span class="n">id_from</span>
+        <span class="n">zfish_gene_id_options</span> <span class="o">=</span> <span class="p">[</span><span class="n">NCBI_ID</span><span class="p">,</span> <span class="n">ZFIN_ID</span><span class="p">,</span> <span class="n">ENS_ID</span><span class="p">,</span> <span class="n">SYMBOL</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">id_from</span> <span class="ow">in</span> <span class="n">zfish_gene_id_options</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">id_from</span> <span class="o">!=</span> <span class="n">ZFIN_ID</span><span class="p">):</span>
+            <span class="n">gene_list</span> <span class="o">=</span> <span class="n">convert_ids</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">original_id_from</span><span class="p">,</span> <span class="n">ZFIN_ID</span><span class="p">)</span>
+            <span class="n">id_from</span> <span class="o">=</span> <span class="n">ZFIN_ID</span>
+        
+        <span class="c1"># if id_to is a zebrafish gene and not ZFIN, </span>
+        <span class="n">original_id_to</span> <span class="o">=</span> <span class="n">id_to</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">id_to</span> <span class="ow">in</span> <span class="n">zfish_gene_id_options</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">id_to</span> <span class="o">!=</span> <span class="n">ZFIN_ID</span><span class="p">):</span>
+            <span class="n">id_to</span> <span class="o">=</span> <span class="n">ZFIN_ID</span>
+
+        <span class="c1"># read in the master orthology mapping file</span>
+        <span class="n">master_mapping</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">MASTER_ORTHO_FILE_PATH</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+        <span class="c1"># grab the columns we want</span>
+        <span class="n">df_desired_columns</span> <span class="o">=</span> <span class="n">master_mapping</span><span class="p">[[</span><span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">]]</span>
+        <span class="c1"># grab the rows we want</span>
+        <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">df_desired_columns</span><span class="p">[</span><span class="n">df_desired_columns</span><span class="p">[</span><span class="n">id_from</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">gene_list</span><span class="p">)]</span>
+        <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">gene_list</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(),</span> <span class="n">filtered_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">id_from</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">keep_mapping</span><span class="p">:</span>
+            <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">filtered_df</span>
+            <span class="c1"># if id_to is a zebrafish gene type and not ZFIN ID, map to </span>
+            <span class="c1"># desired type</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">original_id_to</span> <span class="ow">in</span> <span class="n">zfish_gene_id_options</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">original_id_to</span> <span class="o">!=</span> <span class="n">ZFIN_ID</span><span class="p">):</span>
+                <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">add_mapped_column</span><span class="p">(</span><span class="n">mapped_genes</span><span class="p">,</span> <span class="n">ZFIN_ID</span><span class="p">,</span> <span class="n">original_id_to</span><span class="p">,</span> 
+                                                 <span class="n">keep_old_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="c1"># if id_from is a zebrafish gene type and not ZFIN ID, map to </span>
+            <span class="c1"># desired type</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">original_id_from</span> <span class="ow">in</span> <span class="n">zfish_gene_id_options</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">original_id_from</span> <span class="o">!=</span> <span class="n">ZFIN_ID</span><span class="p">):</span>
+                <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">add_mapped_column</span><span class="p">(</span><span class="n">mapped_genes</span><span class="p">,</span> <span class="n">ZFIN_ID</span><span class="p">,</span> <span class="n">original_id_from</span><span class="p">,</span> 
+                                                 <span class="n">keep_old_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">filtered_df</span><span class="p">[</span><span class="n">id_to</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+            <span class="c1"># if id_to is a zebrafish gene type and not ZFIN ID, map to </span>
+            <span class="c1"># desired type</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">original_id_to</span> <span class="ow">in</span> <span class="n">zfish_gene_id_options</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">original_id_to</span> <span class="o">!=</span> <span class="n">ZFIN_ID</span><span class="p">):</span>
+                <span class="n">gene_list</span> <span class="o">=</span> <span class="n">filtered_df</span><span class="p">[</span><span class="n">id_to</span><span class="p">]</span>
+                <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">convert_ids</span><span class="p">(</span><span class="n">mapped_genes</span><span class="p">,</span> <span class="n">ZFIN_ID</span><span class="p">,</span> <span class="n">original_id_to</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">keep_missing_orthos</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">mapped_genes</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+        <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">mapped_genes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mapped_genes</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">InvalidGeneTypeError</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="add_mapped_ortholog_column"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.add_mapped_ortholog_column">[docs]</a><span class="k">def</span> <span class="nf">add_mapped_ortholog_column</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">id_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">id_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                               <span class="n">column_name_with_ids</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">keep_old_ids</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                               <span class="n">drop_na</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">        gene_list - a list of Gene IDs with supported formats list, pd.Series,</span>
+<span class="sd">                    pd.DataFrame and np.array</span>
+<span class="sd">        id_from - the current Gene ID type must be: NCBI Gene ID, ZFIN ID, </span>
+<span class="sd">                Ensembl ID, Symbol, or Human NCBI Gene ID</span>
+<span class="sd">        id_to - the Gene ID type to convert to, must be: NCBI Gene ID, ZFIN ID,</span>
+<span class="sd">                Ensembl ID, Symbol, or Human NCBI Gene ID</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># last updated: July 13, 2023</span>
+    <span class="c1"># last checked: July 13, 2023.</span>
+    <span class="c1"># tutorial? yes</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># some error handling</span>
+        <span class="c1"># -------------------          </span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="n">_check_valid_gene_id_type_for_orthology</span><span class="p">(</span><span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">)</span>
+        <span class="n">_check_column_name_matches_id_choice</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">column_name_with_ids</span><span class="p">)</span>
+        <span class="c1"># get the gene list from the given data</span>
+        <span class="n">gene_list</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">id_from</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">id_from</span> <span class="o">==</span> <span class="n">NCBI_ID</span><span class="p">:</span>
+                <span class="c1"># data[NCBI_ID] = gene_list.astype(str)</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">NCBI_ID</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">gene_list</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">id_from</span> <span class="o">==</span> <span class="n">NCBI_ID</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">gene_list</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">gene_list</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">NCBI_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">NCBI_ID</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">id_from</span> <span class="o">==</span> <span class="n">HUMAN_ID</span><span class="p">:</span>
+                <span class="c1"># data[NCBI_ID] = gene_list.astype(str)</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">HUMAN_ID</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">gene_list</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">id_from</span> <span class="o">==</span> <span class="n">HUMAN_ID</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">gene_list</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">gene_list</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">HUMAN_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">HUMAN_ID</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+        <span class="n">gene_list_with_orthos</span> <span class="o">=</span> <span class="n">get_ortho_ids</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">,</span> <span class="n">keep_mapping</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># add the converted orthologs to the dataset</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">gene_list_with_orthos</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">id_from</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;outer&#39;</span><span class="p">)</span>
+
+        <span class="c1"># move the id_to column next to the id_from column</span>
+        <span class="n">id_from_col_location</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">id_from</span><span class="p">)</span>
+        <span class="n">column_names</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+        <span class="n">column_names</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">id_to</span><span class="p">)</span>
+        <span class="n">column_names</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">id_from_col_location</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">id_to</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">column_names</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">keep_old_ids</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">id_from</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">column_name_with_ids</span><span class="p">:</span>
+            <span class="c1"># rename column back to original name</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">id_from</span><span class="p">:</span><span class="n">column_name_with_ids</span><span class="p">})</span>
+        
+        <span class="k">if</span> <span class="n">drop_na</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">id_to</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+    
+    <span class="k">except</span> <span class="n">InvalidGeneTypeError</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+<span class="c1"># DATABASE BUILDING FUNCTIONS</span>
+<span class="c1"># ----------------------</span>
+
+<div class="viewcode-block" id="build_gene_mapping"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.build_gene_mapping">[docs]</a><span class="k">def</span> <span class="nf">build_gene_mapping</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    purpose:    the purpose of this function is to build the master gene mapping file </span>
+<span class="sd">                named &#39;master_gene_mapping_file_V&lt;VERSION_NUM&gt;.txt</span>
+<span class="sd">                - the files used to build the mapping file have been downloaded from</span>
+<span class="sd">                  ZFIN and should be in the database/raw_data sub directory</span>
+<span class="sd">    dependencies:   zfin_to_ncbi_V&lt;VERSION_NUM&gt;.txt</span>
+<span class="sd">                    zfin_to_ensembl_V&lt;VERSION_NUM&gt;.txt</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># last updated: July 7, 2023</span>
+    <span class="c1"># last checked: July 7, 2023.</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># read in all the data files we have</span>
+        <span class="n">zfin_to_ncbi</span> <span class="o">=</span> <span class="n">RAW_DATA_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;zfin_to_ncbi_V&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+        <span class="n">zfin_to_ens</span> <span class="o">=</span> <span class="n">RAW_DATA_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;zfin_to_ensembl_V&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+
+        <span class="c1"># check if database directory exists</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">DATABASE_DIR</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">DatabaseNotFoundError</span>
+
+        <span class="c1"># check to see if required files exist </span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">zfin_to_ncbi</span><span class="o">.</span><span class="n">is_file</span><span class="p">())</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">zfin_to_ens</span><span class="o">.</span><span class="n">is_file</span><span class="p">()):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span>
+
+        <span class="c1"># clean some stuff up </span>
+        <span class="n">zfin_geneid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">zfin_to_ncbi</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">zfin_ens</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">zfin_to_ens</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>    
+
+        <span class="n">zfin_geneid</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Unnamed: 4&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">zfin_ens</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Unnamed: 4&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">zfin_geneid</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SO ID&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">zfin_ens</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Gene SO ID&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># merge the datasets</span>
+        <span class="n">merged_df</span> <span class="o">=</span> <span class="n">zfin_geneid</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">zfin_ens</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ZFIN ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Symbol&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span> <span class="p">)</span>
+
+        <span class="n">out_file_name</span> <span class="o">=</span> <span class="n">DATABASE_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;master_gene_mapping_file_V&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+        <span class="n">merged_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">out_file_name</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;To build the gene mapping file, we require these two files:&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; - zfin_to_ncbi_V&lt;VERSION_NUM&gt;.txt&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; - zfin_to_ensembl_V&lt;VERSION_NUM&gt;.txt&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;One (or both) of these files was not found in the raw_data folder&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;of the database directory: &#39;</span><span class="p">,</span> <span class="n">RAW_DATA_DIR</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Therefore, the build cannot be completed.&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">DatabaseNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The database should be accessible via the current working directory.&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;It cannot be found. Therefore, the build cannot be completed.&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="build_ortho_mapping"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.build_ortho_mapping">[docs]</a><span class="k">def</span> <span class="nf">build_ortho_mapping</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    purpose:    the purpose of this function is to build the master orthology mapping file </span>
+<span class="sd">                named &#39;master_ortho_mapping_file_V&lt;VERSION_NUM&gt;.txt</span>
+<span class="sd">                - the files used to build the orthology file have been downloaded from</span>
+<span class="sd">                  ZFIN and should be in the database/raw_data sub directory</span>
+<span class="sd">    dependencies:   zfin_to_ncbi_V&lt;VERSION_NUM&gt;.txt</span>
+<span class="sd">                    zfin_to_ensembl_V&lt;VERSION_NUM&gt;.txt</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># last updated: July 7, 2023</span>
+    <span class="c1"># last checked: July 7, 2023.</span>
+
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="c1"># read in the gene data and human ortholog information</span>
+        <span class="c1"># data downloaded from ZFIN!</span>
+        <span class="n">zfish_human_orthology_path</span> <span class="o">=</span> <span class="n">RAW_DATA_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;zfish_human_orthology_V&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+        <span class="c1"># check to see if required files exist </span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">zfish_human_orthology_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span>
+        <span class="n">zfish_human_orthos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">zfish_human_orthology_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="c1"># drop unneccessary columns</span>
+        <span class="n">zfin_orthos</span> <span class="o">=</span> <span class="n">zfish_human_orthos</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;OMIM ID&#39;</span><span class="p">,</span> <span class="s1">&#39;HGNC ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Evidence&#39;</span><span class="p">,</span> <span class="s1">&#39;Pub ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Unnamed: 10&#39;</span><span class="p">,</span>
+                                        <span class="s1">&#39;ZFIN Symbol&#39;</span><span class="p">,</span> <span class="s1">&#39;ZFIN Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Human Symbol&#39;</span><span class="p">,</span> <span class="s1">&#39;Human Name&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># # just include genes</span>
+        <span class="c1"># zfin_orthos = zfin_orthos[zfin_orthos[&#39;ZFIN ID&#39;].str.startswith(&#39;ZDB-GENE-&#39;) ]</span>
+        <span class="c1"># remove duplicates</span>
+        <span class="n">zfin_orthos</span> <span class="o">=</span> <span class="n">zfin_orthos</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span>
+        <span class="c1"># reset index</span>
+        <span class="n">zfin_orthos</span><span class="o">=</span><span class="n">zfin_orthos</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">zfin_orthos</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Gene ID&quot;</span><span class="p">:</span> <span class="s2">&quot;Human NCBI Gene ID&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># # WRITE TO FILE</span>
+        <span class="n">out_file_name</span> <span class="o">=</span> <span class="n">DATABASE_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;master_ortho_mapping_file_V&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+        <span class="n">zfin_orthos</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">out_file_name</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;To build the orthology mapping file, we require the files:&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; - zfish_human_orthology_V&lt;VERSION_NUM&gt;.txt&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;This file was not found in the raw_data folder&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;of the database directory: &#39;</span><span class="p">,</span> <span class="n">RAW_DATA_DIR</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Therefore, the build cannot be completed.&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">DatabaseNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The database should be accessible via the current working directory.&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;It cannot be found. Therefore, the build cannot be completed.&#39;</span><span class="p">)</span></div>
+
+<span class="c1"># PRIVATE FUNCTIONS</span>
+<span class="c1"># -----------------</span>
+<div class="viewcode-block" id="convert_to_str"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.convert_to_str">[docs]</a><span class="k">def</span> <span class="nf">convert_to_str</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s1">&#39;nan&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>  <span class="c1"># Preserve NaN values</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="_make_sure_is_pandas_series"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping._make_sure_is_pandas_series">[docs]</a><span class="k">def</span> <span class="nf">_make_sure_is_pandas_series</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">id_from</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">gene_list</span><span class="p">)</span> <span class="o">!=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">gene_list</span><span class="p">)</span> <span class="o">==</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+            <span class="n">gene_list</span> <span class="o">=</span> <span class="n">gene_list</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gene_list</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">id_from</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">gene_list</span></div>
+
+<div class="viewcode-block" id="_check_valid_zebrafish_gene_id_type"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping._check_valid_zebrafish_gene_id_type">[docs]</a><span class="k">def</span> <span class="nf">_check_valid_zebrafish_gene_id_type</span><span class="p">(</span><span class="n">gene_id_types</span><span class="p">):</span>
+    <span class="n">gene_id_options</span> <span class="o">=</span> <span class="p">[</span><span class="n">NCBI_ID</span><span class="p">,</span> <span class="n">ZFIN_ID</span><span class="p">,</span> <span class="n">ENS_ID</span><span class="p">,</span> <span class="n">SYMBOL</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">gene_id_types</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">gene_id_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">gene_id_types</span><span class="p">]</span>
+
+    <span class="n">invalid_gene_id_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">gene_id_types</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">gene_id_options</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">invalid_gene_id_types</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;One or more of the zebrafish Gene ID types you gave is invalid. The valid zebrafish&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gene ID options are: </span><span class="si">{</span><span class="n">NCBI_ID</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">ZFIN_ID</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">ENS_ID</span><span class="si">}</span><span class="s1">, and </span><span class="si">{</span><span class="n">SYMBOL</span><span class="si">}</span><span class="s1">. The ID(s) you gave&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;that are invalid are:&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;----------&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">invalid_gene_id_types</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;----------&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reminder: Gene ID types are case and spelling sensitive.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">InvalidGeneTypeError</span></div>
+    
+<div class="viewcode-block" id="_check_valid_gene_id_type_for_orthology"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping._check_valid_gene_id_type_for_orthology">[docs]</a><span class="k">def</span> <span class="nf">_check_valid_gene_id_type_for_orthology</span><span class="p">(</span><span class="n">gene_id_from</span><span class="p">,</span> <span class="n">gene_id_to</span><span class="p">):</span>
+
+    <span class="n">zfish_gene_id_options</span> <span class="o">=</span> <span class="p">[</span><span class="n">NCBI_ID</span><span class="p">,</span> <span class="n">ZFIN_ID</span><span class="p">,</span> <span class="n">ENS_ID</span><span class="p">,</span> <span class="n">SYMBOL</span><span class="p">]</span>
+    <span class="n">human_gene_id_options</span> <span class="o">=</span> <span class="p">[</span><span class="n">HUMAN_ID</span><span class="p">]</span>
+
+    <span class="n">all_gene_id_options</span> <span class="o">=</span> <span class="n">zfish_gene_id_options</span> <span class="o">+</span> <span class="n">human_gene_id_options</span>
+    <span class="n">gene_ids_chosen</span> <span class="o">=</span> <span class="p">[</span><span class="n">gene_id_from</span><span class="p">,</span> <span class="n">gene_id_to</span><span class="p">]</span>
+
+    <span class="n">invalid_gene_id_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">gene_ids_chosen</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_gene_id_options</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">invalid_gene_id_types</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;One or more of the Gene ID types you gave is invalid. The valid zebrafish Gene ID&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;options are: </span><span class="si">{</span><span class="n">NCBI_ID</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">ZFIN_ID</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">ENS_ID</span><span class="si">}</span><span class="s1">, and </span><span class="si">{</span><span class="n">SYMBOL</span><span class="si">}</span><span class="s1">. The valid human Gene ID&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;type is: </span><span class="si">{</span><span class="n">HUMAN_ID</span><span class="si">}</span><span class="s1">. The ID(s) you gave that are invalid are:&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;----------&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">invalid_gene_id_types</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;----------&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reminder: Gene ID types are case and spelling sensitive.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">InvalidGeneTypeError</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">invalid_gene_id_types</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">gene_id_from</span> <span class="ow">in</span> <span class="n">zfish_gene_id_options</span> <span class="ow">and</span> <span class="n">gene_id_to</span> <span class="ow">in</span> <span class="n">zfish_gene_id_options</span><span class="p">)</span> <span class="ow">or</span> \
+        <span class="p">(</span><span class="n">gene_id_from</span> <span class="ow">in</span> <span class="n">human_gene_id_options</span> <span class="ow">and</span> <span class="n">gene_id_to</span> <span class="ow">in</span> <span class="n">human_gene_id_options</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The Gene ID choices you gave are from the same organism. To perform othology mapping,&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;id_from must be from organism A and id_to must be from organism B.The valid zebrafish&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gene ID options are: </span><span class="si">{</span><span class="n">NCBI_ID</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">ZFIN_ID</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">ENS_ID</span><span class="si">}</span><span class="s1">, and </span><span class="si">{</span><span class="n">SYMBOL</span><span class="si">}</span><span class="s1">. The valid human&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gene ID type is: </span><span class="si">{</span><span class="n">HUMAN_ID</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">InvalidGeneTypeError</span></div>
+
+
+<div class="viewcode-block" id="_check_column_name_matches_id_choice"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping._check_column_name_matches_id_choice">[docs]</a><span class="k">def</span> <span class="nf">_check_column_name_matches_id_choice</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">id_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">data_cols</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span>
+    <span class="k">if</span> <span class="n">column_name</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">column_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data_cols</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The column name you specified does not exist in your dataset.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">InvalidGeneTypeError</span>
+    <span class="k">else</span><span class="p">:</span>    
+        <span class="k">if</span> <span class="n">id_from</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data_cols</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The Gene ID type you chose does not match a column name in the given&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dataset. Please either change the column name in the dataset or provide&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;the matching column name in the column_name parameter.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">InvalidGeneTypeError</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ZDB-GENE-030131-2931&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ZDB-GENE-081031-55&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ZDB-GENE-081031-61&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ZDB-GENE-110420-1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ZDB-GENE-200107-1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ZDB-GENE-200107-2&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ZDB-GENE-071004-33&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ZDB-GENE-081105-47&#39;</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">convert_ids</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">ZFIN_ID</span><span class="p">,</span> <span class="n">NCBI_ID</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">dropna</span><span class="p">())</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ashley Schwartz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

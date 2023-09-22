@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>danRerLib.GO &mdash; danrerlib  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            danrerlib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../example.html">Example usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">danrerlib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">danRerLib.GO</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for danRerLib.GO</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">danRerLib.settings</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">danRerLib.mapping</span> <span class="k">as</span> <span class="nn">mapping</span>
+<span class="kn">import</span> <span class="nn">danRerLib.utils</span> <span class="k">as</span> <span class="nn">utils</span>
+
+<span class="n">GO_IDS_PATH</span> <span class="o">=</span> <span class="n">GO_DATA_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;GO_ids_V&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+<span class="n">GO_PATH_dre</span> <span class="o">=</span> <span class="n">GO_DATA_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;GO_dre_V&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+<span class="n">GO_PATH_dreM</span> <span class="o">=</span> <span class="n">GO_DATA_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;GO_dreM_V&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+<span class="n">GO_PATH_hsa</span> <span class="o">=</span> <span class="n">GO_DATA_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;GO_hsa_V&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+
+<span class="n">GO_BASIC_URL</span> <span class="o">=</span> <span class="s1">&#39;http://purl.obolibrary.org/obo/go/go-basic.obo&#39;</span>
+<span class="n">GO_ZFIN_URL</span> <span class="o">=</span> <span class="s1">&#39;https://current.geneontology.org/annotations/zfin.gaf.gz&#39;</span>
+<span class="n">GO_NCBI_URL</span> <span class="o">=</span> <span class="s1">&#39;https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2go.gz&#39;</span>
+
+<div class="viewcode-block" id="get_genes_in_GO_concept"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO.get_genes_in_GO_concept">[docs]</a><span class="k">def</span> <span class="nf">get_genes_in_GO_concept</span><span class="p">(</span><span class="n">concept_id</span><span class="p">,</span> <span class="n">organism</span><span class="p">,</span> <span class="n">gene_id_type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    gene_id_type: the desired gene id type to be returned</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># check if ID is in required format:</span>
+    <span class="n">concept_id</span> <span class="o">=</span> <span class="n">check_id_format</span><span class="p">(</span><span class="n">concept_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">id_exists_given_organism</span><span class="p">(</span><span class="n">concept_id</span><span class="p">,</span> <span class="n">organism</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;GO ID does not exist for given organism.&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># the default gene id types for the GO database</span>
+    <span class="k">if</span> <span class="n">organism</span> <span class="o">==</span> <span class="s1">&#39;hsa&#39;</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">GO_PATH_hsa</span>
+        <span class="n">gene_id_type_from_db</span> <span class="o">=</span> <span class="n">HUMAN_ID</span>
+    <span class="k">elif</span> <span class="n">organism</span> <span class="o">==</span> <span class="s1">&#39;dre&#39;</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">GO_PATH_dre</span>
+        <span class="n">gene_id_type_from_db</span> <span class="o">=</span> <span class="n">ZFIN_ID</span>
+    <span class="k">elif</span> <span class="n">organism</span> <span class="o">==</span> <span class="s1">&#39;dreM&#39;</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">GO_PATH_dreM</span>
+        <span class="n">gene_id_type_from_db</span> <span class="o">=</span> <span class="n">ZFIN_ID</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid organism.&#39;</span><span class="p">)</span>
+    
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;GO ID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">concept_id</span><span class="p">]</span>
+
+    <span class="n">gene_ids_series</span> <span class="o">=</span> <span class="n">filtered_df</span><span class="p">[</span><span class="n">gene_id_type_from_db</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">gene_id_type</span> <span class="ow">and</span> <span class="p">(</span><span class="n">organism</span> <span class="o">!=</span> <span class="s1">&#39;hsa&#39;</span><span class="p">):</span>
+        <span class="c1"># map to desired gene id type</span>
+        <span class="k">if</span> <span class="n">gene_id_type</span> <span class="o">!=</span> <span class="n">gene_id_type_from_db</span><span class="p">:</span>
+            <span class="n">gene_ids_series</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">convert_ids</span><span class="p">(</span><span class="n">gene_ids_series</span><span class="p">,</span> 
+                            <span class="n">gene_id_type_from_db</span><span class="p">,</span> <span class="n">gene_id_type</span><span class="p">)</span>
+            
+    <span class="k">return</span> <span class="n">gene_ids_series</span></div>
+
+<div class="viewcode-block" id="id_exists_given_organism"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO.id_exists_given_organism">[docs]</a><span class="k">def</span> <span class="nf">id_exists_given_organism</span><span class="p">(</span><span class="n">concept_id</span><span class="p">,</span> <span class="n">organism</span><span class="p">):</span>
+
+    <span class="c1"># check if ID exists for given organism:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">GO_IDS_PATH</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;GO ID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">concept_id</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">organism</span> <span class="o">==</span> <span class="s1">&#39;hsa&#39;</span><span class="p">:</span>
+        <span class="n">target_column</span> <span class="o">=</span> <span class="s1">&#39;exists_hsa&#39;</span>
+    <span class="k">elif</span> <span class="n">organism</span> <span class="o">==</span> <span class="s1">&#39;dre&#39;</span><span class="p">:</span>
+        <span class="n">target_column</span> <span class="o">=</span> <span class="s1">&#39;exists_dre&#39;</span>
+    <span class="k">elif</span> <span class="n">organism</span> <span class="o">==</span> <span class="s1">&#39;dreM&#39;</span><span class="p">:</span>
+        <span class="n">target_column</span> <span class="o">=</span> <span class="s1">&#39;exists_hsa&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid Organism&#39;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">filtered_df</span><span class="p">[</span><span class="n">target_column</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+    
+<div class="viewcode-block" id="check_id_format"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO.check_id_format">[docs]</a><span class="k">def</span> <span class="nf">check_id_format</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">is_numeric</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+        <span class="n">length_of_numeric</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">length_of_numeric</span> <span class="o">&lt;</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="n">zeros_needed</span> <span class="o">=</span> <span class="mi">7</span><span class="o">-</span><span class="n">length_of_numeric</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;GO:&#39;</span> <span class="o">+</span> <span class="n">zeros_needed</span><span class="o">*</span><span class="s1">&#39;0&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">length_of_numeric</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;GO:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown Gene Ontology ID&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;GO ID should be length 10&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;GO:&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The prefix should be </span><span class="se">\&#39;</span><span class="s1">GO:</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">id</span></div>
+
+<div class="viewcode-block" id="is_numeric"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO.is_numeric">[docs]</a><span class="k">def</span> <span class="nf">is_numeric</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="build_all"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO.build_all">[docs]</a><span class="k">def</span> <span class="nf">build_all</span><span class="p">():</span>
+
+    <span class="n">_build_GO_IDs</span><span class="p">(</span><span class="n">GO_BASIC_URL</span><span class="p">,</span> <span class="n">GO_IDS_PATH</span><span class="p">)</span>
+    <span class="n">_build_human_GO</span><span class="p">(</span><span class="n">GO_PATH_hsa</span><span class="p">,</span> <span class="n">GO_NCBI_URL</span><span class="p">)</span>
+    <span class="n">_build_zebrafish_GO</span><span class="p">(</span><span class="n">GO_PATH_dre</span><span class="p">,</span> <span class="n">GO_ZFIN_URL</span><span class="p">)</span>
+    <span class="n">_build_dre_mapped_GO</span><span class="p">(</span><span class="n">GO_PATH_hsa</span><span class="p">,</span> <span class="n">GO_PATH_dreM</span><span class="p">)</span>
+    <span class="n">_add_to_GO_IDs</span><span class="p">(</span><span class="n">GO_IDS_PATH</span><span class="p">,</span> <span class="n">GO_PATH_dre</span><span class="p">,</span> <span class="n">GO_PATH_hsa</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="_build_GO_IDs"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO._build_GO_IDs">[docs]</a><span class="k">def</span> <span class="nf">_build_GO_IDs</span><span class="p">(</span><span class="n">GO_BASIC_URL</span><span class="p">,</span> <span class="n">GO_IDS_PATH</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function generates a list of all GO IDs, the Name of GO IDs, and the </span>
+<span class="sd">    ontology it belongs to. This is downloaded directly from the GO website using </span>
+<span class="sd">    the GO API.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">GO_BASIC_URL</span>
+    <span class="n">output_file_for_processed</span> <span class="o">=</span> <span class="n">GO_IDS_PATH</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">download_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">content</span><span class="p">:</span>
+        <span class="n">go_terms</span> <span class="o">=</span> <span class="n">_process_GOBasic_content</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">_write_GOBasic_to_file</span><span class="p">(</span><span class="n">go_terms</span><span class="p">,</span> <span class="n">output_file_for_processed</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="_add_to_GO_IDs"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO._add_to_GO_IDs">[docs]</a><span class="k">def</span> <span class="nf">_add_to_GO_IDs</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    the purpose of this function is to add on two columns to identify if</span>
+<span class="sd">    the GO concept exists for zebrafish and himans.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">GO_IDS_PATH</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">df_zfish</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">GO_PATH_dre</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">df_human</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">GO_PATH_hsa</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;exists_hsa&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;GO ID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">df_human</span><span class="p">[</span><span class="s1">&#39;GO ID&#39;</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;exists_dre&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;GO ID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">df_zfish</span><span class="p">[</span><span class="s1">&#39;GO ID&#39;</span><span class="p">])</span>
+    <span class="n">utils</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">GO_IDS_PATH</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="_build_zebrafish_GO"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO._build_zebrafish_GO">[docs]</a><span class="k">def</span> <span class="nf">_build_zebrafish_GO</span><span class="p">():</span>
+    <span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Database Designation&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Marker ID&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Gene Symbol&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Qualifiers&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;GO Term ID&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Reference ID&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;GO Evidence Code&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Inferred From&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Ontology&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Marker Name&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Marker Synonyms&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Marker Type&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Taxon&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Modification Date&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Assigned By&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Annotation Extension&#39;</span><span class="p">,</span> 
+                    <span class="s1">&#39;Gene Product Form ID&#39;</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">GO_ZFIN_URL</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;!&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">desired_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Marker ID&#39;</span><span class="p">,</span> <span class="s1">&#39;GO Term ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Ontology&#39;</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">desired_columns</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+    <span class="n">new_column_names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Marker ID&#39;</span><span class="p">:</span> <span class="s1">&#39;ZFIN ID&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;GO Term ID&#39;</span><span class="p">:</span> <span class="s1">&#39;GO ID&#39;</span><span class="p">}</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">new_column_names</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">utils</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">GO_PATH_dre</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="_build_human_GO"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO._build_human_GO">[docs]</a><span class="k">def</span> <span class="nf">_build_human_GO</span><span class="p">():</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">GO_NCBI_URL</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;#tax_id&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">9606</span><span class="p">]</span>
+    <span class="n">desired_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GeneID&#39;</span><span class="p">,</span> <span class="s1">&#39;GO_ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Category&#39;</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">desired_columns</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+    <span class="n">new_column_names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;GeneID&#39;</span><span class="p">:</span> <span class="s1">&#39;Human NCBI Gene ID&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;GO_ID&#39;</span><span class="p">:</span> <span class="s1">&#39;GO ID&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Category&#39;</span> <span class="p">:</span> <span class="s1">&#39;Orthology&#39;</span><span class="p">}</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">new_column_names</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Orthology&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Orthology&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">_get_ontology</span><span class="p">)</span>
+    <span class="n">utils</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">GO_PATH_hsa</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="_build_dre_mapped_GO"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO._build_dre_mapped_GO">[docs]</a><span class="k">def</span> <span class="nf">_build_dre_mapped_GO</span><span class="p">():</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">GO_PATH_hsa</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">ortho_df</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">add_mapped_ortholog_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;Human NCBI Gene ID&#39;</span><span class="p">,</span> <span class="s1">&#39;ZFIN ID&#39;</span><span class="p">,</span> <span class="n">keep_old_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">drop_na</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">utils</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">ortho_df</span><span class="p">,</span> <span class="n">GO_PATH_dreM</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="_get_ontology"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO._get_ontology">[docs]</a><span class="k">def</span> <span class="nf">_get_ontology</span><span class="p">(</span><span class="n">namespace</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">namespace</span> <span class="o">==</span> <span class="s1">&#39;biological_process&#39;</span>
+        <span class="ow">or</span> <span class="n">namespace</span> <span class="o">==</span> <span class="s1">&#39;Process&#39;</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;P&#39;</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">namespace</span> <span class="o">==</span> <span class="s1">&#39;molecular_function&#39;</span>
+          <span class="ow">or</span> <span class="n">namespace</span> <span class="o">==</span> <span class="s1">&#39;Function&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;F&#39;</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">namespace</span> <span class="o">==</span> <span class="s1">&#39;cellular_component&#39;</span>
+          <span class="ow">or</span> <span class="n">namespace</span> <span class="o">==</span> <span class="s1">&#39;Component&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;C&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+    
+<div class="viewcode-block" id="_process_GOBasic_content"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO._process_GOBasic_content">[docs]</a><span class="k">def</span> <span class="nf">_process_GOBasic_content</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="n">go_terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_term</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>  <span class="c1"># Decode bytes to string</span>
+
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;[Term]&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">current_term</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Check if the current term has all the required fields</span>
+                <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">current_term</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+                    <span class="n">go_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_term</span><span class="p">)</span>
+
+            <span class="n">current_term</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;ontology&#39;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">}</span>
+        <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;id: &#39;</span><span class="p">):</span>
+            <span class="n">current_term</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;: &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;name: &#39;</span><span class="p">):</span>
+            <span class="n">current_term</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;: &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;namespace: &#39;</span><span class="p">):</span>
+            <span class="n">namespace</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;: &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">current_term</span><span class="p">[</span><span class="s1">&#39;ontology&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_ontology</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span>
+
+    <span class="c1"># Check and add the last term after the loop ends</span>
+    <span class="k">if</span> <span class="n">current_term</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">current_term</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+        <span class="n">go_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_term</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">go_terms</span></div>
+
+<div class="viewcode-block" id="_write_GOBasic_to_file"><a class="viewcode-back" href="../../autoapi/danRerLib/GO/index.html#danRerLib.GO._write_GOBasic_to_file">[docs]</a><span class="k">def</span> <span class="nf">_write_GOBasic_to_file</span><span class="p">(</span><span class="n">go_terms</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">output_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_out</span><span class="p">:</span>
+        <span class="n">f_out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;GO ID</span><span class="se">\t</span><span class="s1">GO Name</span><span class="se">\t</span><span class="s1">Ontology</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># Header line</span>
+
+        <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">go_terms</span><span class="p">:</span>
+            <span class="n">f_out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">term</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span><span class="si">}</span><span class="se">\t</span><span class="si">{</span><span class="n">term</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="si">}</span><span class="se">\t</span><span class="si">{</span><span class="n">term</span><span class="p">[</span><span class="s2">&quot;ontology&quot;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ashley Schwartz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

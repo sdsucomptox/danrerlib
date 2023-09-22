@@ -23,7 +23,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="danRerLib.KEGG" href="../KEGG/index.html" />
-    <link rel="prev" title="danRerLib" href="../index.html" /> 
+    <link rel="prev" title="danRerLib.database" href="../database/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,12 +52,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib</span></code></a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#subpackages">Subpackages</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.GO</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.KEGG</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../enrichment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.enrichment</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../mapping/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.mapping</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../my_module/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.my_module</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../settings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.settings</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.utils</span></code></a></li>
 </ul>
@@ -209,33 +209,33 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO.get_genes_in_GO_concept">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_GO_concept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concept_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.GO.get_genes_in_GO_concept" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_GO_concept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concept_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#get_genes_in_GO_concept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO.get_genes_in_GO_concept" title="Permalink to this definition"></a></dt>
 <dd><p>gene_id_type: the desired gene id type to be returned</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO.id_exists_given_organism">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">id_exists_given_organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concept_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organism</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.GO.id_exists_given_organism" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">id_exists_given_organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concept_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organism</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#id_exists_given_organism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO.id_exists_given_organism" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO.check_id_format">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">check_id_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.GO.check_id_format" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">check_id_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#check_id_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO.check_id_format" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO.is_numeric">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">is_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.GO.is_numeric" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">is_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#is_numeric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO.is_numeric" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO.build_all">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">build_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.GO.build_all" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">build_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#build_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO.build_all" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO._build_GO_IDs">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_build_GO_IDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">GO_BASIC_URL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GO_IDS_PATH</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.GO._build_GO_IDs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_build_GO_IDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">GO_BASIC_URL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GO_IDS_PATH</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#_build_GO_IDs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO._build_GO_IDs" title="Permalink to this definition"></a></dt>
 <dd><p>This function generates a list of all GO IDs, the Name of GO IDs, and the
 ontology it belongs to. This is downloaded directly from the GO website using
 the GO API.</p>
@@ -243,39 +243,39 @@ the GO API.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO._add_to_GO_IDs">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_add_to_GO_IDs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.GO._add_to_GO_IDs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_add_to_GO_IDs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#_add_to_GO_IDs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO._add_to_GO_IDs" title="Permalink to this definition"></a></dt>
 <dd><p>the purpose of this function is to add on two columns to identify if
 the GO concept exists for zebrafish and himans.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO._build_zebrafish_GO">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_build_zebrafish_GO</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.GO._build_zebrafish_GO" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_build_zebrafish_GO</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#_build_zebrafish_GO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO._build_zebrafish_GO" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO._build_human_GO">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_build_human_GO</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.GO._build_human_GO" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_build_human_GO</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#_build_human_GO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO._build_human_GO" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO._build_dre_mapped_GO">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_build_dre_mapped_GO</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.GO._build_dre_mapped_GO" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_build_dre_mapped_GO</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#_build_dre_mapped_GO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO._build_dre_mapped_GO" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO._get_ontology">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_get_ontology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">namespace</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.GO._get_ontology" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_get_ontology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">namespace</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#_get_ontology"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO._get_ontology" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO._process_GOBasic_content">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_process_GOBasic_content</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#danRerLib.GO._process_GOBasic_content" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_process_GOBasic_content</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#_process_GOBasic_content"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO._process_GOBasic_content" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.GO._write_GOBasic_to_file">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_write_GOBasic_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">go_terms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#danRerLib.GO._write_GOBasic_to_file" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.GO.</span></span><span class="sig-name descname"><span class="pre">_write_GOBasic_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">go_terms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/danRerLib/GO.html#_write_GOBasic_to_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.GO._write_GOBasic_to_file" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>
@@ -286,7 +286,7 @@ the GO concept exists for zebrafish and himans.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="danRerLib" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../database/index.html" class="btn btn-neutral float-left" title="danRerLib.database" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../KEGG/index.html" class="btn btn-neutral float-right" title="danRerLib.KEGG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

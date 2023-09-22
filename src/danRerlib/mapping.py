@@ -18,18 +18,29 @@ class InvalidGeneTypeError(Exception):
 # GENE MAPPING FUNCTIONS
 # ----------------------
 
-def convert_ids(gene_list: any, id_from: str, id_to: str, keep_mapping = False, out_format = None) -> pd.Series or pd.DataFrame:
-    '''
+def convert_ids(gene_list, id_from, id_to, keep_mapping = False, out_format = None):
+    """
     Convert a list of Gene IDs.
-    Parameters: 
-        gene_list - a list of Gene IDs with supported formats list, pd.Series,
-                    pd.DataFrame and np.array
-        id_from - the current Gene ID type
-        id_to   - the Gene ID type to convert to
+
+    Parameters:
+        gene_list (array-like): A list of Gene IDs with supported formats like list, pd.Series,
+            pd.DataFrame, or np.array.
+        id_from (str): The current Gene ID type.
+        id_to (str): The Gene ID type to convert to.
+        keep_mapping (bool, optional): Whether to keep a mapping of the original IDs to the
+            converted IDs. Default is False.
+        out_format (str, optional): The desired output format for the result. Default is None.
+
+    Returns:
+        pd.Series or pd.DataFrame: A pandas Series or DataFrame containing the converted Gene IDs.
+
     Other:
         Gene ID Type Options: NCBI Gene ID, ZFIN ID, Symbol, Ensembl ID
-    '''
 
+    Notes:
+        - if the order is important, it is recommended to have keep_mapping = True. Otherwise, 
+          the mapping order is not guaranteed.
+    """
     # last updated: July 7, 2023
     # last checked: July 7, 2023.]
     # tutorial? yes
@@ -73,22 +84,25 @@ def convert_ids(gene_list: any, id_from: str, id_to: str, keep_mapping = False, 
     except InvalidGeneTypeError:
         pass
 
-def add_mapped_column(data: pd.DataFrame, id_from: str, id_to: str, 
-                      column_name_with_ids = None, keep_old_ids = True,
-                      drop_na = False):
-    '''
+def add_mapped_column(data, id_from, id_to, column_name_with_ids=None, keep_old_ids=True, drop_na=False):
+    """
+    Add a new column to a pandas DataFrame with mapped Gene IDs.
+
     Parameters:
-        data - a pandas DataFrame containing a column that has Gene IDs of some type
-        id_from - the current Gene ID type must be: NCBI Gene ID, ZFIN ID, 
-                Ensembl ID, or Symbol
-        id_to - the Gene ID type to convert to, must be: NCBI Gene ID, ZFIN ID,
-                Ensembl ID, or Symbol 
-        column_name_with_ids - the name of the column containing the Gene IDs (if
-                               the column name does not match id_from)
-        keep_old_ids - if you would like to keep the old Gene ID column
-        drop_na - if you would like to drop any rows that have a NA in the resulting
-                  mapped column
-    '''
+        data (pd.DataFrame): A pandas DataFrame containing a column that has Gene IDs of some type.
+        id_from (str): The current Gene ID type. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
+        id_to (str): The Gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
+        column_name_with_ids (str, optional): The name of the column containing the Gene IDs if it doesn't match id_from.
+        keep_old_ids (bool, optional): Whether to keep the old Gene ID column. Default is True.
+        drop_na (bool, optional): Whether to drop rows with NA values in the resulting mapped column. Default is False.
+
+    Returns:
+        pd.DataFrame: A pandas DataFrame containing the added mapped column.
+
+    Notes:
+        - This function adds a new column to the input DataFrame containing the mapped Gene IDs.
+        - The new column will have the name 'Gene ID (Mapped)' unless specified otherwise.
+    """
 
     # last updated: July 13, 2023
     # last checked: July 13, 2023

@@ -1,4 +1,4 @@
-from settings import *
+from danRerLib.settings import *
 import danRerLib.mapping as mapping
 import danRerLib.utils as utils
 

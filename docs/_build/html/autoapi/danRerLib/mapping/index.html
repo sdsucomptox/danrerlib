@@ -22,7 +22,7 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="danRerLib.my_module" href="../my_module/index.html" />
+    <link rel="next" title="danRerLib.settings" href="../settings/index.html" />
     <link rel="prev" title="danRerLib.enrichment" href="../enrichment/index.html" /> 
 </head>
 
@@ -52,12 +52,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib</span></code></a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#subpackages">Subpackages</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../GO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.GO</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.KEGG</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../enrichment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.enrichment</span></code></a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.mapping</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../my_module/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.my_module</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../settings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.settings</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.utils</span></code></a></li>
 </ul>
@@ -107,15 +107,11 @@ out the database README for more information.</p>
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.mapping.convert_ids" title="danRerLib.mapping.convert_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_ids</span></code></a>(→ pd.Series or pd.DataFrame)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.mapping.convert_ids" title="danRerLib.mapping.convert_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_ids</span></code></a>(gene_list, id_from, id_to[, keep_mapping, ...])</p></td>
 <td><p>Convert a list of Gene IDs.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.mapping.add_mapped_column" title="danRerLib.mapping.add_mapped_column"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_mapped_column</span></code></a>(data, id_from, id_to[, ...])</p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">param data - a pandas DataFrame containing a column that has Gene IDs of some type<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-</p></td>
+<td><p>Add a new column to a pandas DataFrame with mapped Gene IDs.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.mapping.convert_to_human" title="danRerLib.mapping.convert_to_human"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_human</span></code></a>(gene_list, zfish_gene_type[, ...])</p></td>
 <td><p></p></td>
@@ -173,27 +169,41 @@ out the database README for more information.</p>
 </table>
 <dl class="py exception">
 <dt class="sig sig-object py" id="danRerLib.mapping.DatabaseNotFoundError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">DatabaseNotFoundError</span></span><a class="headerlink" href="#danRerLib.mapping.DatabaseNotFoundError" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">DatabaseNotFoundError</span></span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#DatabaseNotFoundError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping.DatabaseNotFoundError" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Raised when the the database directory is not found</p>
 </dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="danRerLib.mapping.InvalidGeneTypeError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">InvalidGeneTypeError</span></span><a class="headerlink" href="#danRerLib.mapping.InvalidGeneTypeError" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">InvalidGeneTypeError</span></span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#InvalidGeneTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping.InvalidGeneTypeError" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Raised when the the database directory is not found</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping.convert_ids">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">convert_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pd.Series</span> <span class="pre">or</span> <span class="pre">pd.DataFrame</span></span></span><a class="headerlink" href="#danRerLib.mapping.convert_ids" title="Permalink to this definition"></a></dt>
-<dd><p>Convert a list of Gene IDs.
-:param gene_list - a list of Gene IDs with supported formats list: pd.DataFrame and np.array
-:param pd.Series: pd.DataFrame and np.array
-:param : pd.DataFrame and np.array
-:param id_from - the current Gene ID type:
-:param id_to   - the Gene ID type to convert to:</p>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">convert_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_to</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#convert_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping.convert_ids" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a list of Gene IDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gene_list</strong> (<em>array-like</em>) – A list of Gene IDs with supported formats like list, pd.Series,
+pd.DataFrame, or np.array.</p></li>
+<li><p><strong>id_from</strong> (<em>str</em>) – The current Gene ID type.</p></li>
+<li><p><strong>id_to</strong> (<em>str</em>) – The Gene ID type to convert to.</p></li>
+<li><p><strong>keep_mapping</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep a mapping of the original IDs to the
+converted IDs. Default is False.</p></li>
+<li><p><strong>out_format</strong> (<em>str</em><em>, </em><em>optional</em>) – The desired output format for the result. Default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas Series or DataFrame containing the converted Gene IDs.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.Series or pd.DataFrame</p>
+</dd>
+</dl>
 <dl class="simple">
 <dt>Other:</dt><dd><p>Gene ID Type Options: NCBI Gene ID, ZFIN ID, Symbol, Ensembl ID</p>
 </dd>
@@ -202,38 +212,43 @@ out the database README for more information.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping.add_mapped_column">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">add_mapped_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_with_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_old_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_na</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.mapping.add_mapped_column" title="Permalink to this definition"></a></dt>
-<dd><dl class="field-list simple">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">add_mapped_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_to</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_with_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_old_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_na</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#add_mapped_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping.add_mapped_column" title="Permalink to this definition"></a></dt>
+<dd><p>Add a new column to a pandas DataFrame with mapped Gene IDs.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>type</strong> (<em>data - a pandas DataFrame containing a column that has Gene IDs</em><em> of </em><em>some</em>) – </p></li>
-<li><p><strong>be</strong> (<em>must</em>) – NCBI Gene ID, ZFIN ID,
-Ensembl ID, or Symbol</p></li>
-<li><p><strong>to</strong> (<em>id_to - the Gene ID type to convert</em>) – NCBI Gene ID, ZFIN ID,
-Ensembl ID, or Symbol</p></li>
-<li><p><strong>be</strong> – NCBI Gene ID, ZFIN ID,
-Ensembl ID, or Symbol</p></li>
-<li><p><strong>(</strong><strong>if</strong> (<em>column_name_with_ids - the name</em><em> of </em><em>the column containing the Gene IDs</em>) – the column name does not match id_from)</p></li>
-<li><p><strong>column</strong> (<em>keep_old_ids - if you would like to keep the old Gene ID</em>) – </p></li>
-<li><p><strong>resulting</strong> (<em>drop_na - if you would like to drop any rows that have a NA in the</em>) – mapped column</p></li>
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – A pandas DataFrame containing a column that has Gene IDs of some type.</p></li>
+<li><p><strong>id_from</strong> (<em>str</em>) – The current Gene ID type. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.</p></li>
+<li><p><strong>id_to</strong> (<em>str</em>) – The Gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.</p></li>
+<li><p><strong>column_name_with_ids</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the column containing the Gene IDs if it doesn’t match id_from.</p></li>
+<li><p><strong>keep_old_ids</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep the old Gene ID column. Default is True.</p></li>
+<li><p><strong>drop_na</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to drop rows with NA values in the resulting mapped column. Default is False.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
 </dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function adds a new column to the input DataFrame containing the mapped Gene IDs.</p></li>
+<li><p>The new column will have the name ‘Gene ID (Mapped)’ unless specified otherwise.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping.convert_to_human">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">convert_to_human</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zfish_gene_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_missing_orthos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.mapping.convert_to_human" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">convert_to_human</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zfish_gene_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_missing_orthos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#convert_to_human"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping.convert_to_human" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping.convert_to_zebrafish">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">convert_to_zebrafish</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zfish_gene_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_missing_orthos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.mapping.convert_to_zebrafish" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">convert_to_zebrafish</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zfish_gene_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_missing_orthos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#convert_to_zebrafish"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping.convert_to_zebrafish" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping.get_ortho_ids">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">get_ortho_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_missing_orthos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.mapping.get_ortho_ids" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">get_ortho_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_missing_orthos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#get_ortho_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping.get_ortho_ids" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -253,7 +268,7 @@ Ensembl ID, Symbol, or Human NCBI Gene ID</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping.add_mapped_ortholog_column">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">add_mapped_ortholog_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_with_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_old_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_na</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.mapping.add_mapped_ortholog_column" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">add_mapped_ortholog_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danRerLib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_with_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_old_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_na</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#add_mapped_ortholog_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping.add_mapped_ortholog_column" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -281,7 +296,7 @@ Ensembl ID, Symbol, or Human NCBI Gene ID</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping.build_gene_mapping">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">build_gene_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.mapping.build_gene_mapping" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">build_gene_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#build_gene_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping.build_gene_mapping" title="Permalink to this definition"></a></dt>
 <dd><dl>
 <dt>purpose:    the purpose of this function is to build the master gene mapping file</dt><dd><p>named ‘master_gene_mapping_file_V&lt;VERSION_NUM&gt;.txt
 - the files used to build the mapping file have been downloaded from</p>
@@ -296,7 +311,7 @@ Ensembl ID, Symbol, or Human NCBI Gene ID</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping.build_ortho_mapping">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">build_ortho_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.mapping.build_ortho_mapping" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">build_ortho_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#build_ortho_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping.build_ortho_mapping" title="Permalink to this definition"></a></dt>
 <dd><dl>
 <dt>purpose:    the purpose of this function is to build the master orthology mapping file</dt><dd><p>named ‘master_ortho_mapping_file_V&lt;VERSION_NUM&gt;.txt
 - the files used to build the orthology file have been downloaded from</p>
@@ -311,27 +326,27 @@ Ensembl ID, Symbol, or Human NCBI Gene ID</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping.convert_to_str">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">convert_to_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.mapping.convert_to_str" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">convert_to_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#convert_to_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping.convert_to_str" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping._make_sure_is_pandas_series">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">_make_sure_is_pandas_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.mapping._make_sure_is_pandas_series" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">_make_sure_is_pandas_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#_make_sure_is_pandas_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping._make_sure_is_pandas_series" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping._check_valid_zebrafish_gene_id_type">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">_check_valid_zebrafish_gene_id_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_id_types</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.mapping._check_valid_zebrafish_gene_id_type" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">_check_valid_zebrafish_gene_id_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_id_types</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#_check_valid_zebrafish_gene_id_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping._check_valid_zebrafish_gene_id_type" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping._check_valid_gene_id_type_for_orthology">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">_check_valid_gene_id_type_for_orthology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_id_from</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_to</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.mapping._check_valid_gene_id_type_for_orthology" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">_check_valid_gene_id_type_for_orthology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_id_from</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_to</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#_check_valid_gene_id_type_for_orthology"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping._check_valid_gene_id_type_for_orthology" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.mapping._check_column_name_matches_id_choice">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">_check_column_name_matches_id_choice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.mapping._check_column_name_matches_id_choice" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">_check_column_name_matches_id_choice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danRerLib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#_check_column_name_matches_id_choice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping._check_column_name_matches_id_choice" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -348,7 +363,7 @@ Ensembl ID, Symbol, or Human NCBI Gene ID</p></li>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../enrichment/index.html" class="btn btn-neutral float-left" title="danRerLib.enrichment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../my_module/index.html" class="btn btn-neutral float-right" title="danRerLib.my_module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../settings/index.html" class="btn btn-neutral float-right" title="danRerLib.settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
