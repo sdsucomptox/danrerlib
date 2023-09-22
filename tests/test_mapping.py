@@ -154,7 +154,7 @@ def generate_mapped_df(in_id, out_id, list = True):
     return out_ids_sorted, true_data_out_df
 
 # ------------------------
-# test convert_to_human
+# test convert_to_human and convert_toz_zebrafish
 # ------------------------
 
 def test_mapping_list_of_ids_to_ortho_df():
@@ -168,8 +168,33 @@ def test_mapping_list_of_ids_to_ortho_df():
         generated_df, true_df = generate_ortho_df(option, HUMAN_ID)
         assert_frame_equal(generated_df, true_df[HUMAN_ID].to_frame()) 
 
+def test_mapping_df_of_ids_to_ortho_df():
 
-def generate_ortho_df(in_id, out_id, list = True):
+    ids = [ZFIN_ID, ENS_ID, SYMBOL, NCBI_ID]
+    for option in ids:
+        
+        generated_df, true_df = generate_ortho_df(HUMAN_ID, option, False)
+        assert_frame_equal(generated_df, true_df[option].to_frame()) 
+
+        generated_df, true_df = generate_ortho_df(option, HUMAN_ID, False)
+        assert_frame_equal(generated_df, true_df[HUMAN_ID].to_frame()) 
+
+# ------------------------
+# add_mapped_ortholog_column
+# ------------------------
+
+def test_mapping_df_of_ids_to_ortho_df_keep_mapping():
+
+    ids = [ZFIN_ID, ENS_ID, SYMBOL, NCBI_ID]
+    for option in ids:
+        
+        generated_df, true_df = generate_ortho_df(HUMAN_ID, option, False, True)
+        assert_frame_equal(generated_df, true_df) 
+
+        generated_df, true_df = generate_ortho_df(option, HUMAN_ID, False, True)
+        assert_frame_equal(generated_df, true_df) 
+
+def generate_ortho_df(in_id, out_id, list = True, add_column = False):
 
     id_string_dict = {
         NCBI_ID: 'ncbi',
@@ -191,18 +216,21 @@ def generate_ortho_df(in_id, out_id, list = True):
     true_data_out_df = pd.read_csv(true_data_path, sep = '\t', dtype = str).sort_values(
         by = out_id, ascending=True).reset_index(drop = True).dropna()
 
-    if out_id == HUMAN_ID:
-        if list == True:
-            in_list = in_df[in_id].to_list()
-            out_ids = mapping.convert_to_human(in_list, in_id)
-        else:
-            out_ids = mapping.convert_to_human(in_list, in_id)
+    if add_column:
+        out_ids = mapping.add_mapped_ortholog_column(in_df, in_id, out_id)
     else:
-        if list == True:
-            in_list = in_df[in_id].to_list()
-            out_ids = mapping.convert_to_zebrafish(in_list, out_id)
+        if out_id == HUMAN_ID:
+            if list == True:
+                in_list = in_df[in_id].to_list()
+                out_ids = mapping.convert_to_human(in_list, in_id)
+            else:
+                out_ids = mapping.convert_to_human(in_list, in_id)
         else:
-            out_ids = mapping.convert_to_zebrafish(in_list, out_id)
+            if list == True:
+                in_list = in_df[in_id].to_list()
+                out_ids = mapping.convert_to_zebrafish(in_list, out_id)
+            else:
+                out_ids = mapping.convert_to_zebrafish(in_list, out_id)
     
     if type(out_ids) == pd.Series:
         out_ids = out_ids.to_frame()
