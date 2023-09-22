@@ -89,7 +89,7 @@
     <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="InvalidGeneTypeError"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.InvalidGeneTypeError">[docs]</a><span class="k">class</span> <span class="nc">InvalidGeneTypeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="s2">&quot;Raised when the the database directory is not found&quot;</span>
+    <span class="s2">&quot;Raised when the Gene ID Type is invalid&quot;</span>
     <span class="k">pass</span></div>
 
 <span class="c1"># GENE MAPPING FUNCTIONS</span>
@@ -113,6 +113,10 @@
 
 <span class="sd">    Other:</span>
 <span class="sd">        Gene ID Type Options: NCBI Gene ID, ZFIN ID, Symbol, Ensembl ID</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        - if the order is important, it is recommended to have keep_mapping = True. Otherwise, </span>
+<span class="sd">          the mapping order is not guaranteed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># last updated: July 7, 2023</span>
     <span class="c1"># last checked: July 7, 2023.]</span>
@@ -162,7 +166,7 @@
 <span class="sd">    Add a new column to a pandas DataFrame with mapped Gene IDs.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        data (pd.DataFrame): A pandas DataFrame containing a column that has Gene IDs of some type.</span>
+<span class="sd">        data (pd.DataFrame, list): A pandas DataFrame containing a column that has Gene IDs of some type.</span>
 <span class="sd">        id_from (str): The current Gene ID type. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.</span>
 <span class="sd">        id_to (str): The Gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.</span>
 <span class="sd">        column_name_with_ids (str, optional): The name of the column containing the Gene IDs if it doesn&#39;t match id_from.</span>
@@ -170,7 +174,7 @@
 <span class="sd">        drop_na (bool, optional): Whether to drop rows with NA values in the resulting mapped column. Default is False.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        None</span>
+<span class="sd">        pd.DataFrame: A pandas DataFrame containing the added mapped column.</span>
 
 <span class="sd">    Notes:</span>
 <span class="sd">        - This function adds a new column to the input DataFrame containing the mapped Gene IDs.</span>
@@ -184,9 +188,11 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># some error handling</span>
         <span class="c1"># -------------------    </span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span>
         <span class="n">_check_valid_zebrafish_gene_id_type</span><span class="p">([</span><span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">id_from</span><span class="p">])</span>
+            <span class="c1"># raise TypeError</span>
         <span class="n">_check_column_name_matches_id_choice</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">column_name_with_ids</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">column_name_with_ids</span><span class="p">:</span>

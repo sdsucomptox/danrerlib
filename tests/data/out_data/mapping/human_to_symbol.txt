@@ -1,0 +1,14 @@
+Human NCBI Gene ID	Symbol
+70	actc1b
+861	runx1
+53826	fxyd6
+5355	plp2b
+10528	nop56
+70	actc1a
+5355	plp2a
+2207	fcer1g
+339453	tmem240a
+80301	plekho2
+339453	tmem240b
+3761	
+338799	linc.setd1ba

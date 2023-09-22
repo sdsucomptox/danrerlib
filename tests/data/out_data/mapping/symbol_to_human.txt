@@ -1,0 +1,10 @@
+Symbol	Human NCBI Gene ID
+badb	572
+rtn1b	6252
+polr3glb	84265
+arhgef39	84904
+crb2a	286204
+ggact.1	87769
+ankdd1a	348094
+dpep2	64174
+oprd1a	4985

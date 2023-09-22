@@ -121,14 +121,13 @@ def test_mapping_df_of_ids_to_mapped_df():
         generated_df, true_df = generate_mapped_df(pair[0], pair[1])
         assert_frame_equal(generated_df, true_df, False) 
 
-
 def generate_mapped_df(in_id, out_id, list = True):
 
     id_string_dict = {
         NCBI_ID: 'ncbi',
         ZFIN_ID: 'zfin',
         ENS_ID: 'ens',
-        SYMBOL: 'symbol'
+        SYMBOL: 'symbol',
     }
 
     in_id_str = id_string_dict[in_id]
@@ -153,3 +152,62 @@ def generate_mapped_df(in_id, out_id, list = True):
     out_ids_sorted = out_ids.sort_values(by = in_id, ascending=True).reset_index(drop = True).dropna()
 
     return out_ids_sorted, true_data_out_df
+
+# ------------------------
+# test convert_to_human
+# ------------------------
+
+def test_mapping_list_of_ids_to_ortho_df():
+
+    ids = [ZFIN_ID, ENS_ID, SYMBOL, NCBI_ID]
+    for option in ids:
+        
+        generated_df, true_df = generate_ortho_df(HUMAN_ID, option)
+        assert_frame_equal(generated_df, true_df[option].to_frame()) 
+
+        generated_df, true_df = generate_ortho_df(option, HUMAN_ID)
+        assert_frame_equal(generated_df, true_df[HUMAN_ID].to_frame()) 
+
+
+def generate_ortho_df(in_id, out_id, list = True):
+
+    id_string_dict = {
+        NCBI_ID: 'ncbi',
+        ZFIN_ID: 'zfin',
+        ENS_ID: 'ens',
+        SYMBOL: 'symbol',
+        HUMAN_ID: 'human'
+    }
+
+    in_id_str = id_string_dict[in_id]
+    out_id_str = id_string_dict[out_id]
+
+    in_path = 'tests/data/in_data/mapping/'+in_id_str+'_genes.txt'
+    true_data_path = 'tests/data/out_data/mapping/'+in_id_str+'_to_'+out_id_str+'.txt'
+
+    in_df = pd.read_csv(in_path, sep = '\t', dtype = str)
+
+    in_list = in_df[in_id].to_list()
+    true_data_out_df = pd.read_csv(true_data_path, sep = '\t', dtype = str).sort_values(
+        by = out_id, ascending=True).reset_index(drop = True).dropna()
+
+    if out_id == HUMAN_ID:
+        if list == True:
+            in_list = in_df[in_id].to_list()
+            out_ids = mapping.convert_to_human(in_list, in_id)
+        else:
+            out_ids = mapping.convert_to_human(in_list, in_id)
+    else:
+        if list == True:
+            in_list = in_df[in_id].to_list()
+            out_ids = mapping.convert_to_zebrafish(in_list, out_id)
+        else:
+            out_ids = mapping.convert_to_zebrafish(in_list, out_id)
+    
+    if type(out_ids) == pd.Series:
+        out_ids = out_ids.to_frame()
+
+    out_ids_sorted = out_ids.sort_values(by = out_id, ascending=True).reset_index(drop = True).dropna()
+
+    return out_ids_sorted, true_data_out_df
+

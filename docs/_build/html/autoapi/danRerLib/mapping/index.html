@@ -178,7 +178,7 @@ out the database README for more information.</p>
 <dt class="sig sig-object py" id="danRerLib.mapping.InvalidGeneTypeError">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">danRerLib.mapping.</span></span><span class="sig-name descname"><span class="pre">InvalidGeneTypeError</span></span><a class="reference internal" href="../../../_modules/danRerLib/mapping.html#InvalidGeneTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.mapping.InvalidGeneTypeError" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised when the the database directory is not found</p>
+<p>Raised when the Gene ID Type is invalid</p>
 </dd></dl>
 
 <dl class="py function">
@@ -208,6 +208,11 @@ converted IDs. Default is False.</p></li>
 <dt>Other:</dt><dd><p>Gene ID Type Options: NCBI Gene ID, ZFIN ID, Symbol, Ensembl ID</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>if the order is important, it is recommended to have keep_mapping = True. Otherwise,
+the mapping order is not guaranteed.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
@@ -217,7 +222,7 @@ converted IDs. Default is False.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – A pandas DataFrame containing a column that has Gene IDs of some type.</p></li>
+<li><p><strong>data</strong> (<em>pd.DataFrame</em><em>, </em><em>list</em>) – A pandas DataFrame containing a column that has Gene IDs of some type.</p></li>
 <li><p><strong>id_from</strong> (<em>str</em>) – The current Gene ID type. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.</p></li>
 <li><p><strong>id_to</strong> (<em>str</em>) – The Gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.</p></li>
 <li><p><strong>column_name_with_ids</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the column containing the Gene IDs if it doesn’t match id_from.</p></li>
@@ -226,7 +231,10 @@ converted IDs. Default is False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-even"><p>A pandas DataFrame containing the added mapped column.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
