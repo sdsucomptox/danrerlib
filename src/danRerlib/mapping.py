@@ -12,7 +12,7 @@ class DatabaseNotFoundError(Exception):
     pass
 
 class InvalidGeneTypeError(Exception):
-    "Raised when the the database directory is not found"
+    "Raised when the Gene ID Type is invalid"
     pass
 
 # GENE MAPPING FUNCTIONS
@@ -89,7 +89,7 @@ def add_mapped_column(data, id_from, id_to, column_name_with_ids=None, keep_old_
     Add a new column to a pandas DataFrame with mapped Gene IDs.
 
     Parameters:
-        data (pd.DataFrame): A pandas DataFrame containing a column that has Gene IDs of some type.
+        data (pd.DataFrame, list): A pandas DataFrame containing a column that has Gene IDs of some type.
         id_from (str): The current Gene ID type. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
         id_to (str): The Gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
         column_name_with_ids (str, optional): The name of the column containing the Gene IDs if it doesn't match id_from.
@@ -111,9 +111,11 @@ def add_mapped_column(data, id_from, id_to, column_name_with_ids=None, keep_old_
     try:
         # some error handling
         # -------------------    
-        if type(data) != pd.DataFrame:
-            raise TypeError
         _check_valid_zebrafish_gene_id_type([id_from, id_to])
+        if type(data) != pd.DataFrame:
+            if type(data) == list:
+                data = pd.DataFrame(data, columns=[id_from])
+            # raise TypeError
         _check_column_name_matches_id_choice(data, id_from, column_name_with_ids)
 
         if column_name_with_ids:

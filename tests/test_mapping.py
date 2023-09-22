@@ -1,12 +1,20 @@
 from danRerLib import mapping
+from danRerLib.settings import *
+from pandas.testing import assert_frame_equal
+import os
+from itertools import permutations
 
 # MAPPING COMBINATIONS ARE:
-# ZFIN_ID and NCBI_ID done
-# ZFIN_ID and SYMBOL done
-# ZFIN_ID and ENS_ID done
-# NCBI_ID and SYMBOL done
-# NCBI_ID and ENS_ID done
-# SYMBOL and ENS_ID
+# ZFIN_ID and NCBI_ID  done
+# ZFIN_ID and SYMBOL 
+# ZFIN_ID and ENS_ID 
+# NCBI_ID and SYMBOL 
+# NCBI_ID and ENS_ID 
+# SYMBOL and ENS_ID done
+
+# ------------------------
+# test convert_ids
+# ------------------------
 
 def test_mapping_list_of_ids_ncbi_and_zfin():
 
@@ -15,10 +23,10 @@ def test_mapping_list_of_ids_ncbi_and_zfin():
     zfin_ids = ['ZDB-GENE-001222-1', 'ZDB-GENE-030131-4309',
         'ZDB-GENE-040426-2356', 'ZDB-GENE-081001-1', 'ZDB-GENE-131127-614']
     
-    out_ids = mapping.convert_ids(ncbi_ids, mapping.NCBI_ID, mapping.ZFIN_ID, out_format = list)
+    out_ids = mapping.convert_ids(ncbi_ids, NCBI_ID, ZFIN_ID, out_format = list)
     assert sorted(zfin_ids) ==  sorted(out_ids)
 
-    out_ids = mapping.convert_ids(zfin_ids, mapping.ZFIN_ID, mapping.NCBI_ID, out_format = list)
+    out_ids = mapping.convert_ids(zfin_ids, ZFIN_ID, NCBI_ID, out_format = list)
     assert sorted(ncbi_ids) ==  sorted(out_ids)
 
 def test_mapping_list_of_ids_zfin_and_symbol():
@@ -28,10 +36,10 @@ def test_mapping_list_of_ids_zfin_and_symbol():
     
     symbols = ['si:ch211-152p11.4', 'angpt2b', 'trhde.2', 'ttpal', 'harbi1']
     
-    out_ids = mapping.convert_ids(zfin_ids, mapping.ZFIN_ID, mapping.SYMBOL, out_format = list)
+    out_ids = mapping.convert_ids(zfin_ids, ZFIN_ID, SYMBOL, out_format = list)
     assert sorted(symbols) ==  sorted(out_ids)
     
-    out_ids = mapping.convert_ids(symbols, mapping.SYMBOL, mapping.ZFIN_ID, out_format = list)
+    out_ids = mapping.convert_ids(symbols, SYMBOL, ZFIN_ID, out_format = list)
     assert sorted(zfin_ids) ==  sorted(out_ids)
 
 
@@ -42,10 +50,10 @@ def test_mapping_list_of_ids_zfin_and_ens():
     ens_ids = ['ENSDARG00000008785', 'ENSDARG00000092478', 'ENSDARG00000100251', 
                'ENSDARG00000102792', 'ENSDARG00000096078']
     
-    out_ids = mapping.convert_ids(zfin_ids, mapping.ZFIN_ID, mapping.ENS_ID, out_format = list)
+    out_ids = mapping.convert_ids(zfin_ids, ZFIN_ID, ENS_ID, out_format = list)
     assert ens_ids ==  out_ids
 
-    out_ids = mapping.convert_ids(ens_ids, mapping.ENS_ID, mapping.ZFIN_ID, out_format = list)
+    out_ids = mapping.convert_ids(ens_ids, ENS_ID, ZFIN_ID, out_format = list)
     assert sorted(zfin_ids) ==  sorted(out_ids)
 
 
@@ -54,10 +62,10 @@ def test_mapping_list_of_ids_ncbi_and_symbol():
     ncbi_ids = ['402853', '65231', '565228', '436656', '324103']
     symbols = ['uts2b', 'mdkb', 'si:ch211-215a10.4', 'krt97', 'wu:fc18g07']
     
-    out_ids = mapping.convert_ids(ncbi_ids, mapping.NCBI_ID, mapping.SYMBOL, out_format = list)
+    out_ids = mapping.convert_ids(ncbi_ids, NCBI_ID, SYMBOL, out_format = list)
     assert sorted(symbols) ==  sorted(out_ids)
 
-    out_ids = mapping.convert_ids(symbols, mapping.SYMBOL, mapping.NCBI_ID, out_format = list)
+    out_ids = mapping.convert_ids(symbols, SYMBOL, NCBI_ID, out_format = list)
     assert sorted(ncbi_ids) ==  sorted(out_ids)
 
 def test_mapping_list_of_ids_ncbi_and_ens():
@@ -66,10 +74,10 @@ def test_mapping_list_of_ids_ncbi_and_ens():
     ens_ids = ['ENSDARG00000039730', 'ENSDARG00000091990', 'ENSDARG00000087413', 
                 'ENSDARG00000058372', 'ENSDARG00000103395']
     
-    out_ids = mapping.convert_ids(ncbi_ids, mapping.NCBI_ID, mapping.ENS_ID, out_format = list)
+    out_ids = mapping.convert_ids(ncbi_ids, NCBI_ID, ENS_ID, out_format = list)
     assert sorted(ens_ids) ==  sorted(out_ids)
 
-    out_ids = mapping.convert_ids(ens_ids, mapping.ENS_ID, mapping.NCBI_ID, out_format = list)
+    out_ids = mapping.convert_ids(ens_ids, ENS_ID, NCBI_ID, out_format = list)
     assert sorted(ncbi_ids) ==  sorted(out_ids)
 
 def test_mapping_list_of_ids_ens_and_symbol():
@@ -78,9 +86,70 @@ def test_mapping_list_of_ids_ens_and_symbol():
                 'ENSDARG00000090873', 'ENSDARG00000097710']
     symbols = ['epb41b', 'sox2', 'coro2ba', 'ccl34a.4', 'si:dkey-58f6.3']
     
-    out_ids = mapping.convert_ids(ens_ids, mapping.ENS_ID, mapping.SYMBOL, out_format = list)
+    out_ids = mapping.convert_ids(ens_ids, ENS_ID, SYMBOL, out_format = list)
     assert sorted(symbols) ==  sorted(out_ids)
 
-    out_ids = mapping.convert_ids(symbols, mapping.SYMBOL, mapping.ENS_ID, out_format = list)
+    out_ids = mapping.convert_ids(symbols, SYMBOL, ENS_ID, out_format = list)
     assert sorted(ens_ids) ==  sorted(out_ids)
         
+
+# ------------------------
+# test add_mapped_column
+# ------------------------
+
+def test_mapping_list_of_ids_to_mapped_df():
+
+    ids = [ZFIN_ID, ENS_ID, SYMBOL, NCBI_ID]
+
+    # Generate pairs where order matters
+    pairs = list(permutations(ids, 2))
+
+    for pair in pairs:
+
+        generated_df, true_df = generate_mapped_df(pair[0], pair[1])
+        assert_frame_equal(generated_df, true_df) 
+
+def test_mapping_df_of_ids_to_mapped_df():
+
+    ids = [ZFIN_ID, ENS_ID, SYMBOL, NCBI_ID]
+
+    # Generate pairs where order matters
+    pairs = list(permutations(ids, 2))
+
+    for pair in pairs:
+
+        generated_df, true_df = generate_mapped_df(pair[0], pair[1])
+        assert_frame_equal(generated_df, true_df, False) 
+
+
+def generate_mapped_df(in_id, out_id, list = True):
+
+    id_string_dict = {
+        NCBI_ID: 'ncbi',
+        ZFIN_ID: 'zfin',
+        ENS_ID: 'ens',
+        SYMBOL: 'symbol'
+    }
+
+    in_id_str = id_string_dict[in_id]
+    out_id_str = id_string_dict[out_id]
+
+    in_path = 'tests/data/in_data/mapping/'+in_id_str+'_genes.txt'
+    true_data_path = 'tests/data/out_data/mapping/'+in_id_str+'_to_'+out_id_str+'.txt'
+
+    in_df = pd.read_csv(in_path, sep = '\t', dtype = str)
+
+    in_list = in_df[in_id].to_list()
+
+    true_data_out_df = pd.read_csv(true_data_path, sep = '\t', dtype = str).sort_values(
+        by = in_id, ascending=True).reset_index(drop = True).dropna()
+    
+    if list == True:
+        in_list = in_df[in_id].to_list()
+        out_ids = mapping.add_mapped_column(in_list, in_id, out_id)
+    else:
+        out_ids = mapping.add_mapped_column(in_df, in_id, out_id)
+        
+    out_ids_sorted = out_ids.sort_values(by = in_id, ascending=True).reset_index(drop = True).dropna()
+
+    return out_ids_sorted, true_data_out_df

@@ -1,0 +1,10 @@
+Symbol	NCBI Gene ID
+badb	58100
+rtn1b	327065
+polr3glb	449786
+arhgef39	492469
+crb2a	723994
+ggact.1	777609
+ankdd1a	569271
+dpep2	100534995
+oprd1a	30509
