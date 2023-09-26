@@ -1,5 +1,9 @@
 from danRerLib.settings import *
 import danRerLib.mapping as mapping
+import os.path 
+from pathlib import Path
+import numpy as np
+import pandas as pd
 
 zebrafish_pathways_path = KEGG_DATA_DIR / Path('pathway_ids_dre_V' + str(VERSION_NUM) + '.txt')
 human_pathways_path = KEGG_DATA_DIR / Path('pathway_ids_hsa_V' + str(VERSION_NUM) + '.txt')
@@ -10,6 +14,7 @@ human_pathways_dir = KEGG_DATA_DIR / Path('hsa/')
 dre_mapped_dir = KEGG_DATA_DIR / Path('dreM/')
 
 human_disease_path = KEGG_DATA_DIR / Path('disease_ids_V'+ str(VERSION_NUM) + '.txt')
+human_disease_genes_path = KEGG_DATA_DIR / Path('disease_ids_and_genes_V'+ str(VERSION_NUM) + '.txt')
 
 def get_genes_in_pathway(pathway_id, org=None):
     """
@@ -289,6 +294,52 @@ def _download_zebrafish_pathway_genes(zebrafish_pathways_path, zebrafish_pathway
         file_path = zebrafish_pathways_dir / Path(str(pathway_id) + '.txt')
         genes.to_csv(file_path, sep='\t', index=False)
 
+def _download_human_disease_genes(disease_ids_path):
+    """
+    Download and store genes associated with human diseases.
+
+    Parameters:
+        disease_ids_path (str): The file path to the list of disease IDs.
+
+    Returns:
+        None
+
+    Notes:
+        - This function reads a list of human disease IDs from the specified file.
+        - It iterates through each disease ID and retrieves genes associated with the disease.
+        - Genes are stored in a DataFrame with columns 'Human NCBI Gene ID' and 'Disease ID'.
+        - The resulting DataFrame is saved to a file named 'human_disease_genes.txt'.
+        - This function is intended for use in building or updating a database of human disease genes.
+    """
+
+    disease_data = pd.read_csv(disease_ids_path, sep='\t')
+    m, n = disease_data.shape
+
+    # Create an empty DataFrame to store the results
+    result_df = pd.DataFrame(columns=[HUMAN_ID, 'Disease ID'])
+
+    # Iterate through each Disease ID and retrieve genes
+    for index, row in disease_data.iterrows():
+        disease_id = row['Disease ID']
+        genes = _get_genes_for_disease(disease_id)
+
+        if not genes.empty:
+            genes_df = pd.DataFrame({HUMAN_ID: genes, 'Disease ID': disease_id})
+            result_df = pd.concat([result_df, genes_df], ignore_index=True)
+        if index == 10:
+            break
+        print(f"{index} / {m}")
+
+    # Save the result to a file
+    result_df.to_csv(human_disease_genes_path, index=False, sep = '\t')
+
+def _get_genes_for_disease(disease_id):
+    url = 'https://rest.kegg.jp/link/hsa/' + disease_id
+    column_names = ['trash', HUMAN_ID]
+    gene_df = pd.read_csv(url, names=column_names, sep='\t')
+    genes = gene_df[HUMAN_ID].str[4:]
+    return genes
+
 def _build_dre_mapped(human_pathways_path, human_pathways_dir, dre_mapped_dir):
     """
     Build mapped zebrafish KEGG pathways from human pathways and store them.
@@ -310,61 +361,9 @@ def _build_dre_mapped(human_pathways_path, human_pathways_dir, dre_mapped_dir):
         out_file_name = dre_mapped_dir / Path(stripped_pathway_id+'.txt')
         zebrafish_genes.to_csv(out_file_name, sep='\t', index=False)
 
-# def is_dre_pathway(pathway_id):
-#     id_str = str(pathway_id)
-#     if not id_str.startswith('0'):
-#         pathway_id = '0'+ id_str
-#     pathway_id = 'dre'+str(pathway_id)
-#     df = pd.read_csv('database/kegg_ids_dre.txt', sep='\t')
-#     if pathway_id in df['id']:
-#         return True
-#     else:
-#         return False
-
-# def _get_only_id(df: pd.DataFrame) -> pd.Series:
-#     id_column = df['Pathway ID']
-#     ids = id_column.str[3:]
-#     return ids
-
-# def _download_url(url_to_download: str, file_path: str, column_names = None) -> None:
-#     response = None
-#     file_to_save = None
-
-#     try:
-#         request = urllib.request.Request(url_to_download)
-#         response = urllib.request.urlopen(request)
-
-#         file_to_save = open(file_path, 'wb')
-
-#         if column_names != None:
-#             header_string = '\t'.join(column_names) + '\n'
-#             file_to_save.write(header_string.encode())
-
-#         # Because response.read() returns a bytes object and because we
-#         # opened the file with the 'wb' option, we can write those bytes
-#         # directly to the file without first decoding them to a
-#         # string.
-#         file_to_save.write(response.read())
-
-#     except urllib.error.HTTPError as e:
-#         print('Failed to download contents of URL')
-#         print('Status code: {}'.format(e.code))
-#         print()
-
-#     finally:
-#         if file_to_save != None:
-#             file_to_save.close()
-        
-#         if response != None:
-#             response.close()
-
-
-
 def testing():
-    id = 'H00001'
-    test_data_dir = FILE_DIR / Path('../../tutorials/data/test_data/')
-    file_path = test_data_dir / Path('kegg_pathways.txt')
-    print(get_genes_in_disease(id, 'dre'))
+    # _download_human_disease_genes(human_disease_path)
+    pass
 
 if __name__ == '__main__':
     testing()

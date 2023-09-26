@@ -104,40 +104,46 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.get_genes_in_pathway" title="danRerLib.KEGG.get_genes_in_pathway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_genes_in_pathway</span></code></a>(pathway_id[, org])</p></td>
-<td><p>organism options:</p></td>
+<td><p>Retrieve genes associated with a specific pathway from KEGG.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG.get_genes_in_disease" title="danRerLib.KEGG.get_genes_in_disease"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_genes_in_disease</span></code></a>(disease_id[, org])</p></td>
 <td><p>organism options:</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._check_for_organism" title="danRerLib.KEGG._check_for_organism"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_for_organism</span></code></a>(pathway_id, org)</p></td>
-<td><p></p></td>
+<td><p>Check for and validate the organism information in a KEGG pathway ID.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._check_if_pathway_id_exists" title="danRerLib.KEGG._check_if_pathway_id_exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_if_pathway_id_exists</span></code></a>(pathway_id, org)</p></td>
-<td><p></p></td>
+<td><p>Check if a KEGG pathway ID exists for the specified organism.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.build_kegg_database" title="danRerLib.KEGG.build_kegg_database"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_kegg_database</span></code></a>()</p></td>
-<td><p>A DATABASE BUILDING FUNCTION</p></td>
+<td><p>Build or update the KEGG pathway and disease database.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._download_zebrafish_pathway_ids" title="danRerLib.KEGG._download_zebrafish_pathway_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_download_zebrafish_pathway_ids</span></code></a>(zebrafish_pathways_path)</p></td>
-<td><p>A DATABASE BUILDING FUNCTION</p></td>
+<td><p>Download and store the list of zebrafish pathways and pathway names.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._download_human_pathway_ids" title="danRerLib.KEGG._download_human_pathway_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_download_human_pathway_ids</span></code></a>(human_pathways_path)</p></td>
-<td><p>A DATABASE BUILDING FUNCTION</p></td>
+<td><p>Download and store the list of human pathways and pathway names.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._create_mapped_zebrafish_pathway_ids" title="danRerLib.KEGG._create_mapped_zebrafish_pathway_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_create_mapped_zebrafish_pathway_ids</span></code></a>(...)</p></td>
-<td><p>A DATABASE BUILDING FUNCTION</p></td>
+<td><p>Create mapped zebrafish pathway IDs from human pathways and store them.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._download_disease_ids" title="danRerLib.KEGG._download_disease_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_download_disease_ids</span></code></a>(human_disease_path)</p></td>
-<td><p>A DATABASE BUILDING FUNCTION</p></td>
+<td><p>Download and store the list of KEGG disease IDs and descriptions for humans.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._download_human_pathway_genes" title="danRerLib.KEGG._download_human_pathway_genes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_download_human_pathway_genes</span></code></a>(human_pathways_path, ...)</p></td>
-<td><p>A DATABASE BUILDING FUNCTION</p></td>
+<td><p>Download and store genes associated with true KEGG pathways for humans.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._download_zebrafish_pathway_genes" title="danRerLib.KEGG._download_zebrafish_pathway_genes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_download_zebrafish_pathway_genes</span></code></a>(...)</p></td>
-<td><p>A DATABASE BUILDING FUNCTION</p></td>
+<td><p>Download and store genes associated with true KEGG pathways for zebrafish.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._download_human_disease_genes" title="danRerLib.KEGG._download_human_disease_genes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_download_human_disease_genes</span></code></a>(disease_ids_path)</p></td>
+<td><p>Download and store genes associated with human diseases.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._get_genes_for_disease" title="danRerLib.KEGG._get_genes_for_disease"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_genes_for_disease</span></code></a>(disease_id)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._build_dre_mapped" title="danRerLib.KEGG._build_dre_mapped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_build_dre_mapped</span></code></a>(human_pathways_path, ...)</p></td>
-<td><p>A DATABASE BUILDING FUNCTION</p></td>
+<td><p>Build mapped zebrafish KEGG pathways from human pathways and store them.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.testing" title="danRerLib.KEGG.testing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testing</span></code></a>()</p></td>
 <td><p></p></td>
@@ -168,6 +174,9 @@
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.human_disease_path" title="danRerLib.KEGG.human_disease_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">human_disease_path</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG.human_disease_genes_path" title="danRerLib.KEGG.human_disease_genes_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">human_disease_genes_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -207,15 +216,47 @@
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">human_disease_path</span></span><a class="headerlink" href="#danRerLib.KEGG.human_disease_path" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
+<dl class="py data">
+<dt class="sig sig-object py" id="danRerLib.KEGG.human_disease_genes_path">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">human_disease_genes_path</span></span><a class="headerlink" href="#danRerLib.KEGG.human_disease_genes_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG.get_genes_in_pathway">
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#get_genes_in_pathway"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG.get_genes_in_pathway" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>organism options:</dt><dd><p>dre : true danio rerio pathways from KEGG
-hsa : true human pathways from KEGG
-dreM : mapped danio rerio pathways from human</p>
+<dd><p>Retrieve genes associated with a specific pathway from KEGG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pathway_id</strong> (<em>str</em>) – The KEGG pathway ID for the pathway of interest.</p></li>
+<li><p><strong>org</strong> (<em>str</em><em>, </em><em>optional</em>) – <p>The organism for which to retrieve pathway information.
+Options:</p>
+<blockquote>
+<div><ul>
+<li><p>’dre’: Danio rerio (Zebrafish) pathways from KEGG.</p></li>
+<li><p>’hsa’: Human pathways from KEGG.</p></li>
+<li><p>’dreM’: Mapped Danio rerio pathways from human.</p></li>
+</ul>
+<p>(Default is None, which will use the provided ‘org’ or ‘hsa’ if ‘org’ is None.)</p>
+</div></blockquote>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame containing genes associated with the specified pathway.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function retrieves gene information associated with a specific KEGG pathway.</p></li>
+<li><p>The ‘pathway_id’ parameter should be a valid KEGG pathway identifier.</p></li>
+<li><p>The ‘org’ parameter specifies the organism for which to retrieve pathway information.</p></li>
+<li><p>Organism options include ‘dre’ (Danio rerio), ‘hsa’ (Human), or ‘dreM’ (Mapped Danio rerio from Human).</p></li>
+<li><p>Data is obtained from KEGG and may require internet access to download pathway information.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
@@ -236,69 +277,230 @@ instead of saving all the genes in each pathway to a file</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._check_for_organism">
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_check_for_organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_check_for_organism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._check_for_organism" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Check for and validate the organism information in a KEGG pathway ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pathway_id</strong> (<em>str</em>) – The KEGG pathway ID, which may or may not include organism information.</p></li>
+<li><p><strong>org</strong> (<em>str</em><em>, </em><em>optional</em>) – The specified organism code to validate against the pathway ID.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the validated organism code and the modified pathway ID.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the organism code in the pathway ID does not match the specified ‘org’ parameter.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This internal function is used to validate and extract organism information from a KEGG pathway ID.</p></li>
+<li><p>If the pathway ID includes organism information, it validates it against the ‘org’ parameter.</p></li>
+<li><p>If ‘org’ is None, it extracts and returns the organism code from the pathway ID.</p></li>
+<li><p>Raises a ValueError if there is a mismatch between the organism code in the pathway ID and the ‘org’ parameter.</p></li>
+</ul>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._check_if_pathway_id_exists">
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_check_if_pathway_id_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_check_if_pathway_id_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._check_if_pathway_id_exists" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Check if a KEGG pathway ID exists for the specified organism.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pathway_id</strong> (<em>str</em>) – The KEGG pathway ID to be validated.</p></li>
+<li><p><strong>org</strong> (<em>str</em>) – The specified organism code (e.g., ‘dre’, ‘dreM’, or ‘hsa’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the pathway ID exists for the specified organism, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This internal function checks whether a given KEGG pathway ID exists for the specified organism.</p></li>
+<li><p>It reads relevant pathway data files based on the organism code and checks if the pathway ID is present.</p></li>
+<li><p>Returns True if the pathway ID exists, False otherwise.</p></li>
+<li><p>Provides an error message if the pathway ID or organism code is invalid.</p></li>
+<li><p>Organism code options include: ‘dre’ (Danio rerio), ‘dreM’ (Mapped Danio rerio from Human), or ‘hsa’ (Human).</p></li>
+<li><p>Pathway IDs must be entered as strings if the organism prefix is omitted.</p></li>
+</ul>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG.build_kegg_database">
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">build_kegg_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#build_kegg_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG.build_kegg_database" title="Permalink to this definition"></a></dt>
-<dd><p>A DATABASE BUILDING FUNCTION
-ONLY RUN ON VERSION UPDATE!!
-this takes a while, be careful:)</p>
+<dd><p>Build or update the KEGG pathway and disease database.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function is intended for database creation or update and should be run only during version updates.</p></li>
+<li><p>The process may take some time, so exercise caution when running it.</p></li>
+<li><dl class="simple">
+<dt>The function performs the following steps:</dt><dd><ol class="arabic simple">
+<li><p>Downloads zebrafish pathway IDs and stores them in a specified file.</p></li>
+<li><p>Downloads human pathway IDs and stores them in a specified file.</p></li>
+<li><p>Creates mapped zebrafish pathway IDs from human pathways and stores them in a specified file.</p></li>
+<li><p>Downloads genes associated with true KEGG pathways for zebrafish.</p></li>
+<li><p>Downloads genes associated with true KEGG pathways for humans.</p></li>
+<li><p>Builds mapped zebrafish KEGG pathways from human pathways and stores them in a specified directory.</p></li>
+<li><p>Downloads KEGG disease IDs and stores them in a specified file.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>Running this function should be done carefully, as it involves downloading and processing data from KEGG.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._download_zebrafish_pathway_ids">
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_zebrafish_pathway_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zebrafish_pathways_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_download_zebrafish_pathway_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._download_zebrafish_pathway_ids" title="Permalink to this definition"></a></dt>
-<dd><p>A DATABASE BUILDING FUNCTION
-ONLY RUN ON VERSION UPDATE!!
-download the list of zebrafish pathways and pathway names</p>
+<dd><p>Download and store the list of zebrafish pathways and pathway names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>zebrafish_pathways_path</strong> (<em>str</em>) – The file path to save the zebrafish pathway data.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function is intended for database building and should be run only during version updates.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._download_human_pathway_ids">
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_human_pathway_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_download_human_pathway_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._download_human_pathway_ids" title="Permalink to this definition"></a></dt>
-<dd><p>A DATABASE BUILDING FUNCTION
-ONLY RUN ON VERSION UPDATE!!</p>
+<dd><p>Download and store the list of human pathways and pathway names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>human_pathways_path</strong> (<em>str</em>) – The file path to save the human pathway data.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function is intended for database building and should be run only during version updates.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._create_mapped_zebrafish_pathway_ids">
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_create_mapped_zebrafish_pathway_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapped_zebrafish_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_create_mapped_zebrafish_pathway_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._create_mapped_zebrafish_pathway_ids" title="Permalink to this definition"></a></dt>
-<dd><p>A DATABASE BUILDING FUNCTION
-ONLY RUN ON VERSION UPDATE!!</p>
+<dd><p>Create mapped zebrafish pathway IDs from human pathways and store them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mapped_zebrafish_pathways_path</strong> (<em>str</em>) – The file path to save the mapped zebrafish pathway data.</p></li>
+<li><p><strong>human_pathways_path</strong> (<em>str</em>) – The file path containing human pathway data.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function is intended for database building and should be run only during version updates.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._download_disease_ids">
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_disease_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_disease_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_download_disease_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._download_disease_ids" title="Permalink to this definition"></a></dt>
-<dd><p>A DATABASE BUILDING FUNCTION
-ONLY RUN ON VERSION UPDATE!!</p>
+<dd><p>Download and store the list of KEGG disease IDs and descriptions for humans.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>human_disease_path</strong> (<em>str</em>) – The file path to save the human disease data.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function is intended for database building and should be run only during version updates.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._download_human_pathway_genes">
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_human_pathway_genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_download_human_pathway_genes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._download_human_pathway_genes" title="Permalink to this definition"></a></dt>
-<dd><p>A DATABASE BUILDING FUNCTION
-ONLY RUN ON VERSION UPDATE!!</p>
+<dd><p>Download and store genes associated with true KEGG pathways for humans.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>human_pathways_path</strong> (<em>str</em>) – The file path containing human pathway data.</p></li>
+<li><p><strong>human_pathways_dir</strong> (<em>str</em>) – The directory to save gene data associated with human pathways.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function is intended for database building and should be run only during version updates.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._download_zebrafish_pathway_genes">
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_zebrafish_pathway_genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zebrafish_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zebrafish_pathways_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_download_zebrafish_pathway_genes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._download_zebrafish_pathway_genes" title="Permalink to this definition"></a></dt>
-<dd><p>A DATABASE BUILDING FUNCTION
-ONLY RUN ON VERSION UPDATE!!</p>
+<dd><p>Download and store genes associated with true KEGG pathways for zebrafish.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>zebrafish_pathways_path</strong> (<em>str</em>) – The file path containing zebrafish pathway data.</p></li>
+<li><p><strong>zebrafish_pathways_dir</strong> (<em>str</em>) – The directory to save gene data associated with zebrafish pathways.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function is intended for database building and should be run only during version updates.</p></li>
+</ul>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG._download_human_disease_genes">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_download_human_disease_genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disease_ids_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_download_human_disease_genes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._download_human_disease_genes" title="Permalink to this definition"></a></dt>
+<dd><p>Download and store genes associated with human diseases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>disease_ids_path</strong> (<em>str</em>) – The file path to the list of disease IDs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function reads a list of human disease IDs from the specified file.</p></li>
+<li><p>It iterates through each disease ID and retrieves genes associated with the disease.</p></li>
+<li><p>Genes are stored in a DataFrame with columns ‘Human NCBI Gene ID’ and ‘Disease ID’.</p></li>
+<li><p>The resulting DataFrame is saved to a file named ‘human_disease_genes.txt’.</p></li>
+<li><p>This function is intended for use in building or updating a database of human disease genes.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG._get_genes_for_disease">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_get_genes_for_disease</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disease_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_get_genes_for_disease"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._get_genes_for_disease" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._build_dre_mapped">
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_build_dre_mapped</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dre_mapped_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_build_dre_mapped"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._build_dre_mapped" title="Permalink to this definition"></a></dt>
-<dd><p>A DATABASE BUILDING FUNCTION
-ONLY RUN ON VERSION UPDATE!!</p>
+<dd><p>Build mapped zebrafish KEGG pathways from human pathways and store them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>human_pathways_path</strong> (<em>str</em>) – The file path containing human pathway data.</p></li>
+<li><p><strong>human_pathways_dir</strong> (<em>str</em>) – The directory containing gene data associated with human pathways.</p></li>
+<li><p><strong>dre_mapped_dir</strong> (<em>str</em>) – The directory to save mapped zebrafish pathway data.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function is intended for database building and should be run only during version updates.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">

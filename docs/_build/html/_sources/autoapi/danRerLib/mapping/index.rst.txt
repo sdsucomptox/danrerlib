@@ -17,8 +17,6 @@
        - `convert_to_human`: Convert Zebrafish gene IDs to their corresponding human orthologs.
        - `convert_to_zebrafish`: Convert human gene IDs to their corresponding Zebrafish orthologs.
        - `add_mapped_ortholog_column`: Add a new column with mapped ortholog Gene IDs to a pandas DataFrame.
-       - `build_gene_mapping`: Build a master gene mapping file based on Zebrafish gene ID conversions.
-       - `build_ortho_mapping`: Build a master orthology mapping file between Zebrafish and human genes.
 
    Constants:
        - `NCBI_ID`: Identifier for 'NCBI Gene ID'.
@@ -27,11 +25,15 @@
        - `SYMBOL`: Identifier for gene 'Symbol'.
        - `HUMAN_ID`: Identifier for 'Human NCBI Gene ID'.
 
+   Database Rebuild Functions:
+       - `build_gene_mapping`: Build a master gene mapping file based on Zebrafish gene ID conversions.
+       - `build_ortho_mapping`: Build a master orthology mapping file between Zebrafish and human genes.
+
    .. rubric:: Notes
 
    - This module is designed for use in genomics research and gene ID mapping projects.
    - It provides functions to convert gene IDs between different types, build mapping files, and perform orthology checks.
-   - If you would like to re-build mapping files, ensure that your dataset and mapping files are accurately named and organized as per the function requirements.
+   - If you would like to re-build mapping files, ensure that your dataset and mapping files are accurately named and organized as per the function requirements. It is recommended to use the current package database build.
 
    .. rubric:: Example
 
@@ -41,7 +43,7 @@
    converted_genes = convert_to_human(gene_list, ENS_ID, HUMAN_ID)
    ```
 
-   For detailed information on each function and their usage, please refer to the documentation.
+   For detailed information on each function and their usage, please refer to the documentation. For more examples of full functionality, please refer to tutorials.
 
 
 
@@ -60,22 +62,13 @@ Functions
    danRerLib.mapping.convert_to_zebrafish
    danRerLib.mapping.get_ortho_ids
    danRerLib.mapping.add_mapped_ortholog_column
-   danRerLib.mapping.build_gene_mapping
-   danRerLib.mapping.build_ortho_mapping
-   danRerLib.mapping.convert_to_str
+   danRerLib.mapping._build_gene_mapping
+   danRerLib.mapping._build_ortho_mapping
    danRerLib.mapping._make_sure_is_pandas_series
    danRerLib.mapping._check_valid_zebrafish_gene_id_type
    danRerLib.mapping._check_valid_gene_id_type_for_orthology
    danRerLib.mapping._check_column_name_matches_id_choice
 
-
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   danRerLib.mapping.ids
 
 
 .. py:exception:: DatabaseNotFoundError
@@ -222,7 +215,7 @@ Attributes
    - Gene IDs with missing orthologs can be retained by setting `keep_missing_orthos` to True.
 
 
-.. py:function:: add_mapped_ortholog_column(data: danRerLib.settings.pd.DataFrame, id_from: str, id_to: str, column_name_with_ids=None, keep_old_ids=True, drop_na=False)
+.. py:function:: add_mapped_ortholog_column(data: pandas.DataFrame, id_from: str, id_to: str, column_name_with_ids=None, keep_old_ids=True, drop_na=False)
 
    Add a new column to a pandas DataFrame with mapped ortholog Gene IDs.
 
@@ -250,7 +243,7 @@ Attributes
    - The new column will have the name 'Ortholog Gene ID (Mapped)' unless specified otherwise.
 
 
-.. py:function:: build_gene_mapping()
+.. py:function:: _build_gene_mapping()
 
    Build the master gene mapping file named 'master_gene_mapping_file_V<VERSION_NUM>.txt'.
 
@@ -277,7 +270,7 @@ Attributes
    Place them in the raw_data folder of the database directory.
 
 
-.. py:function:: build_ortho_mapping()
+.. py:function:: _build_ortho_mapping()
 
    Build the master orthology mapping file named 'master_ortho_mapping_file_V<VERSION_NUM>.txt'.
 
@@ -300,11 +293,6 @@ Attributes
    To build the orthology mapping file, you need the following data file:
    - 'zfish_human_orthology_V<VERSION_NUM>.txt'
    Place it in the raw_data folder of the database directory.
-
-
-.. py:function:: convert_to_str(value)
-
-   Convert a value to a string, preserving NaN as np.nan.
 
 
 .. py:function:: _make_sure_is_pandas_series(gene_list, id_from)
@@ -366,7 +354,7 @@ Attributes
    - To perform orthology mapping, id_from must be from organism A, and id_to must be from organism B.
 
 
-.. py:function:: _check_column_name_matches_id_choice(data: danRerLib.settings.pd.DataFrame, id_from: str, column_name: str)
+.. py:function:: _check_column_name_matches_id_choice(data: pandas.DataFrame, id_from: str, column_name: str)
 
    Check if the specified column name matches the chosen gene ID type.
 
@@ -389,9 +377,4 @@ Attributes
    - If 'column_name' is not provided, it checks if 'id_from' matches any column name in the DataFrame.
    - Ensure that the dataset and column names are accurate to perform gene ID conversion.
 
-
-.. py:data:: ids
-   :value: ['ZDB-GENE-030131-2931', 'ZDB-GENE-081031-55', 'ZDB-GENE-081031-61', 'ZDB-GENE-110420-1',...
-
-   
 
