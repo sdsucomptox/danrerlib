@@ -1,5 +1,4 @@
 from danRerLib.settings import *
-
 import danRerLib.mapping as mapping
 
 zebrafish_pathways_path = KEGG_DATA_DIR / Path('pathway_ids_dre_V' + str(VERSION_NUM) + '.txt')
@@ -12,13 +11,29 @@ dre_mapped_dir = KEGG_DATA_DIR / Path('dreM/')
 
 human_disease_path = KEGG_DATA_DIR / Path('disease_ids_V'+ str(VERSION_NUM) + '.txt')
 
-def get_genes_in_pathway(pathway_id, org = None):
-    '''
-    organism options:
-        dre : true danio rerio pathways from KEGG
-        hsa : true human pathways from KEGG
-        dreM : mapped danio rerio pathways from human
-    '''
+def get_genes_in_pathway(pathway_id, org=None):
+    """
+    Retrieve genes associated with a specific pathway from KEGG.
+
+    Parameters:
+        pathway_id (str): The KEGG pathway ID for the pathway of interest.
+        org (str, optional): The organism for which to retrieve pathway information.
+            Options:
+                - 'dre': Danio rerio (Zebrafish) pathways from KEGG.
+                - 'hsa': Human pathways from KEGG.
+                - 'dreM': Mapped Danio rerio pathways from human.
+                (Default is None, which will use the provided 'org' or 'hsa' if 'org' is None.)
+
+    Returns:
+        pd.DataFrame: A pandas DataFrame containing genes associated with the specified pathway.
+
+    Notes:
+        - This function retrieves gene information associated with a specific KEGG pathway.
+        - The 'pathway_id' parameter should be a valid KEGG pathway identifier.
+        - The 'org' parameter specifies the organism for which to retrieve pathway information.
+        - Organism options include 'dre' (Danio rerio), 'hsa' (Human), or 'dreM' (Mapped Danio rerio from Human).
+        - Data is obtained from KEGG and may require internet access to download pathway information.
+    """
     try:
         org, pathway_id = _check_for_organism(pathway_id, org)
         _check_if_pathway_id_exists(pathway_id, org)
@@ -58,6 +73,25 @@ def get_genes_in_disease(disease_id, org = 'dreM'):
             return genes
     
 def _check_for_organism(pathway_id, org):
+    """
+    Check for and validate the organism information in a KEGG pathway ID.
+
+    Parameters:
+        pathway_id (str): The KEGG pathway ID, which may or may not include organism information.
+        org (str, optional): The specified organism code to validate against the pathway ID.
+
+    Returns:
+        tuple: A tuple containing the validated organism code and the modified pathway ID.
+
+    Raises:
+        ValueError: If the organism code in the pathway ID does not match the specified 'org' parameter.
+
+    Notes:
+        - This internal function is used to validate and extract organism information from a KEGG pathway ID.
+        - If the pathway ID includes organism information, it validates it against the 'org' parameter.
+        - If 'org' is None, it extracts and returns the organism code from the pathway ID.
+        - Raises a ValueError if there is a mismatch between the organism code in the pathway ID and the 'org' parameter.
+    """
     pathway_id = str(pathway_id)
     if pathway_id[0].isdigit():
         if org == None:
@@ -76,6 +110,24 @@ def _check_for_organism(pathway_id, org):
         return org, pathway_id
 
 def _check_if_pathway_id_exists(pathway_id, org):
+    """
+    Check if a KEGG pathway ID exists for the specified organism.
+
+    Parameters:
+        pathway_id (str): The KEGG pathway ID to be validated.
+        org (str): The specified organism code (e.g., 'dre', 'dreM', or 'hsa').
+
+    Returns:
+        bool: True if the pathway ID exists for the specified organism, False otherwise.
+
+    Notes:
+        - This internal function checks whether a given KEGG pathway ID exists for the specified organism.
+        - It reads relevant pathway data files based on the organism code and checks if the pathway ID is present.
+        - Returns True if the pathway ID exists, False otherwise.
+        - Provides an error message if the pathway ID or organism code is invalid.
+        - Organism code options include: 'dre' (Danio rerio), 'dreM' (Mapped Danio rerio from Human), or 'hsa' (Human).
+        - Pathway IDs must be entered as strings if the organism prefix is omitted.
+    """
     result = False
     if org == 'dreM':
         df = pd.read_csv(mapped_zebrafish_pathways_path, sep='\t')
@@ -100,11 +152,23 @@ def _check_if_pathway_id_exists(pathway_id, org):
 # ---------------------------
 
 def build_kegg_database():
-    '''
-    A DATABASE BUILDING FUNCTION
-    ONLY RUN ON VERSION UPDATE!!
-    this takes a while, be careful:)
-    '''
+    """
+    Build or update the KEGG pathway and disease database.
+
+    Notes:
+        - This function is intended for database creation or update and should be run only during version updates.
+        - The process may take some time, so exercise caution when running it.
+        - The function performs the following steps:
+            1. Downloads zebrafish pathway IDs and stores them in a specified file.
+            2. Downloads human pathway IDs and stores them in a specified file.
+            3. Creates mapped zebrafish pathway IDs from human pathways and stores them in a specified file.
+            4. Downloads genes associated with true KEGG pathways for zebrafish.
+            5. Downloads genes associated with true KEGG pathways for humans.
+            6. Builds mapped zebrafish KEGG pathways from human pathways and stores them in a specified directory.
+            7. Downloads KEGG disease IDs and stores them in a specified file.
+
+        - Running this function should be done carefully, as it involves downloading and processing data from KEGG.
+    """
 
     # pathway ids
     _download_zebrafish_pathway_ids(zebrafish_pathways_path)
@@ -123,11 +187,15 @@ def build_kegg_database():
 
 
 def _download_zebrafish_pathway_ids(zebrafish_pathways_path):
-    '''
-    A DATABASE BUILDING FUNCTION
-    ONLY RUN ON VERSION UPDATE!!
-    download the list of zebrafish pathways and pathway names
-    '''
+    """
+    Download and store the list of zebrafish pathways and pathway names.
+
+    Parameters:
+        zebrafish_pathways_path (str): The file path to save the zebrafish pathway data.
+
+    Notes:
+        - This function is intended for database building and should be run only during version updates.
+    """
     url = 'https://rest.kegg.jp/list/pathway/dre'
     names=['Pathway ID', 'Pathway Description']
     zebrafish_pathways = pd.read_csv(url, names=names, sep='\t')
@@ -135,10 +203,15 @@ def _download_zebrafish_pathway_ids(zebrafish_pathways_path):
     zebrafish_pathways.to_csv(zebrafish_pathways_path, sep='\t', index=False)
 
 def _download_human_pathway_ids(human_pathways_path):
-    '''
-    A DATABASE BUILDING FUNCTION
-    ONLY RUN ON VERSION UPDATE!!
-    '''
+    """
+    Download and store the list of human pathways and pathway names.
+
+    Parameters:
+        human_pathways_path (str): The file path to save the human pathway data.
+
+    Notes:
+        - This function is intended for database building and should be run only during version updates.
+    """
     url = 'https://rest.kegg.jp/list/pathway/hsa'
     names=['Pathway ID', 'Pathway Description']
     human_pathways = pd.read_csv(url, names=names, sep='\t')
@@ -146,19 +219,30 @@ def _download_human_pathway_ids(human_pathways_path):
     human_pathways.to_csv(human_pathways_path, sep='\t', index=False)
 
 def _create_mapped_zebrafish_pathway_ids(mapped_zebrafish_pathways_path, human_pathways_path):
-    '''
-    A DATABASE BUILDING FUNCTION
-    ONLY RUN ON VERSION UPDATE!!
-    '''    
+    """
+    Create mapped zebrafish pathway IDs from human pathways and store them.
+
+    Parameters:
+        mapped_zebrafish_pathways_path (str): The file path to save the mapped zebrafish pathway data.
+        human_pathways_path (str): The file path containing human pathway data.
+
+    Notes:
+        - This function is intended for database building and should be run only during version updates.
+    """  
     df = pd.read_csv(human_pathways_path, sep='\t')
     df['Pathway ID'] = df['Pathway ID'].str.replace('hsa', 'dreM')
     df.to_csv(mapped_zebrafish_pathways_path, sep='\t', index=False)
 
 def _download_disease_ids(human_disease_path):
-    '''
-    A DATABASE BUILDING FUNCTION
-    ONLY RUN ON VERSION UPDATE!!
-    '''
+    """
+    Download and store the list of KEGG disease IDs and descriptions for humans.
+
+    Parameters:
+        human_disease_path (str): The file path to save the human disease data.
+
+    Notes:
+        - This function is intended for database building and should be run only during version updates.
+    """
     url = 'https://rest.kegg.jp/list/disease'
     names=['Disease ID', 'Disease Description']
     human_diseases = pd.read_csv(url, names=names, sep='\t')
@@ -166,10 +250,16 @@ def _download_disease_ids(human_disease_path):
     human_diseases.to_csv(human_disease_path, sep='\t', index=False)
 
 def _download_human_pathway_genes(human_pathways_path, human_pathways_dir):
-    '''
-    A DATABASE BUILDING FUNCTION
-    ONLY RUN ON VERSION UPDATE!!
-    '''
+    """
+    Download and store genes associated with true KEGG pathways for humans.
+
+    Parameters:
+        human_pathways_path (str): The file path containing human pathway data.
+        human_pathways_dir (str): The directory to save gene data associated with human pathways.
+
+    Notes:
+        - This function is intended for database building and should be run only during version updates.
+    """
     human_pathways = pd.read_csv(human_pathways_path, sep='\t')
     for pathway_id in human_pathways['Pathway ID']:
         url = 'https://rest.kegg.jp/link/hsa/'+pathway_id
@@ -180,10 +270,16 @@ def _download_human_pathway_genes(human_pathways_path, human_pathways_dir):
         genes.to_csv(file_path, sep='\t', index=False)
 
 def _download_zebrafish_pathway_genes(zebrafish_pathways_path, zebrafish_pathways_dir):
-    '''
-    A DATABASE BUILDING FUNCTION
-    ONLY RUN ON VERSION UPDATE!!
-    '''
+    """
+    Download and store genes associated with true KEGG pathways for zebrafish.
+
+    Parameters:
+        zebrafish_pathways_path (str): The file path containing zebrafish pathway data.
+        zebrafish_pathways_dir (str): The directory to save gene data associated with zebrafish pathways.
+
+    Notes:
+        - This function is intended for database building and should be run only during version updates.
+    """
     zebrafish_pathways = pd.read_csv(zebrafish_pathways_path, sep='\t')
     for pathway_id in zebrafish_pathways['Pathway ID']:
         url = 'https://rest.kegg.jp/link/dre/'+pathway_id
@@ -194,10 +290,17 @@ def _download_zebrafish_pathway_genes(zebrafish_pathways_path, zebrafish_pathway
         genes.to_csv(file_path, sep='\t', index=False)
 
 def _build_dre_mapped(human_pathways_path, human_pathways_dir, dre_mapped_dir):
-    '''
-    A DATABASE BUILDING FUNCTION
-    ONLY RUN ON VERSION UPDATE!!
-    '''
+    """
+    Build mapped zebrafish KEGG pathways from human pathways and store them.
+
+    Parameters:
+        human_pathways_path (str): The file path containing human pathway data.
+        human_pathways_dir (str): The directory containing gene data associated with human pathways.
+        dre_mapped_dir (str): The directory to save mapped zebrafish pathway data.
+
+    Notes:
+        - This function is intended for database building and should be run only during version updates.
+    """
     human_pathways_df = pd.read_csv(human_pathways_path, sep='\t')
     for pathway_id in human_pathways_df['Pathway ID']:
         in_file_name = human_pathways_dir / Path(pathway_id+'.txt')

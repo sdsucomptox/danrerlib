@@ -11,8 +11,6 @@ Functions:
     - `convert_to_human`: Convert Zebrafish gene IDs to their corresponding human orthologs.
     - `convert_to_zebrafish`: Convert human gene IDs to their corresponding Zebrafish orthologs.
     - `add_mapped_ortholog_column`: Add a new column with mapped ortholog Gene IDs to a pandas DataFrame.
-    - `build_gene_mapping`: Build a master gene mapping file based on Zebrafish gene ID conversions.
-    - `build_ortho_mapping`: Build a master orthology mapping file between Zebrafish and human genes.
 
 Constants:
     - `NCBI_ID`: Identifier for 'NCBI Gene ID'.
@@ -21,10 +19,14 @@ Constants:
     - `SYMBOL`: Identifier for gene 'Symbol'.
     - `HUMAN_ID`: Identifier for 'Human NCBI Gene ID'.
 
+Database Rebuild Functions:
+    - `build_gene_mapping`: Build a master gene mapping file based on Zebrafish gene ID conversions.
+    - `build_ortho_mapping`: Build a master orthology mapping file between Zebrafish and human genes.
+
 Notes:
     - This module is designed for use in genomics research and gene ID mapping projects.
     - It provides functions to convert gene IDs between different types, build mapping files, and perform orthology checks.
-    - If you would like to re-build mapping files, ensure that your dataset and mapping files are accurately named and organized as per the function requirements. 
+    - If you would like to re-build mapping files, ensure that your dataset and mapping files are accurately named and organized as per the function requirements. It is recommended to use the current package database build. 
 
 Example:
     To convert a list of Zebrafish gene IDs to human orthologs:
@@ -397,7 +399,7 @@ def add_mapped_ortholog_column(data: pd.DataFrame, id_from: str, id_to: str,
 # DATABASE BUILDING FUNCTIONS
 # ----------------------
 
-def build_gene_mapping():
+def _build_gene_mapping():
     """
     Build the master gene mapping file named 'master_gene_mapping_file_V<VERSION_NUM>.txt'.
 
@@ -466,7 +468,7 @@ def build_gene_mapping():
         print('The database should be accessible via the current working directory.')
         print('It cannot be found. Therefore, the build cannot be completed.')
 
-def build_ortho_mapping():
+def _build_ortho_mapping():
     """
     Build the master orthology mapping file named 'master_ortho_mapping_file_V<VERSION_NUM>.txt'.
 
@@ -530,14 +532,6 @@ def build_ortho_mapping():
 
 # PRIVATE FUNCTIONS
 # -----------------
-def convert_to_str(value):
-    """
-    Convert a value to a string, preserving NaN as np.nan.
-    """
-    if value == 'nan':
-        return np.nan  # Preserve NaN values
-    else:
-        return str(value)
 
 def _make_sure_is_pandas_series(gene_list, id_from):
     """

@@ -1,7 +1,6 @@
 from danRerLib import mapping
 from danRerLib.settings import *
 from pandas.testing import assert_frame_equal
-import os
 from itertools import permutations
 
 # MAPPING COMBINATIONS ARE:
