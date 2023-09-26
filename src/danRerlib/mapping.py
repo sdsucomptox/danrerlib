@@ -44,6 +44,8 @@ import os.path
 from pathlib import Path
 import numpy as np
 import pandas as pd
+from typing import Union, Optional, List
+
 
 class DatabaseNotFoundError(Exception):
     "Raised when the the database directory is not found"
@@ -56,7 +58,12 @@ class InvalidGeneTypeError(Exception):
 # GENE MAPPING FUNCTIONS
 # ----------------------
 
-def convert_ids(gene_list, id_from, id_to, keep_mapping = False, out_format = None):
+def convert_ids(gene_list: Union[list, pd.Series, pd.DataFrame, np.array],
+                id_from: str,
+                id_to: str,
+                keep_mapping: bool = False,
+                out_format: Optional[str] = None
+                ) -> Union[pd.Series, pd.DataFrame]:
     """
     Convert a list of Gene IDs.
 
@@ -116,13 +123,16 @@ def convert_ids(gene_list, id_from, id_to, keep_mapping = False, out_format = No
             if out_format == list:
                 mapped_genes = mapped_genes.to_list()
             return mapped_genes
-        
-
-    
     except InvalidGeneTypeError:
         pass
 
-def add_mapped_column(data, id_from, id_to, column_name_with_ids=None, keep_old_ids=True, drop_na=False):
+def add_mapped_column(data: Union[pd.DataFrame, list],
+                      id_from: str,
+                      id_to: str,
+                      column_name_with_ids: str = None,
+                      keep_old_ids: bool = True,
+                      drop_na: bool = False
+                      ) -> pd.DataFrame:
     """
     Add a new column to a pandas DataFrame with mapped Gene IDs.
 
@@ -166,7 +176,6 @@ def add_mapped_column(data, id_from, id_to, column_name_with_ids=None, keep_old_
             data[NCBI_ID] = data[NCBI_ID].to_numpy()
             # data[NCBI_ID] = gene_list.replace('nan', np.nan) if (id_from == NCBI_ID) and (gene_list.dtype == int) else gene_list
         
-
         # convert the ids in the gene list
         converted_ids = convert_ids(gene_list, id_from, id_to, keep_mapping=True)
 
@@ -198,7 +207,11 @@ def add_mapped_column(data, id_from, id_to, column_name_with_ids=None, keep_old_
 # ORTHOLOGY FUNCTIONS
 # -------------------
 
-def convert_to_human(gene_list, zfish_gene_type, keep_mapping=False, keep_missing_orthos=False):
+def convert_to_human(gene_list: List[str],
+                     zfish_gene_type: str,
+                     keep_mapping: bool = False,
+                     keep_missing_orthos: bool = False
+                     ) -> List[str]:
     """
     Convert a list of Zebrafish gene IDs to their human orthologs.
 
@@ -222,7 +235,11 @@ def convert_to_human(gene_list, zfish_gene_type, keep_mapping=False, keep_missin
                               keep_mapping, keep_missing_orthos)
     return human_ids
 
-def convert_to_zebrafish(gene_list, zfish_gene_type, keep_mapping=False, keep_missing_orthos=False):
+def convert_to_zebrafish(gene_list: List[str],
+                         zfish_gene_type: str,
+                         keep_mapping: bool = False,
+                         keep_missing_orthos: bool = False
+                         ) -> List[str]:
     """
     Convert a list of human gene IDs to their Zebrafish orthologs.
 
@@ -246,7 +263,12 @@ def convert_to_zebrafish(gene_list, zfish_gene_type, keep_mapping=False, keep_mi
                                   keep_mapping, keep_missing_orthos)
     return zebrafish_ids
 
-def get_ortho_ids(gene_list, id_from, id_to, keep_mapping=False, keep_missing_orthos=False):
+def get_ortho_ids(gene_list: List[str],
+                  id_from: str,
+                  id_to: str,
+                  keep_mapping: bool = False,
+                  keep_missing_orthos: bool = False
+                  ) -> List[str]:
     """
     Retrieve orthologous gene IDs for a given list of genes.
 
@@ -327,9 +349,13 @@ def get_ortho_ids(gene_list, id_from, id_to, keep_mapping=False, keep_missing_or
     except InvalidGeneTypeError:
         pass
 
-def add_mapped_ortholog_column(data: pd.DataFrame, id_from: str, id_to: str, 
-                               column_name_with_ids=None, keep_old_ids=True,
-                               drop_na=False):
+def add_mapped_ortholog_column(data: pd.DataFrame,
+                               id_from: str,
+                               id_to: str,
+                               column_name_with_ids: str = None,
+                               keep_old_ids: bool = True,
+                               drop_na: bool = False
+                               ) -> pd.DataFrame:
     """
     Add a new column to a pandas DataFrame with mapped ortholog Gene IDs.
 
@@ -359,7 +385,10 @@ def add_mapped_ortholog_column(data: pd.DataFrame, id_from: str, id_to: str,
         # some error handling
         # -------------------          
         if type(data) != pd.DataFrame:
-            raise TypeError
+            if type(data) == pd.Series:
+                data = pd.DataFrame(data)
+            else:
+                raise TypeError
         _check_valid_gene_id_type_for_orthology(id_from, id_to)
         _check_column_name_matches_id_choice(data, id_from, column_name_with_ids)
         # get the gene list from the given data
@@ -537,7 +566,8 @@ def _build_ortho_mapping():
 # PRIVATE FUNCTIONS
 # -----------------
 
-def _make_sure_is_pandas_series(gene_list, id_from):
+def _make_sure_is_pandas_series(gene_list: Union[pd.Series, pd.DataFrame, list], id_from: str
+                                ) -> pd.Series:
     """
     Ensure that the input is a pandas Series.
 
@@ -560,7 +590,7 @@ def _make_sure_is_pandas_series(gene_list, id_from):
             gene_list = pd.Series(gene_list, name = id_from)
     return gene_list
 
-def _check_valid_zebrafish_gene_id_type(gene_id_types):
+def _check_valid_zebrafish_gene_id_type(gene_id_types: Union[str, List[str]]) -> None:
     """
     Check the validity of Zebrafish gene ID types.
 
@@ -594,7 +624,9 @@ def _check_valid_zebrafish_gene_id_type(gene_id_types):
         print('Reminder: Gene ID types are case and spelling sensitive.')
         raise InvalidGeneTypeError
     
-def _check_valid_gene_id_type_for_orthology(gene_id_from, gene_id_to):
+def _check_valid_gene_id_type_for_orthology(gene_id_from: str, 
+                                            gene_id_to: str
+                                            ) -> None:
     """
     Check the validity of gene ID types for orthology mapping.
 
@@ -642,7 +674,10 @@ def _check_valid_gene_id_type_for_orthology(gene_id_from, gene_id_to):
             raise InvalidGeneTypeError
 
 
-def _check_column_name_matches_id_choice(data: pd.DataFrame, id_from: str, column_name: str):
+def _check_column_name_matches_id_choice(data: pd.DataFrame, 
+                                         id_from: str, 
+                                         column_name: str
+                                         ) -> None:
     """
     Check if the specified column name matches the chosen gene ID type.
 

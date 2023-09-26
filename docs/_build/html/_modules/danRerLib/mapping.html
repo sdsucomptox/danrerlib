@@ -121,6 +121,8 @@
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+
 
 <div class="viewcode-block" id="DatabaseNotFoundError"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.DatabaseNotFoundError">[docs]</a><span class="k">class</span> <span class="nc">DatabaseNotFoundError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="s2">&quot;Raised when the the database directory is not found&quot;</span>
@@ -133,7 +135,12 @@
 <span class="c1"># GENE MAPPING FUNCTIONS</span>
 <span class="c1"># ----------------------</span>
 
-<div class="viewcode-block" id="convert_ids"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.convert_ids">[docs]</a><span class="k">def</span> <span class="nf">convert_ids</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">,</span> <span class="n">keep_mapping</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">out_format</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="convert_ids"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.convert_ids">[docs]</a><span class="k">def</span> <span class="nf">convert_ids</span><span class="p">(</span><span class="n">gene_list</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">],</span>
+                <span class="n">id_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="n">id_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="n">keep_mapping</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="n">out_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a list of Gene IDs.</span>
 
@@ -193,13 +200,16 @@
             <span class="k">if</span> <span class="n">out_format</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
                 <span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">mapped_genes</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">mapped_genes</span>
-        
-
-    
     <span class="k">except</span> <span class="n">InvalidGeneTypeError</span><span class="p">:</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="add_mapped_column"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.add_mapped_column">[docs]</a><span class="k">def</span> <span class="nf">add_mapped_column</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">,</span> <span class="n">column_name_with_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_old_ids</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_na</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="add_mapped_column"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.add_mapped_column">[docs]</a><span class="k">def</span> <span class="nf">add_mapped_column</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+                      <span class="n">id_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                      <span class="n">id_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                      <span class="n">column_name_with_ids</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                      <span class="n">keep_old_ids</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                      <span class="n">drop_na</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+                      <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add a new column to a pandas DataFrame with mapped Gene IDs.</span>
 
@@ -243,7 +253,6 @@
             <span class="n">data</span><span class="p">[</span><span class="n">NCBI_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">NCBI_ID</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
             <span class="c1"># data[NCBI_ID] = gene_list.replace(&#39;nan&#39;, np.nan) if (id_from == NCBI_ID) and (gene_list.dtype == int) else gene_list</span>
         
-
         <span class="c1"># convert the ids in the gene list</span>
         <span class="n">converted_ids</span> <span class="o">=</span> <span class="n">convert_ids</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">,</span> <span class="n">keep_mapping</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -275,7 +284,11 @@
 <span class="c1"># ORTHOLOGY FUNCTIONS</span>
 <span class="c1"># -------------------</span>
 
-<div class="viewcode-block" id="convert_to_human"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.convert_to_human">[docs]</a><span class="k">def</span> <span class="nf">convert_to_human</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">zfish_gene_type</span><span class="p">,</span> <span class="n">keep_mapping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">keep_missing_orthos</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="convert_to_human"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.convert_to_human">[docs]</a><span class="k">def</span> <span class="nf">convert_to_human</span><span class="p">(</span><span class="n">gene_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                     <span class="n">zfish_gene_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                     <span class="n">keep_mapping</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                     <span class="n">keep_missing_orthos</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+                     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a list of Zebrafish gene IDs to their human orthologs.</span>
 
@@ -299,7 +312,11 @@
                               <span class="n">keep_mapping</span><span class="p">,</span> <span class="n">keep_missing_orthos</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">human_ids</span></div>
 
-<div class="viewcode-block" id="convert_to_zebrafish"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.convert_to_zebrafish">[docs]</a><span class="k">def</span> <span class="nf">convert_to_zebrafish</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">zfish_gene_type</span><span class="p">,</span> <span class="n">keep_mapping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">keep_missing_orthos</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="convert_to_zebrafish"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.convert_to_zebrafish">[docs]</a><span class="k">def</span> <span class="nf">convert_to_zebrafish</span><span class="p">(</span><span class="n">gene_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                         <span class="n">zfish_gene_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                         <span class="n">keep_mapping</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                         <span class="n">keep_missing_orthos</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+                         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a list of human gene IDs to their Zebrafish orthologs.</span>
 
@@ -323,7 +340,12 @@
                                   <span class="n">keep_mapping</span><span class="p">,</span> <span class="n">keep_missing_orthos</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">zebrafish_ids</span></div>
 
-<div class="viewcode-block" id="get_ortho_ids"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.get_ortho_ids">[docs]</a><span class="k">def</span> <span class="nf">get_ortho_ids</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">,</span> <span class="n">keep_mapping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">keep_missing_orthos</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="get_ortho_ids"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.get_ortho_ids">[docs]</a><span class="k">def</span> <span class="nf">get_ortho_ids</span><span class="p">(</span><span class="n">gene_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                  <span class="n">id_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                  <span class="n">id_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                  <span class="n">keep_mapping</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                  <span class="n">keep_missing_orthos</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+                  <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieve orthologous gene IDs for a given list of genes.</span>
 
@@ -404,9 +426,13 @@
     <span class="k">except</span> <span class="n">InvalidGeneTypeError</span><span class="p">:</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="add_mapped_ortholog_column"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.add_mapped_ortholog_column">[docs]</a><span class="k">def</span> <span class="nf">add_mapped_ortholog_column</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">id_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">id_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
-                               <span class="n">column_name_with_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_old_ids</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                               <span class="n">drop_na</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="add_mapped_ortholog_column"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping.add_mapped_ortholog_column">[docs]</a><span class="k">def</span> <span class="nf">add_mapped_ortholog_column</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+                               <span class="n">id_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                               <span class="n">id_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                               <span class="n">column_name_with_ids</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="n">keep_old_ids</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                               <span class="n">drop_na</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+                               <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add a new column to a pandas DataFrame with mapped ortholog Gene IDs.</span>
 
@@ -436,7 +462,10 @@
         <span class="c1"># some error handling</span>
         <span class="c1"># -------------------          </span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
         <span class="n">_check_valid_gene_id_type_for_orthology</span><span class="p">(</span><span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">)</span>
         <span class="n">_check_column_name_matches_id_choice</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">column_name_with_ids</span><span class="p">)</span>
         <span class="c1"># get the gene list from the given data</span>
@@ -614,7 +643,8 @@
 <span class="c1"># PRIVATE FUNCTIONS</span>
 <span class="c1"># -----------------</span>
 
-<div class="viewcode-block" id="_make_sure_is_pandas_series"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping._make_sure_is_pandas_series">[docs]</a><span class="k">def</span> <span class="nf">_make_sure_is_pandas_series</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">id_from</span><span class="p">):</span>
+<div class="viewcode-block" id="_make_sure_is_pandas_series"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping._make_sure_is_pandas_series">[docs]</a><span class="k">def</span> <span class="nf">_make_sure_is_pandas_series</span><span class="p">(</span><span class="n">gene_list</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">id_from</span><span class="p">:</span> <span class="nb">str</span>
+                                <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Ensure that the input is a pandas Series.</span>
 
@@ -637,7 +667,7 @@
             <span class="n">gene_list</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">id_from</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">gene_list</span></div>
 
-<div class="viewcode-block" id="_check_valid_zebrafish_gene_id_type"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping._check_valid_zebrafish_gene_id_type">[docs]</a><span class="k">def</span> <span class="nf">_check_valid_zebrafish_gene_id_type</span><span class="p">(</span><span class="n">gene_id_types</span><span class="p">):</span>
+<div class="viewcode-block" id="_check_valid_zebrafish_gene_id_type"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping._check_valid_zebrafish_gene_id_type">[docs]</a><span class="k">def</span> <span class="nf">_check_valid_zebrafish_gene_id_type</span><span class="p">(</span><span class="n">gene_id_types</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check the validity of Zebrafish gene ID types.</span>
 
@@ -671,7 +701,9 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reminder: Gene ID types are case and spelling sensitive.&#39;</span><span class="p">)</span>
         <span class="k">raise</span> <span class="n">InvalidGeneTypeError</span></div>
     
-<div class="viewcode-block" id="_check_valid_gene_id_type_for_orthology"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping._check_valid_gene_id_type_for_orthology">[docs]</a><span class="k">def</span> <span class="nf">_check_valid_gene_id_type_for_orthology</span><span class="p">(</span><span class="n">gene_id_from</span><span class="p">,</span> <span class="n">gene_id_to</span><span class="p">):</span>
+<div class="viewcode-block" id="_check_valid_gene_id_type_for_orthology"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping._check_valid_gene_id_type_for_orthology">[docs]</a><span class="k">def</span> <span class="nf">_check_valid_gene_id_type_for_orthology</span><span class="p">(</span><span class="n">gene_id_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                                            <span class="n">gene_id_to</span><span class="p">:</span> <span class="nb">str</span>
+                                            <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check the validity of gene ID types for orthology mapping.</span>
 
@@ -719,7 +751,10 @@
             <span class="k">raise</span> <span class="n">InvalidGeneTypeError</span></div>
 
 
-<div class="viewcode-block" id="_check_column_name_matches_id_choice"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping._check_column_name_matches_id_choice">[docs]</a><span class="k">def</span> <span class="nf">_check_column_name_matches_id_choice</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">id_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="_check_column_name_matches_id_choice"><a class="viewcode-back" href="../../autoapi/danRerLib/mapping/index.html#danRerLib.mapping._check_column_name_matches_id_choice">[docs]</a><span class="k">def</span> <span class="nf">_check_column_name_matches_id_choice</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> 
+                                         <span class="n">id_from</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                                         <span class="n">column_name</span><span class="p">:</span> <span class="nb">str</span>
+                                         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if the specified column name matches the chosen gene ID type.</span>
 

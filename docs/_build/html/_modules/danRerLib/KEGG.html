@@ -75,12 +75,49 @@
            <div itemprop="articleBody">
              
   <h1>Source code for danRerLib.KEGG</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">danRerLib.settings</span> <span class="kn">import</span> <span class="o">*</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">KEGG Module</span>
+<span class="sd">===========</span>
+
+<span class="sd">This module provides functions for retrieving gene information associated with KEGG pathways and diseases</span>
+<span class="sd">for various organisms, including human, zebrafish, and mapped zebrafish.</span>
+
+<span class="sd">Functions:</span>
+<span class="sd">    - `get_genes_in_pathway`: Retrieve genes associated with a specific KEGG pathway.</span>
+<span class="sd">    - `get_genes_in_disease`: Retrieve genes associated with a disease for a specified organism.</span>
+
+<span class="sd">Constants:</span>
+<span class="sd">    - `NCBI_ID`: Identifier for &#39;NCBI Gene ID&#39;.</span>
+<span class="sd">    - `ZFIN_ID`: Identifier for &#39;ZFIN ID&#39;.</span>
+<span class="sd">    - `ENS_ID`: Identifier for &#39;Ensembl ID&#39;.</span>
+<span class="sd">    - `SYMBOL`: Identifier for gene &#39;Symbol&#39;.</span>
+<span class="sd">    - `HUMAN_ID`: Identifier for &#39;Human NCBI Gene ID&#39;.</span>
+
+<span class="sd">Database Rebuild Functions:</span>
+<span class="sd">    - `build_kegg_database`: Build or update the KEGG pathway and disease database.</span>
+
+<span class="sd">Notes:</span>
+<span class="sd">    - This module is designed for accessing gene information from KEGG pathways and diseases.</span>
+<span class="sd">    - It provides functions to retrieve gene data associated with specific pathways and diseases.</span>
+<span class="sd">    - Data is obtained either through direct API calls or by reading pre-processed files.</span>
+<span class="sd">    - Organism options include &#39;dre&#39; (Danio rerio), &#39;hsa&#39; (Human), or &#39;dreM&#39; (Mapped Danio rerio from Human).</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    To retrieve genes associated with a specific KEGG pathway:</span>
+<span class="sd">    ```</span>
+<span class="sd">    pathway_genes = get_genes_in_pathway(&#39;hsa04010&#39;, &#39;hsa&#39;)</span>
+<span class="sd">    ```</span>
+
+<span class="sd">For detailed information on each function and their usage, please refer to the documentation. For more examples of full functionality, please refer to tutorials.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">danRerLib.settings</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">danRerLib.mapping</span> <span class="k">as</span> <span class="nn">mapping</span>
 <span class="kn">import</span> <span class="nn">os.path</span> 
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
 
 <span class="n">zebrafish_pathways_path</span> <span class="o">=</span> <span class="n">KEGG_DATA_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;pathway_ids_dre_V&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
 <span class="n">human_pathways_path</span> <span class="o">=</span> <span class="n">KEGG_DATA_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;pathway_ids_hsa_V&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
@@ -92,6 +129,7 @@
 
 <span class="n">human_disease_path</span> <span class="o">=</span> <span class="n">KEGG_DATA_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;disease_ids_V&#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
 <span class="n">human_disease_genes_path</span> <span class="o">=</span> <span class="n">KEGG_DATA_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;disease_ids_and_genes_V&#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+<span class="n">dre_disease_genes_path</span> <span class="o">=</span> <span class="n">KEGG_DATA_DIR</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;disease_ids_dreM_and_genes_V&#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">VERSION_NUM</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="get_genes_in_pathway"><a class="viewcode-back" href="../../autoapi/danRerLib/KEGG/index.html#danRerLib.KEGG.get_genes_in_pathway">[docs]</a><span class="k">def</span> <span class="nf">get_genes_in_pathway</span><span class="p">(</span><span class="n">pathway_id</span><span class="p">,</span> <span class="n">org</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -126,18 +164,28 @@
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="get_genes_in_disease"><a class="viewcode-back" href="../../autoapi/danRerLib/KEGG/index.html#danRerLib.KEGG.get_genes_in_disease">[docs]</a><span class="k">def</span> <span class="nf">get_genes_in_disease</span><span class="p">(</span><span class="n">disease_id</span><span class="p">,</span> <span class="n">org</span> <span class="o">=</span> <span class="s1">&#39;dreM&#39;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    organism options:</span>
-<span class="sd">        hsa - will return human genes in the disease</span>
-<span class="sd">        dre - will return human genes mapped to zebrafish in the disease</span>
-<span class="sd">        dreM - will return human genes mapped to zebrafish in the disease</span>
-<span class="sd">    note: dre and dreM produce the same result as human disease is not </span>
-<span class="sd">          characterized for zebrafish on KEGG</span>
-<span class="sd">    There are so many disease pathways I opted to just use the API</span>
-<span class="sd">    instead of saving all the genes in each pathway to a file</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">API</span> <span class="o">=</span> <span class="kc">True</span>
+<div class="viewcode-block" id="get_genes_in_disease"><a class="viewcode-back" href="../../autoapi/danRerLib/KEGG/index.html#danRerLib.KEGG.get_genes_in_disease">[docs]</a><span class="k">def</span> <span class="nf">get_genes_in_disease</span><span class="p">(</span><span class="n">disease_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                         <span class="n">org</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                         <span class="n">API</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+                         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve genes associated with a disease for a specified organism.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        disease_id (str): The disease ID for which genes are to be retrieved.</span>
+<span class="sd">        org (str): The organism for which genes should be retrieved. Options:</span>
+<span class="sd">                   - &#39;hsa&#39;: Returns human genes associated with the disease.</span>
+<span class="sd">                   - &#39;dre&#39; or &#39;dreM&#39;: Returns human genes mapped to Zebrafish genes (same result, as Zebrafish disease not characterized on KEGG).</span>
+<span class="sd">        API (bool, optional): Whether to use the KEGG REST API for retrieval. Default is False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: A pandas DataFrame containing genes associated with the disease for the specified organism.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        - If &#39;API&#39; is set to True, the function fetches gene information using the KEGG REST API.</span>
+<span class="sd">        - If &#39;API&#39; is False, the function reads gene information from pre-processed files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">if</span> <span class="n">API</span><span class="p">:</span>
         <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://rest.kegg.jp/link/hsa/&#39;</span> <span class="o">+</span> <span class="n">disease_id</span>
         <span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;trash&#39;</span><span class="p">,</span> <span class="n">HUMAN_ID</span><span class="p">]</span>
@@ -152,9 +200,33 @@
             <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">genes</span><span class="p">)</span> <span class="o">!=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
                 <span class="n">genes</span> <span class="o">=</span> <span class="n">genes</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
                 <span class="n">genes</span><span class="p">[</span><span class="n">NCBI_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">genes</span><span class="p">[</span><span class="n">NCBI_ID</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">genes</span></div>
+            <span class="k">return</span> <span class="n">genes</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">file_dict_by_org</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;hsa&#39;</span><span class="p">:</span> <span class="n">human_disease_genes_path</span><span class="p">,</span>
+            <span class="s1">&#39;dre&#39;</span><span class="p">:</span> <span class="n">dre_disease_genes_path</span><span class="p">,</span>
+            <span class="s1">&#39;dreM&#39;</span><span class="p">:</span> <span class="n">dre_disease_genes_path</span>
+        <span class="p">}</span>
+
+        <span class="n">id_type_by_org</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;hsa&#39;</span><span class="p">:</span> <span class="n">HUMAN_ID</span><span class="p">,</span>
+            <span class="s1">&#39;dre&#39;</span><span class="p">:</span> <span class="n">NCBI_ID</span><span class="p">,</span>
+            <span class="s1">&#39;dreM&#39;</span><span class="p">:</span><span class="n">NCBI_ID</span>
+        <span class="p">}</span>
+
+        <span class="n">genes_and_disease_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_dict_by_org</span><span class="p">[</span><span class="n">org</span><span class="p">],</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">genes_and_disease_df</span><span class="p">[</span><span class="n">genes_and_disease_df</span><span class="p">[</span><span class="s1">&#39;Disease ID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">disease_id</span><span class="p">]</span>
+
+        <span class="n">genes</span> <span class="o">=</span> <span class="n">filtered_df</span><span class="p">[</span><span class="n">id_type_by_org</span><span class="p">[</span><span class="n">org</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">genes</span><span class="p">)</span> <span class="o">!=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+            <span class="n">genes</span> <span class="o">=</span> <span class="n">genes</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">genes</span></div>
+
     
-<div class="viewcode-block" id="_check_for_organism"><a class="viewcode-back" href="../../autoapi/danRerLib/KEGG/index.html#danRerLib.KEGG._check_for_organism">[docs]</a><span class="k">def</span> <span class="nf">_check_for_organism</span><span class="p">(</span><span class="n">pathway_id</span><span class="p">,</span> <span class="n">org</span><span class="p">):</span>
+<div class="viewcode-block" id="_check_for_organism"><a class="viewcode-back" href="../../autoapi/danRerLib/KEGG/index.html#danRerLib.KEGG._check_for_organism">[docs]</a><span class="k">def</span> <span class="nf">_check_for_organism</span><span class="p">(</span><span class="n">pathway_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                        <span class="n">org</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+                        <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check for and validate the organism information in a KEGG pathway ID.</span>
 
@@ -191,7 +263,9 @@
             <span class="k">raise</span> <span class="ne">ValueError</span>
         <span class="k">return</span> <span class="n">org</span><span class="p">,</span> <span class="n">pathway_id</span></div>
 
-<div class="viewcode-block" id="_check_if_pathway_id_exists"><a class="viewcode-back" href="../../autoapi/danRerLib/KEGG/index.html#danRerLib.KEGG._check_if_pathway_id_exists">[docs]</a><span class="k">def</span> <span class="nf">_check_if_pathway_id_exists</span><span class="p">(</span><span class="n">pathway_id</span><span class="p">,</span> <span class="n">org</span><span class="p">):</span>
+<div class="viewcode-block" id="_check_if_pathway_id_exists"><a class="viewcode-back" href="../../autoapi/danRerLib/KEGG/index.html#danRerLib.KEGG._check_if_pathway_id_exists">[docs]</a><span class="k">def</span> <span class="nf">_check_if_pathway_id_exists</span><span class="p">(</span><span class="n">pathway_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                                <span class="n">org</span><span class="p">:</span> <span class="nb">str</span>
+                                <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if a KEGG pathway ID exists for the specified organism.</span>
 
@@ -262,11 +336,14 @@
     <span class="n">_download_human_pathway_genes</span><span class="p">(</span><span class="n">human_pathways_path</span><span class="p">,</span> <span class="n">human_pathways_dir</span><span class="p">)</span>
 
     <span class="c1"># get mapped human kegg pathways to zebrafish</span>
-    <span class="n">_build_dre_mapped</span><span class="p">(</span><span class="n">human_pathways_path</span><span class="p">,</span> <span class="n">human_pathways_dir</span><span class="p">,</span> <span class="n">dre_mapped_dir</span><span class="p">)</span>
+    <span class="n">_build_dre_mapped_pathway</span><span class="p">(</span><span class="n">human_pathways_path</span><span class="p">,</span> <span class="n">human_pathways_dir</span><span class="p">,</span> <span class="n">dre_mapped_dir</span><span class="p">)</span>
 
     <span class="c1"># get kegg disease ids</span>
-    <span class="n">_download_disease_ids</span><span class="p">(</span><span class="n">human_disease_path</span><span class="p">)</span></div>
+    <span class="n">_download_disease_ids</span><span class="p">(</span><span class="n">human_disease_path</span><span class="p">)</span>
+    <span class="n">_download_human_disease_genes</span><span class="p">(</span><span class="n">human_disease_path</span><span class="p">)</span>
 
+    <span class="c1"># get mapped human kegg pathways to zebrafish</span>
+    <span class="n">_build_dre_mapped_disease</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="_download_zebrafish_pathway_ids"><a class="viewcode-back" href="../../autoapi/danRerLib/KEGG/index.html#danRerLib.KEGG._download_zebrafish_pathway_ids">[docs]</a><span class="k">def</span> <span class="nf">_download_zebrafish_pathway_ids</span><span class="p">(</span><span class="n">zebrafish_pathways_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -417,7 +494,7 @@
     <span class="n">genes</span> <span class="o">=</span> <span class="n">gene_df</span><span class="p">[</span><span class="n">HUMAN_ID</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span>
     <span class="k">return</span> <span class="n">genes</span></div>
 
-<div class="viewcode-block" id="_build_dre_mapped"><a class="viewcode-back" href="../../autoapi/danRerLib/KEGG/index.html#danRerLib.KEGG._build_dre_mapped">[docs]</a><span class="k">def</span> <span class="nf">_build_dre_mapped</span><span class="p">(</span><span class="n">human_pathways_path</span><span class="p">,</span> <span class="n">human_pathways_dir</span><span class="p">,</span> <span class="n">dre_mapped_dir</span><span class="p">):</span>
+<div class="viewcode-block" id="_build_dre_mapped_pathway"><a class="viewcode-back" href="../../autoapi/danRerLib/KEGG/index.html#danRerLib.KEGG._build_dre_mapped_pathway">[docs]</a><span class="k">def</span> <span class="nf">_build_dre_mapped_pathway</span><span class="p">(</span><span class="n">human_pathways_path</span><span class="p">,</span> <span class="n">human_pathways_dir</span><span class="p">,</span> <span class="n">dre_mapped_dir</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Build mapped zebrafish KEGG pathways from human pathways and store them.</span>
 
@@ -438,8 +515,33 @@
         <span class="n">out_file_name</span> <span class="o">=</span> <span class="n">dre_mapped_dir</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">stripped_pathway_id</span><span class="o">+</span><span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
         <span class="n">zebrafish_genes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">out_file_name</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="_build_dre_mapped_disease"><a class="viewcode-back" href="../../autoapi/danRerLib/KEGG/index.html#danRerLib.KEGG._build_dre_mapped_disease">[docs]</a><span class="k">def</span> <span class="nf">_build_dre_mapped_disease</span><span class="p">(</span><span class="n">human_disease_genes_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                              <span class="n">dre_disease_genes_path</span><span class="p">:</span> <span class="nb">str</span>
+                              <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build mapped Zebrafish KEGG disease genes from human genes and store them.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        human_disease_genes_path (str): Path to the file containing human disease-associated genes.</span>
+<span class="sd">        dre_disease_genes_path (str): Path to the file where the mapped Zebrafish disease genes will be stored.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        - This function takes a list of human genes associated with diseases, converts them to Zebrafish orthologs,</span>
+<span class="sd">          and stores the resulting genes in the specified file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># disease ids and associated genes</span>
+    <span class="n">human_disease_genes_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">human_disease_genes_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">zebrafish_genes</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">add_mapped_ortholog_column</span><span class="p">(</span><span class="n">human_disease_genes_df</span><span class="p">,</span> <span class="n">HUMAN_ID</span><span class="p">,</span> <span class="n">NCBI_ID</span><span class="p">,</span> <span class="n">keep_old_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">drop_na</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">zebrafish_genes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">dre_disease_genes_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="testing"><a class="viewcode-back" href="../../autoapi/danRerLib/KEGG/index.html#danRerLib.KEGG.testing">[docs]</a><span class="k">def</span> <span class="nf">testing</span><span class="p">():</span>
     <span class="c1"># _download_human_disease_genes(human_disease_path)</span>
+    <span class="c1"># _build_dre_mapped_disease(human_disease_genes_path, dre_disease_genes_path)</span>
+    <span class="n">out</span><span class="o">=</span> <span class="n">get_genes_in_disease</span><span class="p">(</span><span class="s1">&#39;H00001&#39;</span><span class="p">,</span> <span class="s1">&#39;dreM&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
     <span class="k">pass</span></div>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>

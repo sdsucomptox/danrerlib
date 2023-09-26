@@ -97,6 +97,42 @@
              
   <section id="module-danRerLib.KEGG">
 <span id="danrerlib-kegg"></span><h1><a class="reference internal" href="#module-danRerLib.KEGG" title="danRerLib.KEGG"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.KEGG</span></code></a><a class="headerlink" href="#module-danRerLib.KEGG" title="Permalink to this heading"></a></h1>
+<section id="kegg-module">
+<p>This module provides functions for retrieving gene information associated with KEGG pathways and diseases
+for various organisms, including human, zebrafish, and mapped zebrafish.</p>
+<dl class="simple">
+<dt>Functions:</dt><dd><ul class="simple">
+<li><p><cite>get_genes_in_pathway</cite>: Retrieve genes associated with a specific KEGG pathway.</p></li>
+<li><p><cite>get_genes_in_disease</cite>: Retrieve genes associated with a disease for a specified organism.</p></li>
+</ul>
+</dd>
+<dt>Constants:</dt><dd><ul class="simple">
+<li><p><cite>NCBI_ID</cite>: Identifier for ‘NCBI Gene ID’.</p></li>
+<li><p><cite>ZFIN_ID</cite>: Identifier for ‘ZFIN ID’.</p></li>
+<li><p><cite>ENS_ID</cite>: Identifier for ‘Ensembl ID’.</p></li>
+<li><p><cite>SYMBOL</cite>: Identifier for gene ‘Symbol’.</p></li>
+<li><p><cite>HUMAN_ID</cite>: Identifier for ‘Human NCBI Gene ID’.</p></li>
+</ul>
+</dd>
+<dt>Database Rebuild Functions:</dt><dd><ul class="simple">
+<li><p><cite>build_kegg_database</cite>: Build or update the KEGG pathway and disease database.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This module is designed for accessing gene information from KEGG pathways and diseases.</p></li>
+<li><p>It provides functions to retrieve gene data associated with specific pathways and diseases.</p></li>
+<li><p>Data is obtained either through direct API calls or by reading pre-processed files.</p></li>
+<li><p>Organism options include ‘dre’ (Danio rerio), ‘hsa’ (Human), or ‘dreM’ (Mapped Danio rerio from Human).</p></li>
+</ul>
+<p class="rubric">Example</p>
+<p>To retrieve genes associated with a specific KEGG pathway:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">pathway_genes</span> <span class="pre">=</span> <span class="pre">get_genes_in_pathway('hsa04010',</span> <span class="pre">'hsa')</span>
+<span class="pre">`</span></code></p>
+<p>For detailed information on each function and their usage, please refer to the documentation. For more examples of full functionality, please refer to tutorials.</p>
+</section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
 <section id="functions">
@@ -106,13 +142,13 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.get_genes_in_pathway" title="danRerLib.KEGG.get_genes_in_pathway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_genes_in_pathway</span></code></a>(pathway_id[, org])</p></td>
 <td><p>Retrieve genes associated with a specific pathway from KEGG.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG.get_genes_in_disease" title="danRerLib.KEGG.get_genes_in_disease"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_genes_in_disease</span></code></a>(disease_id[, org])</p></td>
-<td><p>organism options:</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG.get_genes_in_disease" title="danRerLib.KEGG.get_genes_in_disease"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_genes_in_disease</span></code></a>(→ pandas.DataFrame)</p></td>
+<td><p>Retrieve genes associated with a disease for a specified organism.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._check_for_organism" title="danRerLib.KEGG._check_for_organism"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_for_organism</span></code></a>(pathway_id, org)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._check_for_organism" title="danRerLib.KEGG._check_for_organism"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_for_organism</span></code></a>(→ [str, str])</p></td>
 <td><p>Check for and validate the organism information in a KEGG pathway ID.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._check_if_pathway_id_exists" title="danRerLib.KEGG._check_if_pathway_id_exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_if_pathway_id_exists</span></code></a>(pathway_id, org)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._check_if_pathway_id_exists" title="danRerLib.KEGG._check_if_pathway_id_exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_if_pathway_id_exists</span></code></a>(→ bool)</p></td>
 <td><p>Check if a KEGG pathway ID exists for the specified organism.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.build_kegg_database" title="danRerLib.KEGG.build_kegg_database"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_kegg_database</span></code></a>()</p></td>
@@ -142,10 +178,13 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._get_genes_for_disease" title="danRerLib.KEGG._get_genes_for_disease"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_genes_for_disease</span></code></a>(disease_id)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._build_dre_mapped" title="danRerLib.KEGG._build_dre_mapped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_build_dre_mapped</span></code></a>(human_pathways_path, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG._build_dre_mapped_pathway" title="danRerLib.KEGG._build_dre_mapped_pathway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_build_dre_mapped_pathway</span></code></a>(human_pathways_path, ...)</p></td>
 <td><p>Build mapped zebrafish KEGG pathways from human pathways and store them.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.testing" title="danRerLib.KEGG.testing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testing</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG._build_dre_mapped_disease" title="danRerLib.KEGG._build_dre_mapped_disease"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_build_dre_mapped_disease</span></code></a>(→ None)</p></td>
+<td><p>Build mapped Zebrafish KEGG disease genes from human genes and store them.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG.testing" title="danRerLib.KEGG.testing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testing</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -177,6 +216,9 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG.human_disease_genes_path" title="danRerLib.KEGG.human_disease_genes_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">human_disease_genes_path</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.dre_disease_genes_path" title="danRerLib.KEGG.dre_disease_genes_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dre_disease_genes_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -221,6 +263,11 @@
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">human_disease_genes_path</span></span><a class="headerlink" href="#danRerLib.KEGG.human_disease_genes_path" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
+<dl class="py data">
+<dt class="sig sig-object py" id="danRerLib.KEGG.dre_disease_genes_path">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">dre_disease_genes_path</span></span><a class="headerlink" href="#danRerLib.KEGG.dre_disease_genes_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG.get_genes_in_pathway">
 <span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#get_genes_in_pathway"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG.get_genes_in_pathway" title="Permalink to this definition"></a></dt>
@@ -261,22 +308,35 @@ Options:</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG.get_genes_in_disease">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_disease</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disease_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dreM'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#get_genes_in_disease"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG.get_genes_in_disease" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>organism options:</dt><dd><p>hsa - will return human genes in the disease
-dre - will return human genes mapped to zebrafish in the disease
-dreM - will return human genes mapped to zebrafish in the disease</p>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_disease</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disease_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">API</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#get_genes_in_disease"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG.get_genes_in_disease" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve genes associated with a disease for a specified organism.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>disease_id</strong> (<em>str</em>) – The disease ID for which genes are to be retrieved.</p></li>
+<li><p><strong>org</strong> (<em>str</em>) – The organism for which genes should be retrieved. Options:
+- ‘hsa’: Returns human genes associated with the disease.
+- ‘dre’ or ‘dreM’: Returns human genes mapped to Zebrafish genes (same result, as Zebrafish disease not characterized on KEGG).</p></li>
+<li><p><strong>API</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use the KEGG REST API for retrieval. Default is False.</p></li>
+</ul>
 </dd>
-<dt>note: dre and dreM produce the same result as human disease is not</dt><dd><p>characterized for zebrafish on KEGG</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame containing genes associated with the disease for the specified organism.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
-<p>There are so many disease pathways I opted to just use the API
-instead of saving all the genes in each pathway to a file</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If ‘API’ is set to True, the function fetches gene information using the KEGG REST API.</p></li>
+<li><p>If ‘API’ is False, the function reads gene information from pre-processed files.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._check_for_organism">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_check_for_organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_check_for_organism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._check_for_organism" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_check_for_organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_check_for_organism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._check_for_organism" title="Permalink to this definition"></a></dt>
 <dd><p>Check for and validate the organism information in a KEGG pathway ID.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -306,7 +366,7 @@ instead of saving all the genes in each pathway to a file</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.KEGG._check_if_pathway_id_exists">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_check_if_pathway_id_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_check_if_pathway_id_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._check_if_pathway_id_exists" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_check_if_pathway_id_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_check_if_pathway_id_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._check_if_pathway_id_exists" title="Permalink to this definition"></a></dt>
 <dd><p>Check if a KEGG pathway ID exists for the specified organism.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -485,8 +545,8 @@ instead of saving all the genes in each pathway to a file</p>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="danRerLib.KEGG._build_dre_mapped">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_build_dre_mapped</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dre_mapped_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_build_dre_mapped"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._build_dre_mapped" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="danRerLib.KEGG._build_dre_mapped_pathway">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_build_dre_mapped_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_pathways_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">human_pathways_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dre_mapped_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_build_dre_mapped_pathway"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._build_dre_mapped_pathway" title="Permalink to this definition"></a></dt>
 <dd><p>Build mapped zebrafish KEGG pathways from human pathways and store them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -500,6 +560,25 @@ instead of saving all the genes in each pathway to a file</p>
 <p class="rubric">Notes</p>
 <ul class="simple">
 <li><p>This function is intended for database building and should be run only during version updates.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG._build_dre_mapped_disease">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">_build_dre_mapped_disease</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">human_disease_genes_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dre_disease_genes_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/danRerLib/KEGG.html#_build_dre_mapped_disease"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.KEGG._build_dre_mapped_disease" title="Permalink to this definition"></a></dt>
+<dd><p>Build mapped Zebrafish KEGG disease genes from human genes and store them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>human_disease_genes_path</strong> (<em>str</em>) – Path to the file containing human disease-associated genes.</p></li>
+<li><p><strong>dre_disease_genes_path</strong> (<em>str</em>) – Path to the file where the mapped Zebrafish disease genes will be stored.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function takes a list of human genes associated with diseases, converts them to Zebrafish orthologs,
+and stores the resulting genes in the specified file.</p></li>
 </ul>
 </dd></dl>
 

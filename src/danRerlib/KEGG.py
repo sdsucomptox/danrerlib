@@ -1,9 +1,46 @@
+"""
+KEGG Module
+===========
+
+This module provides functions for retrieving gene information associated with KEGG pathways and diseases
+for various organisms, including human, zebrafish, and mapped zebrafish.
+
+Functions:
+    - `get_genes_in_pathway`: Retrieve genes associated with a specific KEGG pathway.
+    - `get_genes_in_disease`: Retrieve genes associated with a disease for a specified organism.
+
+Constants:
+    - `NCBI_ID`: Identifier for 'NCBI Gene ID'.
+    - `ZFIN_ID`: Identifier for 'ZFIN ID'.
+    - `ENS_ID`: Identifier for 'Ensembl ID'.
+    - `SYMBOL`: Identifier for gene 'Symbol'.
+    - `HUMAN_ID`: Identifier for 'Human NCBI Gene ID'.
+
+Database Rebuild Functions:
+    - `build_kegg_database`: Build or update the KEGG pathway and disease database.
+
+Notes:
+    - This module is designed for accessing gene information from KEGG pathways and diseases.
+    - It provides functions to retrieve gene data associated with specific pathways and diseases.
+    - Data is obtained either through direct API calls or by reading pre-processed files.
+    - Organism options include 'dre' (Danio rerio), 'hsa' (Human), or 'dreM' (Mapped Danio rerio from Human).
+
+Example:
+    To retrieve genes associated with a specific KEGG pathway:
+    ```
+    pathway_genes = get_genes_in_pathway('hsa04010', 'hsa')
+    ```
+
+For detailed information on each function and their usage, please refer to the documentation. For more examples of full functionality, please refer to tutorials.
+"""
+
 from danRerLib.settings import *
 import danRerLib.mapping as mapping
 import os.path 
 from pathlib import Path
 import numpy as np
 import pandas as pd
+from typing import Union, Optional, List
 
 zebrafish_pathways_path = KEGG_DATA_DIR / Path('pathway_ids_dre_V' + str(VERSION_NUM) + '.txt')
 human_pathways_path = KEGG_DATA_DIR / Path('pathway_ids_hsa_V' + str(VERSION_NUM) + '.txt')
@@ -15,6 +52,7 @@ dre_mapped_dir = KEGG_DATA_DIR / Path('dreM/')
 
 human_disease_path = KEGG_DATA_DIR / Path('disease_ids_V'+ str(VERSION_NUM) + '.txt')
 human_disease_genes_path = KEGG_DATA_DIR / Path('disease_ids_and_genes_V'+ str(VERSION_NUM) + '.txt')
+dre_disease_genes_path = KEGG_DATA_DIR / Path('disease_ids_dreM_and_genes_V'+ str(VERSION_NUM) + '.txt')
 
 def get_genes_in_pathway(pathway_id, org=None):
     """
@@ -49,18 +87,28 @@ def get_genes_in_pathway(pathway_id, org=None):
     except ValueError:
         pass
 
-def get_genes_in_disease(disease_id, org = 'dreM'):
-    '''
-    organism options:
-        hsa - will return human genes in the disease
-        dre - will return human genes mapped to zebrafish in the disease
-        dreM - will return human genes mapped to zebrafish in the disease
-    note: dre and dreM produce the same result as human disease is not 
-          characterized for zebrafish on KEGG
-    There are so many disease pathways I opted to just use the API
-    instead of saving all the genes in each pathway to a file
-    '''
-    API = True
+def get_genes_in_disease(disease_id: str, 
+                         org: str, 
+                         API: bool = False
+                         ) -> pd.DataFrame:
+    """
+    Retrieve genes associated with a disease for a specified organism.
+
+    Parameters:
+        disease_id (str): The disease ID for which genes are to be retrieved.
+        org (str): The organism for which genes should be retrieved. Options:
+                   - 'hsa': Returns human genes associated with the disease.
+                   - 'dre' or 'dreM': Returns human genes mapped to Zebrafish genes (same result, as Zebrafish disease not characterized on KEGG).
+        API (bool, optional): Whether to use the KEGG REST API for retrieval. Default is False.
+
+    Returns:
+        pd.DataFrame: A pandas DataFrame containing genes associated with the disease for the specified organism.
+
+    Notes:
+        - If 'API' is set to True, the function fetches gene information using the KEGG REST API.
+        - If 'API' is False, the function reads gene information from pre-processed files.
+    """
+
     if API:
         url = 'https://rest.kegg.jp/link/hsa/' + disease_id
         column_names = ['trash', HUMAN_ID]
@@ -76,8 +124,32 @@ def get_genes_in_disease(disease_id, org = 'dreM'):
                 genes = genes.to_frame()
                 genes[NCBI_ID] = genes[NCBI_ID].values.astype(np.int64)
             return genes
+    else:
+        file_dict_by_org = {
+            'hsa': human_disease_genes_path,
+            'dre': dre_disease_genes_path,
+            'dreM': dre_disease_genes_path
+        }
+
+        id_type_by_org = {
+            'hsa': HUMAN_ID,
+            'dre': NCBI_ID,
+            'dreM':NCBI_ID
+        }
+
+        genes_and_disease_df = pd.read_csv(file_dict_by_org[org], sep = '\t')
+        filtered_df = genes_and_disease_df[genes_and_disease_df['Disease ID'] == disease_id]
+
+        genes = filtered_df[id_type_by_org[org]]
+        if type(genes) != pd.DataFrame:
+            genes = genes.to_frame()
+        return genes
+
     
-def _check_for_organism(pathway_id, org):
+def _check_for_organism(pathway_id: str, 
+                        org: Optional[str]
+                        ) -> [str, str]:
+
     """
     Check for and validate the organism information in a KEGG pathway ID.
 
@@ -114,7 +186,9 @@ def _check_for_organism(pathway_id, org):
             raise ValueError
         return org, pathway_id
 
-def _check_if_pathway_id_exists(pathway_id, org):
+def _check_if_pathway_id_exists(pathway_id: str, 
+                                org: str
+                                ) -> bool:
     """
     Check if a KEGG pathway ID exists for the specified organism.
 
@@ -185,11 +259,14 @@ def build_kegg_database():
     _download_human_pathway_genes(human_pathways_path, human_pathways_dir)
 
     # get mapped human kegg pathways to zebrafish
-    _build_dre_mapped(human_pathways_path, human_pathways_dir, dre_mapped_dir)
+    _build_dre_mapped_pathway(human_pathways_path, human_pathways_dir, dre_mapped_dir)
 
     # get kegg disease ids
     _download_disease_ids(human_disease_path)
+    _download_human_disease_genes(human_disease_path)
 
+    # get mapped human kegg pathways to zebrafish
+    _build_dre_mapped_disease()
 
 def _download_zebrafish_pathway_ids(zebrafish_pathways_path):
     """
@@ -340,7 +417,7 @@ def _get_genes_for_disease(disease_id):
     genes = gene_df[HUMAN_ID].str[4:]
     return genes
 
-def _build_dre_mapped(human_pathways_path, human_pathways_dir, dre_mapped_dir):
+def _build_dre_mapped_pathway(human_pathways_path, human_pathways_dir, dre_mapped_dir):
     """
     Build mapped zebrafish KEGG pathways from human pathways and store them.
 
@@ -361,9 +438,31 @@ def _build_dre_mapped(human_pathways_path, human_pathways_dir, dre_mapped_dir):
         out_file_name = dre_mapped_dir / Path(stripped_pathway_id+'.txt')
         zebrafish_genes.to_csv(out_file_name, sep='\t', index=False)
 
+def _build_dre_mapped_disease(human_disease_genes_path: str, 
+                              dre_disease_genes_path: str
+                              ) -> None:
+    """
+    Build mapped Zebrafish KEGG disease genes from human genes and store them.
+
+    Parameters:
+        human_disease_genes_path (str): Path to the file containing human disease-associated genes.
+        dre_disease_genes_path (str): Path to the file where the mapped Zebrafish disease genes will be stored.
+
+    Notes:
+        - This function takes a list of human genes associated with diseases, converts them to Zebrafish orthologs,
+          and stores the resulting genes in the specified file.
+    """
+
+    # disease ids and associated genes
+    human_disease_genes_df = pd.read_csv(human_disease_genes_path, sep='\t')
+
+    zebrafish_genes = mapping.add_mapped_ortholog_column(human_disease_genes_df, HUMAN_ID, NCBI_ID, keep_old_ids=False, drop_na=True)
+    zebrafish_genes.to_csv(dre_disease_genes_path, index=False, sep = '\t')
+
+
 def testing():
     # _download_human_disease_genes(human_disease_path)
+    # _build_dre_mapped_disease(human_disease_genes_path, dre_disease_genes_path)
     pass
-
 if __name__ == '__main__':
     testing()
