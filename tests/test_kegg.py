@@ -3,7 +3,7 @@ from danRerLib.settings import *
 from pandas.testing import assert_frame_equal
 from itertools import permutations
 
-def test_get_genes():
+def test_get_genes_from_pathway():
 
     # human
     pathway_id = 'hsa04010'
@@ -62,3 +62,21 @@ def _format_from_kegg(pathway_id, org):
     else:
         from_kegg_directly = from_kegg_directly.rename(columns={'ids':'NCBI Gene ID'})
     return from_kegg_directly
+
+def test_get_genes_from_disease():
+
+    disease_id = 'H00001'
+    file_name = 'tests/data/out_data/kegg/'+disease_id+'.txt'
+    true_gene_ids = pd.read_csv(file_name, sep = '\t')
+
+    generated_gene_ids = KEGG.get_genes_in_disease(disease_id, 'hsa')
+    assert_frame_equal(true_gene_ids, generated_gene_ids) 
+
+    file_name = 'tests/data/out_data/kegg/'+disease_id+'_dre.txt'
+    true_gene_ids = pd.read_csv(file_name, sep = '\t').sort_values(by = NCBI_ID).reset_index(drop = True)
+
+    generated_gene_ids = KEGG.get_genes_in_disease(disease_id, 'dre').sort_values(by = NCBI_ID).reset_index(drop = True)
+    assert_frame_equal(true_gene_ids, generated_gene_ids) 
+
+
+
