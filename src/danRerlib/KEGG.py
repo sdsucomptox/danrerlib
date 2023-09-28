@@ -460,9 +460,9 @@ def _build_dre_mapped_disease(human_disease_genes_path: str,
     zebrafish_genes.to_csv(dre_disease_genes_path, index=False, sep = '\t')
 
 
-def testing():
-    # _download_human_disease_genes(human_disease_path)
-    # _build_dre_mapped_disease(human_disease_genes_path, dre_disease_genes_path)
-    pass
-if __name__ == '__main__':
-    testing()
+# def testing():
+#     # _download_human_disease_genes(human_disease_path)
+#     # _build_dre_mapped_disease(human_disease_genes_path, dre_disease_genes_path)
+#     pass
+# if __name__ == '__main__':
+#     testing()

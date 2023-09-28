@@ -432,7 +432,7 @@ def add_mapped_ortholog_column(data: pd.DataFrame,
 # DATABASE BUILDING FUNCTIONS
 # ----------------------
 
-def _build_gene_mapping():
+def build_gene_mapping():
     """
     Build the master gene mapping file named 'master_gene_mapping_file_V<VERSION_NUM>.txt'.
 
@@ -501,7 +501,7 @@ def _build_gene_mapping():
         print('The database should be accessible via the current working directory.')
         print('It cannot be found. Therefore, the build cannot be completed.')
 
-def _build_ortho_mapping():
+def build_ortho_mapping():
     """
     Build the master orthology mapping file named 'master_ortho_mapping_file_V<VERSION_NUM>.txt'.
 

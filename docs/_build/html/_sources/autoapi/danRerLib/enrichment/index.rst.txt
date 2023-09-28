@@ -17,13 +17,6 @@ Functions
    danRerLib.enrichment.fishers
    danRerLib.enrichment.enrich_KEGG
    danRerLib.enrichment.enrich_GO
-   danRerLib.enrichment._check_gene_universe
-   danRerLib.enrichment._check_concept_ids_KEGG
-   danRerLib.enrichment._check_concept_ids_GO
-   danRerLib.enrichment._id_exists_given_organism
-   danRerLib.enrichment._check_GO_id_format
-   danRerLib.enrichment._is_numeric
-   danRerLib.enrichment._check_valid_org
    danRerLib.enrichment.test_KEGG_enrich
    danRerLib.enrichment.investigation
    danRerLib.enrichment.test_GO_enrich
@@ -33,13 +26,13 @@ Functions
 
 .. py:function:: logistic(gene_universe: danRerLib.settings.pd.DataFrame, gene_set: danRerLib.settings.pd.DataFrame, gene_id_type: str, concept_type: str, concept_id: str, concept_name: str, sig_cutoff=0.05) -> danRerLib.settings.pd.DataFrame
 
-   This function performs gene enrichment using the logistic regression method. A
+   This function performs gene enrichment using the logistic regression method. A 
    p-value cutoff is required for this method and the default is taken to be 0.05
 
 
 .. py:function:: fishers(gene_universe, gene_set, concept_type, concept_id, concept_name, sig_cutoff=0.05)
 
-   gene_universe - all genes
+   gene_universe - all genes 
    gene_set - genes in the concept of interest
    concept_type - the database (KEGG, GO, etc)
    concept_id - the id (e.g. the KEGG pathway id)
@@ -51,27 +44,6 @@ Functions
 
 
 .. py:function:: enrich_GO(gene_universe: str, gene_id_type=ZFIN_ID, database=None, concept_ids=None, org='dre', method='logistic', sig_gene_cutoff_pvalue=0.05, sig_conceptID_cutoff_pvalue=None, sig_conceptID_cutoff_FDR=None, order_by_p_value=True)
-
-
-.. py:function:: _check_gene_universe(gene_universe, gene_id_type)
-
-
-.. py:function:: _check_concept_ids_KEGG(concept_ids, org, database) -> list
-
-
-.. py:function:: _check_concept_ids_GO(concept_ids, org)
-
-
-.. py:function:: _id_exists_given_organism(concept_id, organism, df)
-
-
-.. py:function:: _check_GO_id_format(id)
-
-
-.. py:function:: _is_numeric(value)
-
-
-.. py:function:: _check_valid_org(org)
 
 
 .. py:function:: test_KEGG_enrich(option1=False, option2=False, option3=False)

@@ -25,19 +25,17 @@
    Database Rebuild Functions:
        - `build_kegg_database`: Build or update the KEGG pathway and disease database.
 
-   .. rubric:: Notes
+   Notes:
+       - This module is designed for accessing gene information from KEGG pathways and diseases.
+       - It provides functions to retrieve gene data associated with specific pathways and diseases.
+       - Data is obtained either through direct API calls or by reading pre-processed files.
+       - Organism options include 'dre' (Danio rerio), 'hsa' (Human), or 'dreM' (Mapped Danio rerio from Human).
 
-   - This module is designed for accessing gene information from KEGG pathways and diseases.
-   - It provides functions to retrieve gene data associated with specific pathways and diseases.
-   - Data is obtained either through direct API calls or by reading pre-processed files.
-   - Organism options include 'dre' (Danio rerio), 'hsa' (Human), or 'dreM' (Mapped Danio rerio from Human).
-
-   .. rubric:: Example
-
-   To retrieve genes associated with a specific KEGG pathway:
-   ```
-   pathway_genes = get_genes_in_pathway('hsa04010', 'hsa')
-   ```
+   Example:
+       To retrieve genes associated with a specific KEGG pathway:
+       ```
+       pathway_genes = get_genes_in_pathway('hsa04010', 'hsa')
+       ```
 
    For detailed information on each function and their usage, please refer to the documentation. For more examples of full functionality, please refer to tutorials.
 
@@ -54,317 +52,69 @@ Functions
 
    danRerLib.KEGG.get_genes_in_pathway
    danRerLib.KEGG.get_genes_in_disease
-   danRerLib.KEGG._check_for_organism
-   danRerLib.KEGG._check_if_pathway_id_exists
    danRerLib.KEGG.build_kegg_database
-   danRerLib.KEGG._download_zebrafish_pathway_ids
-   danRerLib.KEGG._download_human_pathway_ids
-   danRerLib.KEGG._create_mapped_zebrafish_pathway_ids
-   danRerLib.KEGG._download_disease_ids
-   danRerLib.KEGG._download_human_pathway_genes
-   danRerLib.KEGG._download_zebrafish_pathway_genes
-   danRerLib.KEGG._download_human_disease_genes
-   danRerLib.KEGG._get_genes_for_disease
-   danRerLib.KEGG._build_dre_mapped_pathway
-   danRerLib.KEGG._build_dre_mapped_disease
-   danRerLib.KEGG.testing
 
 
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   danRerLib.KEGG.zebrafish_pathways_path
-   danRerLib.KEGG.human_pathways_path
-   danRerLib.KEGG.mapped_zebrafish_pathways_path
-   danRerLib.KEGG.zebrafish_pathways_dir
-   danRerLib.KEGG.human_pathways_dir
-   danRerLib.KEGG.dre_mapped_dir
-   danRerLib.KEGG.human_disease_path
-   danRerLib.KEGG.human_disease_genes_path
-   danRerLib.KEGG.dre_disease_genes_path
-
-
-.. py:data:: zebrafish_pathways_path
-
-   
-
-.. py:data:: human_pathways_path
-
-   
-
-.. py:data:: mapped_zebrafish_pathways_path
-
-   
-
-.. py:data:: zebrafish_pathways_dir
-
-   
-
-.. py:data:: human_pathways_dir
-
-   
-
-.. py:data:: dre_mapped_dir
-
-   
-
-.. py:data:: human_disease_path
-
-   
-
-.. py:data:: human_disease_genes_path
-
-   
-
-.. py:data:: dre_disease_genes_path
-
-   
 
 .. py:function:: get_genes_in_pathway(pathway_id, org=None)
 
    Retrieve genes associated with a specific pathway from KEGG.
 
-   :param pathway_id: The KEGG pathway ID for the pathway of interest.
-   :type pathway_id: str
-   :param org: The organism for which to retrieve pathway information.
-               Options:
-                   - 'dre': Danio rerio (Zebrafish) pathways from KEGG.
-                   - 'hsa': Human pathways from KEGG.
-                   - 'dreM': Mapped Danio rerio pathways from human.
-                   (Default is None, which will use the provided 'org' or 'hsa' if 'org' is None.)
-   :type org: str, optional
+   Parameters:
+       pathway_id (str): The KEGG pathway ID for the pathway of interest.
+       org (str, optional): The organism for which to retrieve pathway information.
+           Options:
+               - 'dre': Danio rerio (Zebrafish) pathways from KEGG.
+               - 'hsa': Human pathways from KEGG.
+               - 'dreM': Mapped Danio rerio pathways from human.
+               (Default is None, which will use the provided 'org' or 'hsa' if 'org' is None.)
 
-   :returns: A pandas DataFrame containing genes associated with the specified pathway.
-   :rtype: pd.DataFrame
+   Returns:
+       pd.DataFrame: A pandas DataFrame containing genes associated with the specified pathway.
 
-   .. rubric:: Notes
-
-   - This function retrieves gene information associated with a specific KEGG pathway.
-   - The 'pathway_id' parameter should be a valid KEGG pathway identifier.
-   - The 'org' parameter specifies the organism for which to retrieve pathway information.
-   - Organism options include 'dre' (Danio rerio), 'hsa' (Human), or 'dreM' (Mapped Danio rerio from Human).
-   - Data is obtained from KEGG and may require internet access to download pathway information.
+   Notes:
+       - This function retrieves gene information associated with a specific KEGG pathway.
+       - The 'pathway_id' parameter should be a valid KEGG pathway identifier.
+       - The 'org' parameter specifies the organism for which to retrieve pathway information.
+       - Organism options include 'dre' (Danio rerio), 'hsa' (Human), or 'dreM' (Mapped Danio rerio from Human).
+       - Data is obtained from KEGG and may require internet access to download pathway information.
 
 
 .. py:function:: get_genes_in_disease(disease_id: str, org: str, API: bool = False) -> pandas.DataFrame
 
    Retrieve genes associated with a disease for a specified organism.
 
-   :param disease_id: The disease ID for which genes are to be retrieved.
-   :type disease_id: str
-   :param org: The organism for which genes should be retrieved. Options:
-               - 'hsa': Returns human genes associated with the disease.
-               - 'dre' or 'dreM': Returns human genes mapped to Zebrafish genes (same result, as Zebrafish disease not characterized on KEGG).
-   :type org: str
-   :param API: Whether to use the KEGG REST API for retrieval. Default is False.
-   :type API: bool, optional
+   Parameters:
+       disease_id (str): The disease ID for which genes are to be retrieved.
+       org (str): The organism for which genes should be retrieved. Options:
+                  - 'hsa': Returns human genes associated with the disease.
+                  - 'dre' or 'dreM': Returns human genes mapped to Zebrafish genes (same result, as Zebrafish disease not characterized on KEGG).
+       API (bool, optional): Whether to use the KEGG REST API for retrieval. Default is False.
 
-   :returns: A pandas DataFrame containing genes associated with the disease for the specified organism.
-   :rtype: pd.DataFrame
+   Returns:
+       pd.DataFrame: A pandas DataFrame containing genes associated with the disease for the specified organism.
 
-   .. rubric:: Notes
-
-   - If 'API' is set to True, the function fetches gene information using the KEGG REST API.
-   - If 'API' is False, the function reads gene information from pre-processed files.
-
-
-.. py:function:: _check_for_organism(pathway_id: str, org: Optional[str]) -> [str, str]
-
-   Check for and validate the organism information in a KEGG pathway ID.
-
-   :param pathway_id: The KEGG pathway ID, which may or may not include organism information.
-   :type pathway_id: str
-   :param org: The specified organism code to validate against the pathway ID.
-   :type org: str, optional
-
-   :returns: A tuple containing the validated organism code and the modified pathway ID.
-   :rtype: tuple
-
-   :raises ValueError: If the organism code in the pathway ID does not match the specified 'org' parameter.
-
-   .. rubric:: Notes
-
-   - This internal function is used to validate and extract organism information from a KEGG pathway ID.
-   - If the pathway ID includes organism information, it validates it against the 'org' parameter.
-   - If 'org' is None, it extracts and returns the organism code from the pathway ID.
-   - Raises a ValueError if there is a mismatch between the organism code in the pathway ID and the 'org' parameter.
-
-
-.. py:function:: _check_if_pathway_id_exists(pathway_id: str, org: str) -> bool
-
-   Check if a KEGG pathway ID exists for the specified organism.
-
-   :param pathway_id: The KEGG pathway ID to be validated.
-   :type pathway_id: str
-   :param org: The specified organism code (e.g., 'dre', 'dreM', or 'hsa').
-   :type org: str
-
-   :returns: True if the pathway ID exists for the specified organism, False otherwise.
-   :rtype: bool
-
-   .. rubric:: Notes
-
-   - This internal function checks whether a given KEGG pathway ID exists for the specified organism.
-   - It reads relevant pathway data files based on the organism code and checks if the pathway ID is present.
-   - Returns True if the pathway ID exists, False otherwise.
-   - Provides an error message if the pathway ID or organism code is invalid.
-   - Organism code options include: 'dre' (Danio rerio), 'dreM' (Mapped Danio rerio from Human), or 'hsa' (Human).
-   - Pathway IDs must be entered as strings if the organism prefix is omitted.
+   Notes:
+       - If 'API' is set to True, the function fetches gene information using the KEGG REST API.
+       - If 'API' is False, the function reads gene information from pre-processed files.
 
 
 .. py:function:: build_kegg_database()
 
    Build or update the KEGG pathway and disease database.
 
-   .. rubric:: Notes
+   Notes:
+       - This function is intended for database creation or update and should be run only during version updates.
+       - The process may take some time, so exercise caution when running it.
+       - The function performs the following steps:
+           1. Downloads zebrafish pathway IDs and stores them in a specified file.
+           2. Downloads human pathway IDs and stores them in a specified file.
+           3. Creates mapped zebrafish pathway IDs from human pathways and stores them in a specified file.
+           4. Downloads genes associated with true KEGG pathways for zebrafish.
+           5. Downloads genes associated with true KEGG pathways for humans.
+           6. Builds mapped zebrafish KEGG pathways from human pathways and stores them in a specified directory.
+           7. Downloads KEGG disease IDs and stores them in a specified file.
 
-   - This function is intended for database creation or update and should be run only during version updates.
-   - The process may take some time, so exercise caution when running it.
-   - The function performs the following steps:
-       1. Downloads zebrafish pathway IDs and stores them in a specified file.
-       2. Downloads human pathway IDs and stores them in a specified file.
-       3. Creates mapped zebrafish pathway IDs from human pathways and stores them in a specified file.
-       4. Downloads genes associated with true KEGG pathways for zebrafish.
-       5. Downloads genes associated with true KEGG pathways for humans.
-       6. Builds mapped zebrafish KEGG pathways from human pathways and stores them in a specified directory.
-       7. Downloads KEGG disease IDs and stores them in a specified file.
-
-   - Running this function should be done carefully, as it involves downloading and processing data from KEGG.
-
-
-.. py:function:: _download_zebrafish_pathway_ids(zebrafish_pathways_path)
-
-   Download and store the list of zebrafish pathways and pathway names.
-
-   :param zebrafish_pathways_path: The file path to save the zebrafish pathway data.
-   :type zebrafish_pathways_path: str
-
-   .. rubric:: Notes
-
-   - This function is intended for database building and should be run only during version updates.
-
-
-.. py:function:: _download_human_pathway_ids(human_pathways_path)
-
-   Download and store the list of human pathways and pathway names.
-
-   :param human_pathways_path: The file path to save the human pathway data.
-   :type human_pathways_path: str
-
-   .. rubric:: Notes
-
-   - This function is intended for database building and should be run only during version updates.
-
-
-.. py:function:: _create_mapped_zebrafish_pathway_ids(mapped_zebrafish_pathways_path, human_pathways_path)
-
-   Create mapped zebrafish pathway IDs from human pathways and store them.
-
-   :param mapped_zebrafish_pathways_path: The file path to save the mapped zebrafish pathway data.
-   :type mapped_zebrafish_pathways_path: str
-   :param human_pathways_path: The file path containing human pathway data.
-   :type human_pathways_path: str
-
-   .. rubric:: Notes
-
-   - This function is intended for database building and should be run only during version updates.
-
-
-.. py:function:: _download_disease_ids(human_disease_path)
-
-   Download and store the list of KEGG disease IDs and descriptions for humans.
-
-   :param human_disease_path: The file path to save the human disease data.
-   :type human_disease_path: str
-
-   .. rubric:: Notes
-
-   - This function is intended for database building and should be run only during version updates.
-
-
-.. py:function:: _download_human_pathway_genes(human_pathways_path, human_pathways_dir)
-
-   Download and store genes associated with true KEGG pathways for humans.
-
-   :param human_pathways_path: The file path containing human pathway data.
-   :type human_pathways_path: str
-   :param human_pathways_dir: The directory to save gene data associated with human pathways.
-   :type human_pathways_dir: str
-
-   .. rubric:: Notes
-
-   - This function is intended for database building and should be run only during version updates.
-
-
-.. py:function:: _download_zebrafish_pathway_genes(zebrafish_pathways_path, zebrafish_pathways_dir)
-
-   Download and store genes associated with true KEGG pathways for zebrafish.
-
-   :param zebrafish_pathways_path: The file path containing zebrafish pathway data.
-   :type zebrafish_pathways_path: str
-   :param zebrafish_pathways_dir: The directory to save gene data associated with zebrafish pathways.
-   :type zebrafish_pathways_dir: str
-
-   .. rubric:: Notes
-
-   - This function is intended for database building and should be run only during version updates.
-
-
-.. py:function:: _download_human_disease_genes(disease_ids_path)
-
-   Download and store genes associated with human diseases.
-
-   :param disease_ids_path: The file path to the list of disease IDs.
-   :type disease_ids_path: str
-
-   :returns: None
-
-   .. rubric:: Notes
-
-   - This function reads a list of human disease IDs from the specified file.
-   - It iterates through each disease ID and retrieves genes associated with the disease.
-   - Genes are stored in a DataFrame with columns 'Human NCBI Gene ID' and 'Disease ID'.
-   - The resulting DataFrame is saved to a file named 'human_disease_genes.txt'.
-   - This function is intended for use in building or updating a database of human disease genes.
-
-
-.. py:function:: _get_genes_for_disease(disease_id)
-
-
-.. py:function:: _build_dre_mapped_pathway(human_pathways_path, human_pathways_dir, dre_mapped_dir)
-
-   Build mapped zebrafish KEGG pathways from human pathways and store them.
-
-   :param human_pathways_path: The file path containing human pathway data.
-   :type human_pathways_path: str
-   :param human_pathways_dir: The directory containing gene data associated with human pathways.
-   :type human_pathways_dir: str
-   :param dre_mapped_dir: The directory to save mapped zebrafish pathway data.
-   :type dre_mapped_dir: str
-
-   .. rubric:: Notes
-
-   - This function is intended for database building and should be run only during version updates.
-
-
-.. py:function:: _build_dre_mapped_disease(human_disease_genes_path: str, dre_disease_genes_path: str) -> None
-
-   Build mapped Zebrafish KEGG disease genes from human genes and store them.
-
-   :param human_disease_genes_path: Path to the file containing human disease-associated genes.
-   :type human_disease_genes_path: str
-   :param dre_disease_genes_path: Path to the file where the mapped Zebrafish disease genes will be stored.
-   :type dre_disease_genes_path: str
-
-   .. rubric:: Notes
-
-   - This function takes a list of human genes associated with diseases, converts them to Zebrafish orthologs,
-     and stores the resulting genes in the specified file.
-
-
-.. py:function:: testing()
+       - Running this function should be done carefully, as it involves downloading and processing data from KEGG.
 
 

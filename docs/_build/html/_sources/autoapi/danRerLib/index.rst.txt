@@ -4,15 +4,6 @@
 .. py:module:: danRerLib
 
 
-Subpackages
------------
-.. toctree::
-   :titlesonly:
-   :maxdepth: 3
-
-   database/index.rst
-
-
 Submodules
 ----------
 .. toctree::
@@ -23,14 +14,5 @@ Submodules
    KEGG/index.rst
    enrichment/index.rst
    mapping/index.rst
-   settings/index.rst
-   utils/index.rst
 
-
-Package Contents
-----------------
-
-.. py:data:: __version__
-
-   
 

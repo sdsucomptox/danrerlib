@@ -4,11 +4,14 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>danRerLib.enrichment &mdash; danrerlib  documentation</title>
+  <title>danRerLib.enrichment &mdash; danRerLib</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/fonts.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -35,7 +38,8 @@
           
           
           <a href="../../../index.html" class="icon icon-home">
-            danrerlib
+            danRerLib
+              <img src="../../../_static/danrerlib_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -45,28 +49,35 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Example usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+              <p class="caption" role="heading"><span class="caption-text">User's Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../userguide/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../userguide/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../userguide/usage.html">Usage Principles</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib</span></code></a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../index.html#subpackages">Subpackages</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../GO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.GO</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.KEGG</span></code></a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.enrichment</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../mapping/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.mapping</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../settings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.settings</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.utils</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
 </ul>
 </li>
 </ul>
 </li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/example.html">Why</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/perform_geneid_mapping.html">Perform Gene ID Mapping</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
 </ul>
 
         </div>
@@ -75,7 +86,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">danrerlib</a>
+          <a href="../../../index.html">danRerLib</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -115,51 +126,30 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.enrichment.enrich_GO" title="danRerLib.enrichment.enrich_GO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enrich_GO</span></code></a>(gene_universe[, gene_id_type, database, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.enrichment._check_gene_universe" title="danRerLib.enrichment._check_gene_universe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_gene_universe</span></code></a>(gene_universe, gene_id_type)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.enrichment.test_KEGG_enrich" title="danRerLib.enrichment.test_KEGG_enrich"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_KEGG_enrich</span></code></a>([option1, option2, option3])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.enrichment._check_concept_ids_KEGG" title="danRerLib.enrichment._check_concept_ids_KEGG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_concept_ids_KEGG</span></code></a>(→ list)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.enrichment.investigation" title="danRerLib.enrichment.investigation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">investigation</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.enrichment._check_concept_ids_GO" title="danRerLib.enrichment._check_concept_ids_GO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_concept_ids_GO</span></code></a>(concept_ids, org)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.enrichment.test_GO_enrich" title="danRerLib.enrichment.test_GO_enrich"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_GO_enrich</span></code></a>(option1, option2, option3, option4, option5)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.enrichment._id_exists_given_organism" title="danRerLib.enrichment._id_exists_given_organism"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_id_exists_given_organism</span></code></a>(concept_id, organism, df)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.enrichment._check_GO_id_format" title="danRerLib.enrichment._check_GO_id_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_GO_id_format</span></code></a>(id)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.enrichment._is_numeric" title="danRerLib.enrichment._is_numeric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_is_numeric</span></code></a>(value)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.enrichment._check_valid_org" title="danRerLib.enrichment._check_valid_org"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_valid_org</span></code></a>(org)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.enrichment.test_KEGG_enrich" title="danRerLib.enrichment.test_KEGG_enrich"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_KEGG_enrich</span></code></a>([option1, option2, option3])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.enrichment.investigation" title="danRerLib.enrichment.investigation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">investigation</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.enrichment.test_GO_enrich" title="danRerLib.enrichment.test_GO_enrich"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_GO_enrich</span></code></a>(option1, option2, option3, option4, option5)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.enrichment.testing" title="danRerLib.enrichment.testing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testing</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.enrichment.testing" title="danRerLib.enrichment.testing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testing</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.enrichment.logistic">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">logistic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danRerLib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danRerLib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">danRerLib.settings.pd.DataFrame</span></span></span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#logistic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment.logistic" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">logistic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danRerLib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danRerLib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">danRerLib.settings.pd.DataFrame</span></span></span><a class="headerlink" href="#danRerLib.enrichment.logistic" title="Permalink to this definition"></a></dt>
 <dd><p>This function performs gene enrichment using the logistic regression method. A
 p-value cutoff is required for this method and the default is taken to be 0.05</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.enrichment.fishers">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">fishers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#fishers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment.fishers" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">fishers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.enrichment.fishers" title="Permalink to this definition"></a></dt>
 <dd><p>gene_universe - all genes
 gene_set - genes in the concept of interest
 concept_type - the database (KEGG, GO, etc)
@@ -168,68 +158,33 @@ concept_id - the id (e.g. the KEGG pathway id)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.enrichment.enrich_KEGG">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">enrich_KEGG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NCBI_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pathway'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dre'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'logistic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_gene_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_FDR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_by_p_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#enrich_KEGG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment.enrich_KEGG" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">enrich_KEGG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NCBI_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pathway'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dre'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'logistic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_gene_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_FDR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_by_p_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.enrichment.enrich_KEGG" title="Permalink to this definition"></a></dt>
 <dd><p>gene_universe:  the given dataset containing genes, pvalues, and log2FC (in that order)</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.enrichment.enrich_GO">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">enrich_GO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ZFIN_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dre'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'logistic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_gene_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_FDR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_by_p_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#enrich_GO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment.enrich_GO" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="danRerLib.enrichment._check_gene_universe">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">_check_gene_universe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#_check_gene_universe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment._check_gene_universe" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="danRerLib.enrichment._check_concept_ids_KEGG">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">_check_concept_ids_KEGG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concept_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#_check_concept_ids_KEGG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment._check_concept_ids_KEGG" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="danRerLib.enrichment._check_concept_ids_GO">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">_check_concept_ids_GO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concept_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#_check_concept_ids_GO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment._check_concept_ids_GO" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="danRerLib.enrichment._id_exists_given_organism">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">_id_exists_given_organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concept_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#_id_exists_given_organism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment._id_exists_given_organism" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="danRerLib.enrichment._check_GO_id_format">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">_check_GO_id_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#_check_GO_id_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment._check_GO_id_format" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="danRerLib.enrichment._is_numeric">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">_is_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#_is_numeric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment._is_numeric" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="danRerLib.enrichment._check_valid_org">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">_check_valid_org</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#_check_valid_org"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment._check_valid_org" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">enrich_GO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ZFIN_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dre'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'logistic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_gene_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_FDR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_by_p_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.enrichment.enrich_GO" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.enrichment.test_KEGG_enrich">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">test_KEGG_enrich</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#test_KEGG_enrich"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment.test_KEGG_enrich" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">test_KEGG_enrich</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.enrichment.test_KEGG_enrich" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.enrichment.investigation">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">investigation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#investigation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment.investigation" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">investigation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.enrichment.investigation" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.enrichment.test_GO_enrich">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">test_GO_enrich</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#test_GO_enrich"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment.test_GO_enrich" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">test_GO_enrich</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.enrichment.test_GO_enrich" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danRerLib.enrichment.testing">
-<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">testing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/danRerLib/enrichment.html#testing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danRerLib.enrichment.testing" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">danRerLib.enrichment.</span></span><span class="sig-name descname"><span class="pre">testing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.enrichment.testing" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>
@@ -250,9 +205,6 @@ concept_id - the id (e.g. the KEGG pathway id)</p>
     <p>&#169; Copyright 2023, Ashley Schwartz.</p>
   </div>
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
    
 
 </footer>

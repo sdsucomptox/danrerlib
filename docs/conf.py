@@ -6,11 +6,41 @@
 
 # -- Project information -----------------------------------------------------
 
-project = u"danrerlib"
+project = u"danRerLib"
 copyright = u"2023, Ashley Schwartz"
 author = u"Ashley Schwartz"
 
 # -- General configuration ---------------------------------------------------
+def skip_private(app, what, name, obj, skip, options):
+    if name.startswith('danRerLib.mapping._'):
+        skip == True
+    return skip
+
+def skip_member(app, what, name, obj, skip, options):
+    if "danRerLib." in name:
+        if obj.name.startswith('_'):
+            skip = True
+        if obj.name.endswith('_path') or obj.name.endswith('_dir'):
+            skip = True
+    if name in ["danRerLib.utils", "danRerLib.settings", "danRerLib.database"]:
+        skip = True
+    return skip
+
+def skip_util_classes(app, what, name, obj, skip, options):
+    if "util" in name:
+       skip = True
+    return skip
+
+def skip_subpackages(app, what, name, obj, skip, options):
+    if what == "package":
+        skip = True
+    return skip
+
+def setup(sphinx):
+    sphinx.connect("autoapi-skip-member", skip_member)
+    # sphinx.connect("autoapi-skip-member", skip_subpackages)
+    sphinx.connect("autoapi-skip-member", skip_util_classes)
+
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -18,8 +48,8 @@ author = u"Ashley Schwartz"
 extensions = [
     "myst_nb",
     "autoapi.extension",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.viewcode",
+    # "sphinx.ext.napoleon",
+    # "sphinx.ext.viewcode",
 ]
 autoapi_dirs = ["../src/danRerLib"]
 
@@ -33,14 +63,9 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
-
-def skip_private(app, what, name, obj, skip, options):
-    if name.startswith('_'):
-        return True
-    return None
-
-
-def setup(sphinx):
-    sphinx.connect("autoapi-skip-member", skip_private)
-
+html_theme = "renku"
+html_static_path = ['_static']
+html_css_files = ["css/custom.css"]
+html_show_sphinx = False
+html_logo = '_static/img/danrerlib_logo.png'
+html_title = "danRerLib"
