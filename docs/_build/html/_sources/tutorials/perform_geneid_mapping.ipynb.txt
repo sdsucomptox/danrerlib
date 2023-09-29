@@ -4,11 +4,11 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Perform Gene ID Mapping\n",
+    "# Gene ID Mapping\n",
     "\n",
     "Author: Ashley Schwartz\n",
     "\n",
-    "Date: June 30, 2023\n",
+    "Date: September 2023\n",
     "\n",
     "## Purpose and Background\n",
     "\n",
@@ -40,13 +40,8 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "# IMPORT PYTHON PACKAGES\n",
-    "# ----------------------\n",
-    "\n",
-    "# data processing packages\n",
-    "import pandas as pd\n",
-    "\n",
-    "# import relevant modules from danRerLib\n",
+    "# IMPORT PYTHON PACKAGE\n",
+    "# ---------------------\n",
     "from danRerLib import mapping, utils"
    ]
   },
@@ -1166,6 +1161,13 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "## Conclusion"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "This concludes the mapping tutorial! In summary, the key functions in this library for mapping are:\n",
     "\n",
     "| function | purpose |\n",
@@ -1173,8 +1175,13 @@
     "|convert_ids | convert a list of Gene IDs |\n",
     "| add_mapped_column | add a converted list of Gene IDs to an existing DataFrame|\n",
     "\n",
-    "For more information about the full functionality of each function, please refer to the {doc}autoapi/danRerLib."
+    "For more information about the full functionality of each function, please refer to the API Reference."
    ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": []
   }
  ],
  "metadata": {

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Perform Gene ID Mapping &mdash; danRerLib</title>
+  <title>Gene ID Mapping &mdash; danRerLib</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Changelog" href="../changelog.html" />
-    <link rel="prev" title="Why" href="example.html" /> 
+    <link rel="next" title="Orthology Mapping" href="perform_orthology_mapping.html" />
+    <link rel="prev" title="danRerLib.mapping" href="../autoapi/danRerLib/mapping/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -58,8 +58,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="example.html">Why</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Perform Gene ID Mapping</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Gene ID Mapping</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#purpose-and-background">Purpose and Background</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#execute-mappings">Execute Mappings</a><ul>
@@ -72,10 +71,12 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="perform_orthology_mapping.html">Orthology Mapping</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
@@ -96,7 +97,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Perform Gene ID Mapping</li>
+      <li class="breadcrumb-item active">Gene ID Mapping</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/tutorials/perform_geneid_mapping.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -106,10 +107,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="perform-gene-id-mapping">
-<h1>Perform Gene ID Mapping<a class="headerlink" href="#perform-gene-id-mapping" title="Permalink to this heading"></a></h1>
+  <section id="gene-id-mapping">
+<h1>Gene ID Mapping<a class="headerlink" href="#gene-id-mapping" title="Permalink to this heading"></a></h1>
 <p>Author: Ashley Schwartz</p>
-<p>Date: June 30, 2023</p>
+<p>Date: September 2023</p>
 <section id="purpose-and-background">
 <h2>Purpose and Background<a class="headerlink" href="#purpose-and-background" title="Permalink to this heading"></a></h2>
 <p>This tutorial goes over how to simply convert a list of zebrafish Gene IDs to another Gene ID type. Gene IDs come in very different forms depending on the database or genome build you are using. This can get confusing! The Gene ID options are:</p>
@@ -164,13 +165,8 @@
 <p><em>note: the Gene IDs are spelling and case sensitive</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># IMPORT PYTHON PACKAGES</span>
-<span class="c1"># ----------------------</span>
-
-<span class="c1"># data processing packages</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="c1"># import relevant modules from danRerLib</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># IMPORT PYTHON PACKAGE</span>
+<span class="c1"># ---------------------</span>
 <span class="kn">from</span> <span class="nn">danRerLib</span> <span class="kn">import</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">utils</span>
 </pre></div>
 </div>
@@ -263,51 +259,17 @@ ZDB-GENE-120215-92
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">data_file_path</span> <span class="o">=</span> <span class="s1">&#39;data/test_data/ncbi_gene_list.txt&#39;</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">list_of_gene_ids</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">list_of_gene_ids</span>
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>NCBI Gene ID</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>30301</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>30459</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>57924</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>564772</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>794572</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<span class="ne">NameError</span>: name &#39;pd&#39; is not defined
+</pre></div>
+</div>
+</div>
 </div>
 <p>When we use the <code class="docutils literal notranslate"><span class="pre">pandas</span></code> package to read in the data, it organizes it into what is called a <code class="docutils literal notranslate"><span class="pre">Pandas</span> <span class="pre">DataFrame</span></code>. All other steps can be executed the same way.</p>
 <div class="cell docutils container">
@@ -324,8 +286,18 @@ ZDB-GENE-120215-92
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ZDB-GENE-000616-10
+ZDB-GENE-030131-1024
+ZDB-GENE-030131-174
+ZDB-GENE-030131-8872
+ZDB-GENE-030219-83
+ZDB-GENE-040718-198
+ZDB-GENE-040808-44
+ZDB-GENE-040912-16
 ZDB-GENE-050419-85
+ZDB-GENE-050522-533
 ZDB-GENE-080415-1
+ZDB-GENE-081105-136
+ZDB-GENE-150409-7
 ZDB-GENE-991229-12
 </pre></div>
 </div>
@@ -506,16 +478,66 @@ ZDB-GENE-991229-12
     </tr>
     <tr>
       <th>1</th>
+      <td>100003844</td>
+      <td>ZDB-GENE-030131-1024</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>337772</td>
+      <td>ZDB-GENE-030131-174</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>336928</td>
+      <td>ZDB-GENE-030131-8872</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>338183</td>
+      <td>ZDB-GENE-030219-83</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>436767</td>
+      <td>ZDB-GENE-040718-198</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>445326</td>
+      <td>ZDB-GENE-040808-44</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>447813</td>
+      <td>ZDB-GENE-040912-16</td>
+    </tr>
+    <tr>
+      <th>8</th>
       <td>794572</td>
       <td>ZDB-GENE-050419-85</td>
     </tr>
     <tr>
-      <th>2</th>
+      <th>9</th>
+      <td>553785</td>
+      <td>ZDB-GENE-050522-533</td>
+    </tr>
+    <tr>
+      <th>10</th>
       <td>564772</td>
       <td>ZDB-GENE-080415-1</td>
     </tr>
     <tr>
-      <th>3</th>
+      <th>11</th>
+      <td>100003419</td>
+      <td>ZDB-GENE-081105-136</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>105665603</td>
+      <td>ZDB-GENE-150409-7</td>
+    </tr>
+    <tr>
+      <th>13</th>
       <td>30459</td>
       <td>ZDB-GENE-991229-12</td>
     </tr>
@@ -568,7 +590,51 @@ ZDB-GENE-991229-12
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There are 5464 rows and 3 columns
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NCBI Gene ID</th>
+      <th>PValue</th>
+      <th>logFC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>100000006</td>
+      <td>0.792615</td>
+      <td>0.115009</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>100000044</td>
+      <td>0.015286</td>
+      <td>0.803879</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>100000085</td>
+      <td>0.264762</td>
+      <td>0.267360</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There are 5464 rows and 3 columns
 </pre></div>
 </div>
 </div>
@@ -821,6 +887,11 @@ ZDB-GENE-991229-12
 </div></div></div>
 </div>
 <p>In this run I specified the parameter <code class="docutils literal notranslate"><span class="pre">keep_old_ids</span></code> to be <code class="docutils literal notranslate"><span class="pre">False</span></code>; therefore, it is no longer included in the output.</p>
+</section>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
 <p>This concludes the mapping tutorial! In summary, the key functions in this library for mapping are:</p>
 <table class="docutils align-default">
 <thead>
@@ -837,9 +908,7 @@ ZDB-GENE-991229-12
 </tr>
 </tbody>
 </table>
-<p>For more information about the full functionality of each function, please refer to the {doc}autoapi/danRerLib.</p>
-</section>
-</section>
+<p>For more information about the full functionality of each function, please refer to the API Reference.</p>
 </section>
 </section>
 
@@ -847,8 +916,8 @@ ZDB-GENE-991229-12
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="example.html" class="btn btn-neutral float-left" title="Why" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../autoapi/danRerLib/mapping/index.html" class="btn btn-neutral float-left" title="danRerLib.mapping" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="perform_orthology_mapping.html" class="btn btn-neutral float-right" title="Orthology Mapping" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

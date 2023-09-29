@@ -53,9 +53,17 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#anaconda">Anaconda</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pypi">PyPi</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#development-version">Development Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-install">Quick Install</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#conda">Conda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pypi-pip">PyPi/pip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#development-version">Development Version</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-guide">Installation Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#beginning-users">Beginning users</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#advanced-users-recommended-method">Advanced users (recommended method)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Principles</a></li>
@@ -63,10 +71,10 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/example.html">Why</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/perform_geneid_mapping.html">Perform Gene ID Mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/perform_geneid_mapping.html">Gene ID Mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/perform_orthology_mapping.html">Orthology Mapping</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
@@ -99,14 +107,77 @@
              
   <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
-<section id="anaconda">
-<h2>Anaconda<a class="headerlink" href="#anaconda" title="Permalink to this heading"></a></h2>
+<p>danRerLib was built with some dependencies. Therefore, to install danRerLib, you will need a proper version of Python and the required dependencies. The current dependencies are:</p>
+<ul class="simple">
+<li><p>python &gt;=3.9,&lt;3.13</p></li>
+<li><p>numpy 1.26.0</p></li>
+<li><p>pandas 2.1.1</p></li>
+</ul>
+<p>Please see respective package information if dependencies are not already installed.</p>
+<section id="quick-install">
+<h2>Quick Install<a class="headerlink" href="#quick-install" title="Permalink to this heading"></a></h2>
+<section id="conda">
+<h3>Conda<a class="headerlink" href="#conda" title="Permalink to this heading"></a></h3>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">conda</span></code>, you can install danRerLib as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">danRerLib</span>
+</pre></div>
+</div>
 </section>
-<section id="pypi">
-<h2>PyPi<a class="headerlink" href="#pypi" title="Permalink to this heading"></a></h2>
+<section id="pypi-pip">
+<h3>PyPi/pip<a class="headerlink" href="#pypi-pip" title="Permalink to this heading"></a></h3>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">pip</span></code>, you can install danRerLib with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">danRerLib</span>
+</pre></div>
+</div>
 </section>
 <section id="development-version">
-<h2>Development Version<a class="headerlink" href="#development-version" title="Permalink to this heading"></a></h2>
+<h3>Development Version<a class="headerlink" href="#development-version" title="Permalink to this heading"></a></h3>
+<p>Please see Developer’s Guide.</p>
+</section>
+</section>
+<section id="installation-guide">
+<h2>Installation Guide<a class="headerlink" href="#installation-guide" title="Permalink to this heading"></a></h2>
+<p>It is recommended to use a python virtual environment or conda environment to manage all python packages and projects.</p>
+<section id="beginning-users">
+<h3>Beginning users<a class="headerlink" href="#beginning-users" title="Permalink to this heading"></a></h3>
+<p>On all of Windows, macOS, and Linux:</p>
+<ul class="simple">
+<li><p>Install Anaconda (it installs all packages you need and all other tools mentioned below).</p></li>
+<li><p>Utilize the Anaconda App to manage environments and package downloads</p></li>
+</ul>
+</section>
+<section id="advanced-users-recommended-method">
+<h3>Advanced users (recommended method)<a class="headerlink" href="#advanced-users-recommended-method" title="Permalink to this heading"></a></h3>
+<p><strong>Conda</strong></p>
+<ul class="simple">
+<li><p>Create a conda envrionment specifically for the task or project you’re working on.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Best practice, use an environment rather than install in the base env</span>
+<span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">my</span><span class="o">-</span><span class="n">env</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">my</span><span class="o">-</span><span class="n">env</span>
+<span class="c1"># install dependencies</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="n">numpy</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="n">pandas</span>
+<span class="c1"># install library</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="n">danRerLib</span>
+</pre></div>
+</div>
+<p><strong>pip</strong></p>
+<ul class="simple">
+<li><p>create a python virtual environment for the task or project you are working on.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a virtual environment</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">venv</span> <span class="o">.</span>
+<span class="n">mkdir</span> <span class="n">src</span>
+<span class="c1"># Activate virtual environment and install</span>
+<span class="n">cd</span> <span class="nb">bin</span>
+<span class="n">source</span> <span class="n">activate</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">pandas</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">danRerLib</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 

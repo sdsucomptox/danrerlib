@@ -1,8 +1,4 @@
 # Configuration file for the Sphinx documentation builder.
-#
-# This file only contains a selection of the most common options. For a full
-# list see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 # -- Project information -----------------------------------------------------
 
@@ -42,9 +38,6 @@ def setup(sphinx):
     sphinx.connect("autoapi-skip-member", skip_util_classes)
 
 
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
 extensions = [
     "myst_nb",
     "autoapi.extension",
@@ -52,6 +45,8 @@ extensions = [
     # "sphinx.ext.viewcode",
 ]
 autoapi_dirs = ["../src/danRerLib"]
+autoapi_template_dir = "_templates/autoapi"
+stylesheet = "_static/css/parsing.css"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -60,9 +55,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # -- Options for HTML output -------------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
+# The theme to use for HTML and HTML Help pages. 
 html_theme = "renku"
 html_static_path = ['_static']
 html_css_files = ["css/custom.css"]
