@@ -1,6 +1,44 @@
+"""
+GO Module
+===========
+
+The Gene Ontology (GO) module provides functions for retrieving gene information associated with 
+Gene Ontology Biological Process (BP), Molecular Functions (MF) and Cellular Components (CC)
+for various organisms, including human, zebrafish, and mapped zebrafish.
+
+Functions:
+    - ``get_genes_in_GO_concept``: Retrieve genes associated with a specific GO concept ID.
+
+Constants:
+    - ``NCBI_ID``: Identifier for NCBI Gene ID.
+    - ``ZFIN_ID``: Identifier for ZFIN ID.
+    - ``ENS_ID``: Identifier for Ensembl ID.
+    - ``SYMBOL``: Identifier for gene Symbol.
+    - ``HUMAN_ID``: Identifier for Human NCBI Gene ID.
+
+Database Rebuild Functions:
+    - ``build_gene_ontology_database``: Build or update the gene ontology database.
+
+Notes:
+    - This module is designed for accessing gene information from Gene Ontology.
+    - It provides functions to retrieve gene data associated with biological processes, cellular components, and molecular functions.
+    - Data is obtained either through reading pre-processed files from the database build.
+    - Organism options include 'dre' (Danio rerio), 'hsa' (Human), or 'dreM' (Mapped Danio rerio from Human).
+
+Example:
+    To retrieve genes associated with a specific GO concept ID:
+    ```
+    go_genes = get_genes_in_GO_concept('GO:0007582', 'dre')
+    ```
+
+For detailed information on each function and their usage, please refer to the documentation. For more examples of full functionality, please refer to tutorials.
+"""
+
 from danrerlib.settings import *
 import danrerlib.mapping as mapping
 import danrerlib.utils as utils
+from typing import Optional
+import pandas as pd
 
 GO_IDS_PATH = GO_DATA_DIR / Path('GO_ids_V' + str(VERSION_NUM) + '.txt')
 GO_PATH_dre = GO_DATA_DIR / Path('GO_dre_V' + str(VERSION_NUM) + '.txt')
@@ -11,13 +49,45 @@ GO_BASIC_URL = 'http://purl.obolibrary.org/obo/go/go-basic.obo'
 GO_ZFIN_URL = 'https://current.geneontology.org/annotations/zfin.gaf.gz'
 GO_NCBI_URL = 'https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2go.gz'
 
-def get_genes_in_GO_concept(concept_id, organism, gene_id_type = None):
-    '''
-    
-    gene_id_type: the desired gene id type to be returned
-    '''
+def get_genes_in_GO_concept(concept_id: str, 
+                            organism: str, 
+                            gene_id_type: Optional[str] = None
+                            ) -> pd.Series:
+    """
+    Retrieve gene IDs associated with a Gene Ontology (GO) concept for a specified organism.
+
+    Parameters:
+        - ``concept_id (str)``: The Gene Ontology (GO) concept ID for which gene IDs are to be retrieved.
+        - ``organism (str)``: The organism for which gene IDs should be retrieved. Options include
+
+                       - 'hsa': Human.
+                       - 'dre': Zebrafish.
+                       - 'dreM': Mapped Zebrafish from Human (same as 'dre' as Zebrafish GO IDs are not characterized).
+
+        - ``gene_id_type (str, optional)``: The desired gene ID type for the returned gene IDs. Default is None.
+
+    Returns:
+       - ``gene_ids_series (pd.Series)``: A pandas Series containing gene IDs associated with the specified GO concept.
+
+    Raises:
+        ValueError: If the GO concept ID does not exist for the given organism or if the organism is invalid.
+
+    Notes:
+        - This function retrieves gene IDs associated with a Gene Ontology (GO) concept for a specified organism.
+        - The 'concept_id' parameter should be a valid GO concept identifier.
+        - The 'organism' parameter specifies the organism for which gene IDs should be retrieved.
+        - Options for 'organism' include 'hsa' (Human), 'dre' (Zebrafish), or 'dreM' (Mapped Zebrafish from Human).
+
+    Example:
+        To retrieve Zebrafish gene IDs associated with a GO concept:
+        ```
+        concept_id = 'GO:0001234'
+        organism = 'dre'
+        gene_ids = get_genes_in_GO_concept(concept_id, organism)
+        ```
+    """
     # check if ID is in required format:
-    concept_id = check_id_format(concept_id)
+    concept_id = _check_id_format(concept_id)
     if not id_exists_given_organism(concept_id, organism):
         raise ValueError('GO ID does not exist for given organism.')
     
@@ -46,7 +116,27 @@ def get_genes_in_GO_concept(concept_id, organism, gene_id_type = None):
             
     return gene_ids_series
 
-def id_exists_given_organism(concept_id, organism):
+def id_exists_given_organism(concept_id: str, organism: str):
+    """
+    Check if a Gene Ontology (GO) ID exists for the specified organism.
+
+    Parameters:
+        - ``concept_id (str)``: The GO ID to be validated.
+        - ``organism (str)``: The specified organism code (e.g., 'hsa', 'dre', or 'dreM').
+
+    Returns:
+        - bool: True if the GO ID exists for the specified organism, False otherwise.
+
+    Raises:
+        - ValueError: If the organism code is invalid.
+
+    Notes:
+        - This function checks whether a given GO ID exists for the specified organism.
+        - It reads a GO ID data file and looks for a match in the 'GO ID' column.
+        - The 'organism' parameter specifies the organism code for which to perform the check.
+        - Returns True if the GO ID exists for the organism, False otherwise.
+        - Provides an error message if the organism code is invalid.
+    """
 
     # check if ID exists for given organism:
     df = pd.read_csv(GO_IDS_PATH, sep = '\t')
@@ -61,31 +151,24 @@ def id_exists_given_organism(concept_id, organism):
         raise ValueError('Invalid Organism')
     
     return filtered_df[target_column].iloc[0]
-    
-def check_id_format(id):
-    if is_numeric(id):
-        length_of_numeric = len(str(id))
-        if length_of_numeric < 7:
-            zeros_needed = 7-length_of_numeric
-            id = 'GO:' + zeros_needed*'0' + str(id)
-        elif length_of_numeric == 7:
-            id = 'GO:' + str(id)
-        else:
-            raise ValueError('Unknown Gene Ontology ID')
-    else:
-        if len(id) != 10:
-            raise ValueError('GO ID should be length 10')
-        if id[0:3] != 'GO:':
-            raise ValueError('The prefix should be \'GO:\'')
-    return id
 
-def is_numeric(value):
-    if type(value) == str:
-        return value.isnumeric()
-    else:
-        return isinstance(value, (int, float))
+def build_gene_ontology_database():
+    """
+    Build or update the Gene Ontology (GO) database.
 
-def build_all():
+    Notes:
+        - This function is intended for database creation or update and should be run only during version updates.
+        - The process may take some time, so exercise caution when running it.
+        - The function performs the following steps:
+        
+            1. Downloads all current GO IDs.
+            2. Builds the human GO file and with IDs and associated genes.
+            3. Builds the zebrafish GO file and with IDs and associated genes.
+            5. Builds the mapped zebrafish GO file and with IDs and associated genes.
+            6. Add a column to the database file to identify if the GO ID exists for human and/or zebrafish. 
+
+        - Running this function should be done carefully, as it involves downloading and processing data fromGO.
+    """
 
     _build_GO_IDs(GO_BASIC_URL, GO_IDS_PATH)
     _build_human_GO(GO_PATH_hsa, GO_NCBI_URL)
@@ -109,7 +192,7 @@ def _build_GO_IDs(GO_BASIC_URL, GO_IDS_PATH):
 def _add_to_GO_IDs():
     '''
     the purpose of this function is to add on two columns to identify if
-    the GO concept exists for zebrafish and himans.
+    the GO concept exists for zebrafish and humans.
     '''
     df = pd.read_csv(GO_IDS_PATH, sep='\t')
     df_zfish = pd.read_csv(GO_PATH_dre, sep='\t')
@@ -213,3 +296,26 @@ def _write_GOBasic_to_file(go_terms: list, output_file: str) -> None:
 
         for term in go_terms:
             f_out.write(f'{term["id"]}\t{term["name"]}\t{term["ontology"]}\n')
+
+def _check_id_format(id):
+    if _is_numeric(id):
+        length_of_numeric = len(str(id))
+        if length_of_numeric < 7:
+            zeros_needed = 7-length_of_numeric
+            id = 'GO:' + zeros_needed*'0' + str(id)
+        elif length_of_numeric == 7:
+            id = 'GO:' + str(id)
+        else:
+            raise ValueError('Unknown Gene Ontology ID')
+    else:
+        if len(id) != 10:
+            raise ValueError('GO ID should be length 10')
+        if id[0:3] != 'GO:':
+            raise ValueError('The prefix should be \'GO:\'')
+    return id
+
+def _is_numeric(value):
+    if type(value) == str:
+        return value.isnumeric()
+    else:
+        return isinstance(value, (int, float))

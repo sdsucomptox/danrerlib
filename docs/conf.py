@@ -18,6 +18,10 @@ def skip_member(app, what, name, obj, skip, options):
             skip = True
         if obj.name.endswith('_path') or obj.name.endswith('_dir'):
             skip = True
+        if obj.name.endswith('_URL') or obj.name.startswith('GO_PATH'):
+            skip = True
+        if obj.name.endswith('_URL') or obj.name.startswith('GO_IDS_PATH'):
+            skip = True
     if name in ["danrerlib.utils", "danrerlib.settings", "danrerlib.database"]:
         skip = True
     return skip

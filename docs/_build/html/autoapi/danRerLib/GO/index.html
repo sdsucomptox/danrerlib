@@ -109,117 +109,154 @@
              
   <section id="module-danrerlib.GO">
 <span id="danrerlib-go"></span><h1><a class="reference internal" href="#module-danrerlib.GO" title="danrerlib.GO"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.GO</span></code></a><a class="headerlink" href="#module-danrerlib.GO" title="Permalink to this heading"></a></h1>
+<section id="go-module">
+<p>The Gene Ontology (GO) module provides functions for retrieving gene information associated with
+Gene Ontology Biological Process (BP), Molecular Functions (MF) and Cellular Components (CC)
+for various organisms, including human, zebrafish, and mapped zebrafish.</p>
+<dl class="simple">
+<dt>Functions:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_genes_in_GO_concept</span></code>: Retrieve genes associated with a specific GO concept ID.</p></li>
+</ul>
+</dd>
+<dt>Constants:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NCBI_ID</span></code>: Identifier for NCBI Gene ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ZFIN_ID</span></code>: Identifier for ZFIN ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENS_ID</span></code>: Identifier for Ensembl ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SYMBOL</span></code>: Identifier for gene Symbol.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HUMAN_ID</span></code>: Identifier for Human NCBI Gene ID.</p></li>
+</ul>
+</dd>
+<dt>Database Rebuild Functions:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">build_gene_ontology_database</span></code>: Build or update the gene ontology database.</p></li>
+</ul>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This module is designed for accessing gene information from Gene Ontology.</p></li>
+<li><p>It provides functions to retrieve gene data associated with biological processes, cellular components, and molecular functions.</p></li>
+<li><p>Data is obtained either through reading pre-processed files from the database build.</p></li>
+<li><p>Organism options include ‘dre’ (Danio rerio), ‘hsa’ (Human), or ‘dreM’ (Mapped Danio rerio from Human).</p></li>
+</ul>
+</dd>
+<dt>Example:</dt><dd><p>To retrieve genes associated with a specific GO concept ID:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">go_genes</span> <span class="pre">=</span> <span class="pre">get_genes_in_GO_concept('GO:0007582',</span> <span class="pre">'dre')</span>
+<span class="pre">`</span></code></p>
+</dd>
+</dl>
+<p>For detailed information on each function and their usage, please refer to the documentation. For more examples of full functionality, please refer to tutorials.</p>
+</section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.GO.get_genes_in_GO_concept" title="danrerlib.GO.get_genes_in_GO_concept"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_genes_in_GO_concept</span></code></a>(concept_id, organism[, ...])</p></td>
-<td><p>gene_id_type: the desired gene id type to be returned</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.GO.get_genes_in_GO_concept" title="danrerlib.GO.get_genes_in_GO_concept"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_genes_in_GO_concept</span></code></a>(→ pandas.Series)</p></td>
+<td><p>Retrieve gene IDs associated with a Gene Ontology (GO) concept for a specified organism.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.GO.id_exists_given_organism" title="danrerlib.GO.id_exists_given_organism"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id_exists_given_organism</span></code></a>(concept_id, organism)</p></td>
-<td><p></p></td>
+<td><p>Check if a Gene Ontology (GO) ID exists for the specified organism.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.GO.check_id_format" title="danrerlib.GO.check_id_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_id_format</span></code></a>(id)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.GO.is_numeric" title="danrerlib.GO.is_numeric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_numeric</span></code></a>(value)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.GO.build_all" title="danrerlib.GO.build_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_all</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.GO.build_gene_ontology_database" title="danrerlib.GO.build_gene_ontology_database"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_gene_ontology_database</span></code></a>()</p></td>
+<td><p>Build or update the Gene Ontology (GO) database.</p></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.GO.GO_IDS_PATH" title="danrerlib.GO.GO_IDS_PATH"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GO_IDS_PATH</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.GO.GO_PATH_dre" title="danrerlib.GO.GO_PATH_dre"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GO_PATH_dre</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.GO.GO_PATH_dreM" title="danrerlib.GO.GO_PATH_dreM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GO_PATH_dreM</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.GO.GO_PATH_hsa" title="danrerlib.GO.GO_PATH_hsa"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GO_PATH_hsa</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.GO.GO_BASIC_URL" title="danrerlib.GO.GO_BASIC_URL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GO_BASIC_URL</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.GO.GO_ZFIN_URL" title="danrerlib.GO.GO_ZFIN_URL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GO_ZFIN_URL</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.GO.GO_NCBI_URL" title="danrerlib.GO.GO_NCBI_URL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GO_NCBI_URL</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py data">
-<dt class="sig sig-object py" id="danrerlib.GO.GO_IDS_PATH">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">GO_IDS_PATH</span></span><a class="headerlink" href="#danrerlib.GO.GO_IDS_PATH" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="danrerlib.GO.GO_PATH_dre">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">GO_PATH_dre</span></span><a class="headerlink" href="#danrerlib.GO.GO_PATH_dre" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="danrerlib.GO.GO_PATH_dreM">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">GO_PATH_dreM</span></span><a class="headerlink" href="#danrerlib.GO.GO_PATH_dreM" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="danrerlib.GO.GO_PATH_hsa">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">GO_PATH_hsa</span></span><a class="headerlink" href="#danrerlib.GO.GO_PATH_hsa" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="danrerlib.GO.GO_BASIC_URL">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">GO_BASIC_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://purl.obolibrary.org/obo/go/go-basic.obo'</span></em><a class="headerlink" href="#danrerlib.GO.GO_BASIC_URL" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="danrerlib.GO.GO_ZFIN_URL">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">GO_ZFIN_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://current.geneontology.org/annotations/zfin.gaf.gz'</span></em><a class="headerlink" href="#danrerlib.GO.GO_ZFIN_URL" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="danrerlib.GO.GO_NCBI_URL">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">GO_NCBI_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2go.gz'</span></em><a class="headerlink" href="#danrerlib.GO.GO_NCBI_URL" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="danrerlib.GO.get_genes_in_GO_concept">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_GO_concept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concept_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.GO.get_genes_in_GO_concept" title="Permalink to this definition"></a></dt>
-<dd><p>gene_id_type: the desired gene id type to be returned</p>
+<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_GO_concept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concept_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organism</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.Series</span></span></span><a class="headerlink" href="#danrerlib.GO.get_genes_in_GO_concept" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve gene IDs associated with a Gene Ontology (GO) concept for a specified organism.</p>
+<dl>
+<dt>Parameters:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">concept_id</span> <span class="pre">(str)</span></code>: The Gene Ontology (GO) concept ID for which gene IDs are to be retrieved.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">organism</span> <span class="pre">(str)</span></code>: The organism for which gene IDs should be retrieved. Options include</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘hsa’: Human.</p></li>
+<li><p>‘dre’: Zebrafish.</p></li>
+<li><p>‘dreM’: Mapped Zebrafish from Human (same as ‘dre’ as Zebrafish GO IDs are not characterized).</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_id_type</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: The desired gene ID type for the returned gene IDs. Default is None.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_ids_series</span> <span class="pre">(pd.Series)</span></code>: A pandas Series containing gene IDs associated with the specified GO concept.</p></li>
+</ul>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: If the GO concept ID does not exist for the given organism or if the organism is invalid.</p>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This function retrieves gene IDs associated with a Gene Ontology (GO) concept for a specified organism.</p></li>
+<li><p>The ‘concept_id’ parameter should be a valid GO concept identifier.</p></li>
+<li><p>The ‘organism’ parameter specifies the organism for which gene IDs should be retrieved.</p></li>
+<li><p>Options for ‘organism’ include ‘hsa’ (Human), ‘dre’ (Zebrafish), or ‘dreM’ (Mapped Zebrafish from Human).</p></li>
+</ul>
+</dd>
+<dt>Example:</dt><dd><p>To retrieve Zebrafish gene IDs associated with a GO concept:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">concept_id</span> <span class="pre">=</span> <span class="pre">'GO:0001234'</span>
+<span class="pre">organism</span> <span class="pre">=</span> <span class="pre">'dre'</span>
+<span class="pre">gene_ids</span> <span class="pre">=</span> <span class="pre">get_genes_in_GO_concept(concept_id,</span> <span class="pre">organism)</span>
+<span class="pre">`</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danrerlib.GO.id_exists_given_organism">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">id_exists_given_organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concept_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organism</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.GO.id_exists_given_organism" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">id_exists_given_organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concept_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organism</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.GO.id_exists_given_organism" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a Gene Ontology (GO) ID exists for the specified organism.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">concept_id</span> <span class="pre">(str)</span></code>: The GO ID to be validated.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">organism</span> <span class="pre">(str)</span></code>: The specified organism code (e.g., ‘hsa’, ‘dre’, or ‘dreM’).</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>bool: True if the GO ID exists for the specified organism, False otherwise.</p></li>
+</ul>
+</dd>
+<dt>Raises:</dt><dd><ul class="simple">
+<li><p>ValueError: If the organism code is invalid.</p></li>
+</ul>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This function checks whether a given GO ID exists for the specified organism.</p></li>
+<li><p>It reads a GO ID data file and looks for a match in the ‘GO ID’ column.</p></li>
+<li><p>The ‘organism’ parameter specifies the organism code for which to perform the check.</p></li>
+<li><p>Returns True if the GO ID exists for the organism, False otherwise.</p></li>
+<li><p>Provides an error message if the organism code is invalid.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="danrerlib.GO.check_id_format">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">check_id_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.GO.check_id_format" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="danrerlib.GO.is_numeric">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">is_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.GO.is_numeric" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="danrerlib.GO.build_all">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">build_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.GO.build_all" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="danrerlib.GO.build_gene_ontology_database">
+<span class="sig-prename descclassname"><span class="pre">danrerlib.GO.</span></span><span class="sig-name descname"><span class="pre">build_gene_ontology_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.GO.build_gene_ontology_database" title="Permalink to this definition"></a></dt>
+<dd><p>Build or update the Gene Ontology (GO) database.</p>
+<dl>
+<dt>Notes:</dt><dd><ul>
+<li><p>This function is intended for database creation or update and should be run only during version updates.</p></li>
+<li><p>The process may take some time, so exercise caution when running it.</p></li>
+<li><p>The function performs the following steps:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Downloads all current GO IDs.</p></li>
+<li><p>Builds the human GO file and with IDs and associated genes.</p></li>
+</ol>
+<p>3. Builds the zebrafish GO file and with IDs and associated genes.
+5. Builds the mapped zebrafish GO file and with IDs and associated genes.
+6. Add a column to the database file to identify if the GO ID exists for human and/or zebrafish.</p>
+</div></blockquote>
+</li>
+<li><p>Running this function should be done carefully, as it involves downloading and processing data fromGO.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>
