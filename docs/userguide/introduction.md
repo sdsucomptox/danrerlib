@@ -1,6 +1,6 @@
 # Introduction
 
-Welcome to the official documentation for danRerLib! danRerLib is a Python package specifically designed for zebrafish researchers interested in genomics and transcriptomics. It is designed to assist with gene ID mapping, ortholog mapping, and functional enrichment analysis using different pathway and annotation databases. 
+Welcome to the official documentation for `danRerLib`! `danRerLib` is a Python package specifically designed for zebrafish researchers interested in genomics and transcriptomics. It is designed to assist with gene ID mapping, ortholog mapping, and functional enrichment analysis using different pathway and annotation databases. 
 
 ## Key Features
 
@@ -10,28 +10,27 @@ Welcome to the official documentation for danRerLib! danRerLib is a Python packa
 
 ## Getting Started
 
-If you're new to danRerLib, we recommend starting with the following resources:
+If you're new to `danRerLib`, we recommend starting with the following resources:
 
-- [Installation Guide](installation.md): Learn how to install danRerLib on your system.
-- [Quick Start Tutorial](usage.md): Get up and running with danRerLib in just a few minutes.
+- [Installation Guide](installation.md): Learn how to install `danRerLib` on your system.
+- [Quick Start Tutorial](usage.md): Get up and running with `danRerLib` in just a few minutes.
 - {ref}`API Reference <APIRef>`.: Explore the comprehensive API documentation for detailed information on package functions.
 - {ref}`Tutorials <tutorials>`: Explore comprehensive tutorials for detailed package usage.
 
 ## Why danRerLib?
 
-- Ease of Use: With intuitive functions and clear documentation, danRerLib simplifies complex gene ID mapping and orthology tasks.
-- Flexibility: danRerLib allows you to customize and extend its functionality to meet your specific research needs.
-- Up-to-Date: We regularly update Your Package Name to ensure it aligns with the latest gene databases and research standards.
+- **Ease of Use**: `danRerLib` simplifies gene ID mapping, orthology mapping, and functional enrichment tasks with clear documentation and tutorials specifically for zebrafish researchers.
+- **Up-to-Date**: We regularly update `danRerLib` to ensure it aligns with the latest gene and pathway annotation databases.
 
 ## Contributing
 
-We welcome contributions from the community to improve and enhance Your Package Name. If you're interested in contributing, please review our Contributing Guidelines for more information.
+We welcome contributions from the community to improve and enhance `danRerLib`. If you're interested in contributing, please review our [Contributing Guidelines](../contributing.md) for more information.
 
 ## Support and Feedback
 
-If you encounter any issues, have questions, or want to provide feedback, please don't hesitate to contact us. We're here to help and make danRerLib even better.
+If you encounter any issues, have questions, or want to provide feedback, please don't hesitate to contact us. 
 
 ## License
 
-Your Package Name is released under the MIT License. Please review the License for details on how you can use and distribute this package.
+`danRerLib` is released under the MIT License. Please review the License for details on how you can use and distribute this package. 
 

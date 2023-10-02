@@ -42,7 +42,7 @@ If you are proposing a feature:
 
 Ready to contribute? Here's how to set up `danrerlib` for local development.
 
-1. Download a copy of `danrerlib` locally.
+1. Download a copy of `danrerlib` locally from GitHub.
 2. Install `danrerlib` using `poetry`:
 
     ```console
@@ -70,4 +70,4 @@ Before you submit a pull request, check that it meets these guidelines:
 ## Code of Conduct
 
 Please note that the `danrerlib` project is released with a
-Code of Conduct. By contributing to this project you agree to abide by its terms.
+[Code of Conduct](CONDUCT.md). By contributing to this project you agree to abide by its terms.

@@ -3,7 +3,7 @@
 API Reference
 =============
 
-This page contains auto-generated API reference documentation.
+This page contains API reference documentation.
 
 .. toctree::
    :titlesonly:

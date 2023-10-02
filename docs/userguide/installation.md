@@ -1,6 +1,6 @@
 # Installation
 
-danRerLib was built with some dependencies. Therefore, to install danRerLib, you will need a proper version of Python and the required dependencies. The current dependencies are:
+`danRerLib` was built with some dependencies. Therefore, to install `danRerLib`, you will need a proper version of Python and the required dependencies. The current dependencies are:
 
 - python >=3.9,<3.13
 - numpy 1.26.0
@@ -12,7 +12,7 @@ Please see respective package information if dependencies are not already instal
 
 ### Conda
 
-If you use `conda`, you can install danRerLib as:
+If you use `conda`, you can install `danRerLib` as:
 
 ```
 conda install danRerLib
@@ -20,7 +20,7 @@ conda install danRerLib
 
 ### PyPi/pip
 
-If you use `pip`, you can install danRerLib with:
+If you use `pip`, you can install `danRerLib` with:
 
 ```
 pip install danRerLib
@@ -28,11 +28,11 @@ pip install danRerLib
 
 ### Development Version
 
-Please see Developer's Guide.
+If you would like to make changes to the library, either for your own purposes or to contribute, you should install the development version of this package. Please see the [Contributing Guidelines](../contributing.md) in the Developer's Guide to follow the recommended steps.
 
 ## Installation Guide
 
-It is recommended to use a python virtual environment or conda environment to manage all python packages and projects. 
+It is recommended to use a python virtual environment or conda environment to manage all python packages and projects. If you are a new Python user, installing and managing Python packages can be complicated. We recommend using a package management software such as [Anaconda](https://www.anaconda.com/). We refer the user elsewhere to make further installation decisions about Python packages in general. 
 
 ### Beginning users
 
@@ -45,7 +45,7 @@ On all of Windows, macOS, and Linux:
 
 **Conda**
 
-- Create a conda envrionment specifically for the task or project you’re working on.
+- Create a conda environment specifically for the task or project you’re working on.
 
 ```
 # Best practice, use an environment rather than install in the base env
