@@ -6,18 +6,18 @@ This module provides functions for retrieving gene information associated with K
 for various organisms, including human, zebrafish, and mapped zebrafish.
 
 Functions:
-    - `get_genes_in_pathway`: Retrieve genes associated with a specific KEGG pathway.
-    - `get_genes_in_disease`: Retrieve genes associated with a disease for a specified organism.
+    - ``get_genes_in_pathway``: Retrieve genes associated with a specific KEGG pathway.
+    - ``get_genes_in_disease``: Retrieve genes associated with a disease for a specified organism.
 
 Constants:
-    - `NCBI_ID`: Identifier for 'NCBI Gene ID'.
-    - `ZFIN_ID`: Identifier for 'ZFIN ID'.
-    - `ENS_ID`: Identifier for 'Ensembl ID'.
-    - `SYMBOL`: Identifier for gene 'Symbol'.
-    - `HUMAN_ID`: Identifier for 'Human NCBI Gene ID'.
+    - ``NCBI_ID``: Identifier for NCBI Gene ID.
+    - ``ZFIN_ID``: Identifier for ZFIN ID.
+    - ``ENS_ID``: Identifier for Ensembl ID.
+    - ``SYMBOL``: Identifier for gene Symbol.
+    - ``HUMAN_ID``: Identifier for Human NCBI Gene ID.
 
 Database Rebuild Functions:
-    - `build_kegg_database`: Build or update the KEGG pathway and disease database.
+    - ``build_kegg_database``: Build or update the KEGG pathway and disease database.
 
 Notes:
     - This module is designed for accessing gene information from KEGG pathways and diseases.
@@ -36,7 +36,6 @@ For detailed information on each function and their usage, please refer to the d
 
 from danrerlib.settings import *
 import danrerlib.mapping as mapping
-import os.path 
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -54,28 +53,27 @@ human_disease_path = KEGG_DATA_DIR / Path('disease_ids_V'+ str(VERSION_NUM) + '.
 human_disease_genes_path = KEGG_DATA_DIR / Path('disease_ids_and_genes_V'+ str(VERSION_NUM) + '.txt')
 dre_disease_genes_path = KEGG_DATA_DIR / Path('disease_ids_dreM_and_genes_V'+ str(VERSION_NUM) + '.txt')
 
-def get_genes_in_pathway(pathway_id, org=None):
+def get_genes_in_pathway(pathway_id: str, org=None):
     """
     Retrieve genes associated with a specific pathway from KEGG.
 
     Parameters:
-        pathway_id (str): The KEGG pathway ID for the pathway of interest.
-        org (str, optional): The organism for which to retrieve pathway information.
-            Options:
+        - ``pathway_id (str)``: The KEGG pathway ID for the pathway of interest.
+        - ``org (str, optional)``: The organism for which to retrieve pathway information. Options include
+
                 - 'dre': Danio rerio (Zebrafish) pathways from KEGG.
                 - 'hsa': Human pathways from KEGG.
                 - 'dreM': Mapped Danio rerio pathways from human.
-                (Default is None, which will use the provided 'org' or 'hsa' if 'org' is None.)
+                - (Default is None, which will use the provided 'org' or 'hsa' if 'org' is None.)
 
     Returns:
-        pd.DataFrame: A pandas DataFrame containing genes associated with the specified pathway.
+        - ``df (pd.DataFrame)``: A pandas DataFrame containing genes associated with the specified pathway.
 
     Notes:
         - This function retrieves gene information associated with a specific KEGG pathway.
-        - The 'pathway_id' parameter should be a valid KEGG pathway identifier.
-        - The 'org' parameter specifies the organism for which to retrieve pathway information.
+        - The ``pathway_id`` parameter should be a valid KEGG pathway identifier.
+        - The ``org`` parameter specifies the organism for which to retrieve pathway information.
         - Organism options include 'dre' (Danio rerio), 'hsa' (Human), or 'dreM' (Mapped Danio rerio from Human).
-        - Data is obtained from KEGG and may require internet access to download pathway information.
     """
     try:
         org, pathway_id = _check_for_organism(pathway_id, org)
@@ -95,14 +93,16 @@ def get_genes_in_disease(disease_id: str,
     Retrieve genes associated with a disease for a specified organism.
 
     Parameters:
-        disease_id (str): The disease ID for which genes are to be retrieved.
-        org (str): The organism for which genes should be retrieved. Options:
+        - ``disease_id (str)``: The disease ID for which genes are to be retrieved.
+        - ``org (str)``: The organism for which genes should be retrieved. Options include
+
                    - 'hsa': Returns human genes associated with the disease.
                    - 'dre' or 'dreM': Returns human genes mapped to Zebrafish genes (same result, as Zebrafish disease not characterized on KEGG).
-        API (bool, optional): Whether to use the KEGG REST API for retrieval. Default is False.
+
+        - ``API (bool, optional)``: Whether to use the KEGG REST API for retrieval. Default is False.
 
     Returns:
-        pd.DataFrame: A pandas DataFrame containing genes associated with the disease for the specified organism.
+       - ``genes (pd.DataFrame)``: A pandas DataFrame containing genes associated with the disease for the specified organism.
 
     Notes:
         - If 'API' is set to True, the function fetches gene information using the KEGG REST API.
@@ -154,8 +154,8 @@ def _check_for_organism(pathway_id: str,
     Check for and validate the organism information in a KEGG pathway ID.
 
     Parameters:
-        pathway_id (str): The KEGG pathway ID, which may or may not include organism information.
-        org (str, optional): The specified organism code to validate against the pathway ID.
+        - pathway_id (str): The KEGG pathway ID, which may or may not include organism information.
+        - org (str, optional): The specified organism code to validate against the pathway ID.
 
     Returns:
         tuple: A tuple containing the validated organism code and the modified pathway ID.
@@ -238,6 +238,7 @@ def build_kegg_database():
         - This function is intended for database creation or update and should be run only during version updates.
         - The process may take some time, so exercise caution when running it.
         - The function performs the following steps:
+        
             1. Downloads zebrafish pathway IDs and stores them in a specified file.
             2. Downloads human pathway IDs and stores them in a specified file.
             3. Creates mapped zebrafish pathway IDs from human pathways and stores them in a specified file.

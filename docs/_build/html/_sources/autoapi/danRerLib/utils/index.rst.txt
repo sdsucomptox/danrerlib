@@ -1,9 +1,9 @@
 :orphan:
 
-:py:mod:`danRerLib.utils`
+:py:mod:`danrerlib.utils`
 =========================
 
-.. py:module:: danRerLib.utils
+.. py:module:: danrerlib.utils
 
 
 Module Contents
@@ -15,10 +15,10 @@ Functions
 
 .. autoapisummary::
 
-   danRerLib.utils.pretty_print_series
-   danRerLib.utils.save_data
-   danRerLib.utils.download_url
-   danRerLib.utils.download_url_to_file
+   danrerlib.utils.pretty_print_series
+   danrerlib.utils.save_data
+   danrerlib.utils.download_url
+   danrerlib.utils.download_url_to_file
 
 
 

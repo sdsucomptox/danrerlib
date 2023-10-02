@@ -1,14 +1,14 @@
-:py:mod:`danRerLib.mapping`
+:py:mod:`danrerlib.mapping`
 ===========================
 
-.. py:module:: danRerLib.mapping
+.. py:module:: danrerlib.mapping
 
 .. autoapi-nested-parse::
 
    Gene Mapping Module
    ===================
 
-   This module provides functions for gene ID mapping and orthology checks between different species,
+   This module provides functions for gene ID mapping and orthology checks between different species, 
    with a focus on Zebrafish and human gene IDs.
 
    Functions:
@@ -19,11 +19,11 @@
        - ``add_mapped_ortholog_column``: Add a new column with mapped ortholog Gene IDs to a pandas DataFrame.
 
    Constants:
-       - ``NCBI_ID``: Identifier for 'NCBI Gene ID'.
-       - ``ZFIN_ID``: Identifier for 'ZFIN ID'.
-       - ``ENS_ID``: Identifier for 'Ensembl ID'.
-       - ``SYMBOL``: Identifier for gene 'Symbol'.
-       - ``HUMAN_ID``: Identifier for 'Human NCBI Gene ID'.
+       - ``NCBI_ID``: Identifier for NCBI Gene ID.
+       - ``ZFIN_ID``: Identifier for ZFIN ID.
+       - ``ENS_ID``: Identifier for Ensembl ID.
+       - ``SYMBOL``: Identifier for gene Symbol.
+       - ``HUMAN_ID``: Identifier for Human NCBI Gene ID.
 
    Database Rebuild Functions:
        - ``build_gene_mapping``: Build a master gene mapping file based on Zebrafish gene ID conversions.
@@ -54,14 +54,14 @@ Functions
 
 .. autoapisummary::
 
-   danRerLib.mapping.convert_ids
-   danRerLib.mapping.add_mapped_column
-   danRerLib.mapping.convert_to_human
-   danRerLib.mapping.convert_to_zebrafish
-   danRerLib.mapping.get_ortho_ids
-   danRerLib.mapping.add_mapped_ortholog_column
-   danRerLib.mapping.build_gene_mapping
-   danRerLib.mapping.build_ortho_mapping
+   danrerlib.mapping.convert_ids
+   danrerlib.mapping.add_mapped_column
+   danrerlib.mapping.convert_to_human
+   danrerlib.mapping.convert_to_zebrafish
+   danrerlib.mapping.get_ortho_ids
+   danrerlib.mapping.add_mapped_ortholog_column
+   danrerlib.mapping.build_gene_mapping
+   danrerlib.mapping.build_ortho_mapping
 
 
 

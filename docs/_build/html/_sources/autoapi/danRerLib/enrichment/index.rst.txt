@@ -1,7 +1,7 @@
-:py:mod:`danRerLib.enrichment`
+:py:mod:`danrerlib.enrichment`
 ==============================
 
-.. py:module:: danRerLib.enrichment
+.. py:module:: danrerlib.enrichment
 
 
 Module Contents
@@ -13,14 +13,14 @@ Functions
 
 .. autoapisummary::
 
-   danRerLib.enrichment.logistic
-   danRerLib.enrichment.fishers
-   danRerLib.enrichment.enrich_KEGG
-   danRerLib.enrichment.enrich_GO
-   danRerLib.enrichment.test_KEGG_enrich
-   danRerLib.enrichment.investigation
-   danRerLib.enrichment.test_GO_enrich
-   danRerLib.enrichment.testing
+   danrerlib.enrichment.logistic
+   danrerlib.enrichment.fishers
+   danrerlib.enrichment.enrich_KEGG
+   danrerlib.enrichment.enrich_GO
+   danrerlib.enrichment.test_KEGG_enrich
+   danrerlib.enrichment.investigation
+   danrerlib.enrichment.test_GO_enrich
+   danrerlib.enrichment.testing
 
 
 

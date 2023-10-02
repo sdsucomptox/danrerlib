@@ -1,9 +1,9 @@
 :orphan:
 
-:py:mod:`danRerLib.settings`
+:py:mod:`danrerlib.settings`
 ============================
 
-.. py:module:: danRerLib.settings
+.. py:module:: danrerlib.settings
 
 
 Module Contents

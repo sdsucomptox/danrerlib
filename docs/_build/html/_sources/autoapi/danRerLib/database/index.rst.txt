@@ -1,8 +1,8 @@
 :orphan:
 
-:py:mod:`danRerLib.database`
+:py:mod:`danrerlib.database`
 ============================
 
-.. py:module:: danRerLib.database
+.. py:module:: danrerlib.database
 
 

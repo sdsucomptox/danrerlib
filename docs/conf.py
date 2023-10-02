@@ -2,23 +2,23 @@
 
 # -- Project information -----------------------------------------------------
 
-project = u"danRerLib"
+project = u"danrerlib"
 copyright = u"2023, Ashley Schwartz"
 author = u"Ashley Schwartz"
 
 # -- General configuration ---------------------------------------------------
 def skip_private(app, what, name, obj, skip, options):
-    if name.startswith('danRerLib.mapping._'):
+    if name.startswith('danrerlib.mapping._'):
         skip == True
     return skip
 
 def skip_member(app, what, name, obj, skip, options):
-    if "danRerLib." in name:
+    if "danrerlib." in name:
         if obj.name.startswith('_'):
             skip = True
         if obj.name.endswith('_path') or obj.name.endswith('_dir'):
             skip = True
-    if name in ["danRerLib.utils", "danRerLib.settings", "danRerLib.database"]:
+    if name in ["danrerlib.utils", "danrerlib.settings", "danrerlib.database"]:
         skip = True
     return skip
 
@@ -44,7 +44,7 @@ extensions = [
     # "sphinx.ext.napoleon",
     # "sphinx.ext.viewcode",
 ]
-autoapi_dirs = ["../src/danRerLib/"]
+autoapi_dirs = ["../src/danrerlib"]
 autoapi_template_dir = "_templates/autoapi"
 stylesheet = "_static/css/parsing.css"
 
@@ -61,4 +61,4 @@ html_static_path = ['_static']
 html_css_files = ["css/custom.css"]
 html_show_sphinx = False
 html_logo = '_static/img/danrerlib_logo.png'
-html_title = "danRerLib"
+html_title = "danrerlib"

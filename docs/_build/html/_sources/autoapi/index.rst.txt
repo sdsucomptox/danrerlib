@@ -8,4 +8,4 @@ This page contains API reference documentation.
 .. toctree::
    :titlesonly:
 
-   /autoapi/danRerLib/index
+   /autoapi/danrerlib/index

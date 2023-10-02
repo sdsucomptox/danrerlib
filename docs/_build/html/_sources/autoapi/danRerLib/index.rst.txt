@@ -1,7 +1,7 @@
-:py:mod:`danRerLib`
+:py:mod:`danrerlib`
 ===================
 
-.. py:module:: danRerLib
+.. py:module:: danrerlib
 
 
 Submodules

@@ -1,8 +1,0 @@
-:orphan:
-
-:py:mod:`danRerLib.database`
-============================
-
-.. py:module:: danRerLib.database
-
-
