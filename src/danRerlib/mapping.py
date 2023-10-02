@@ -2,26 +2,26 @@
 Gene Mapping Module
 ===================
 
-This module provides functions for gene ID mapping and orthology checks between different species,
+This module provides functions for gene ID mapping and orthology checks between different species, 
 with a focus on Zebrafish and human gene IDs.
 
 Functions:
-    - `convert_ids`: Convert a list of Gene IDs between different types.
-    - `add_mapped_column`: Add a new column with mapped Gene IDs to a pandas DataFrame.
-    - `convert_to_human`: Convert Zebrafish gene IDs to their corresponding human orthologs.
-    - `convert_to_zebrafish`: Convert human gene IDs to their corresponding Zebrafish orthologs.
-    - `add_mapped_ortholog_column`: Add a new column with mapped ortholog Gene IDs to a pandas DataFrame.
+    - ``convert_ids``: Convert a list of Gene IDs between different types.
+    - ``add_mapped_column``: Add a new column with mapped Gene IDs to a pandas DataFrame.
+    - ``convert_to_human``: Convert Zebrafish gene IDs to their corresponding human orthologs.
+    - ``convert_to_zebrafish``: Convert human gene IDs to their corresponding Zebrafish orthologs.
+    - ``add_mapped_ortholog_column``: Add a new column with mapped ortholog Gene IDs to a pandas DataFrame.
 
 Constants:
-    - `NCBI_ID`: Identifier for 'NCBI Gene ID'.
-    - `ZFIN_ID`: Identifier for 'ZFIN ID'.
-    - `ENS_ID`: Identifier for 'Ensembl ID'.
-    - `SYMBOL`: Identifier for gene 'Symbol'.
-    - `HUMAN_ID`: Identifier for 'Human NCBI Gene ID'.
+    - ``NCBI_ID``: Identifier for NCBI Gene ID.
+    - ``ZFIN_ID``: Identifier for ZFIN ID.
+    - ``ENS_ID``: Identifier for Ensembl ID.
+    - ``SYMBOL``: Identifier for gene Symbol.
+    - ``HUMAN_ID``: Identifier for Human NCBI Gene ID.
 
 Database Rebuild Functions:
-    - `build_gene_mapping`: Build a master gene mapping file based on Zebrafish gene ID conversions.
-    - `build_ortho_mapping`: Build a master orthology mapping file between Zebrafish and human genes.
+    - ``build_gene_mapping``: Build a master gene mapping file based on Zebrafish gene ID conversions.
+    - ``build_ortho_mapping``: Build a master orthology mapping file between Zebrafish and human genes.
 
 Notes:
     - This module is designed for use in genomics research and gene ID mapping projects.
@@ -68,22 +68,20 @@ def convert_ids(gene_list: Union[list, pd.Series, pd.DataFrame, np.array],
     Convert a list of Gene IDs.
 
     Parameters:
-        gene_list (array-like): A list of Gene IDs with supported formats like list, pd.Series,
-            pd.DataFrame, or np.array.
-        id_from (str): The current Gene ID type.
-        id_to (str): The Gene ID type to convert to.
-        keep_mapping (bool, optional): Whether to keep a mapping of the original IDs to the
-            converted IDs. Default is False.
-        out_format (str, optional): The desired output format for the result. Default is None.
+        - ``gene_list (array-like)``: A list of Gene IDs with supported formats like list, pd.Series, pd.DataFrame, or np.array.
+        - ``id_from (str)``: The current Gene ID type.
+        - ``id_to (str)``: The Gene ID type to convert to.
+        - ``keep_mapping (bool, optional)``: Whether to keep a mapping of the original IDs to the converted IDs. Default is False.
+        - ``out_format (str, optional)``: The desired output format for the result. Default is None.
 
     Returns:
-        pd.Series or pd.DataFrame: A pandas Series or DataFrame containing the converted Gene IDs.
+        - ``mapped_genes (pd.Series or pd.DataFrame)``: A pandas Series or DataFrame containing the converted Gene IDs.
 
     Other:
-        Gene ID Type Options: NCBI Gene ID, ZFIN ID, Symbol, Ensembl ID
+        - Gene ID Type Options: NCBI Gene ID, ZFIN ID, Symbol, Ensembl ID
 
     Notes:
-        - if the order is important, it is recommended to have keep_mapping = True. Otherwise, 
+        - If the order is important, it is recommended to have keep_mapping = True. Otherwise, 
           the mapping order is not guaranteed.
     """
     # last updated: July 7, 2023
@@ -137,15 +135,15 @@ def add_mapped_column(data: Union[pd.DataFrame, list],
     Add a new column to a pandas DataFrame with mapped Gene IDs.
 
     Parameters:
-        data (pd.DataFrame, list): A pandas DataFrame containing a column that has Gene IDs of some type.
-        id_from (str): The current Gene ID type. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
-        id_to (str): The Gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
-        column_name_with_ids (str, optional): The name of the column containing the Gene IDs if it doesn't match id_from.
-        keep_old_ids (bool, optional): Whether to keep the old Gene ID column. Default is True.
-        drop_na (bool, optional): Whether to drop rows with NA values in the resulting mapped column. Default is False.
+        - ``data (pd.DataFrame, list)``: A pandas DataFrame containing a column that has Gene IDs of some type.
+        - ``id_from (str)``: The current Gene ID type. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
+        - ``id_to (str)``: The Gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
+        - ``column_name_with_ids (str, optional)``: The name of the column containing the Gene IDs if it doesn't match id_from.
+        - ``keep_old_ids (bool, optional)``: Whether to keep the old Gene ID column. Default is True.
+        - ``drop_na (bool, optional)``: Whether to drop rows with NA values in the resulting mapped column. Default is False.
 
     Returns:
-        pd.DataFrame: A pandas DataFrame containing the added mapped column.
+        - ``data (pd.DataFrame)``: A pandas DataFrame containing the added mapped column.
 
     Notes:
         - This function adds a new column to the input DataFrame containing the mapped Gene IDs.
@@ -216,18 +214,18 @@ def convert_to_human(gene_list: List[str],
     Convert a list of Zebrafish gene IDs to their human orthologs.
 
     Parameters:
-        gene_list (list): A list of Zebrafish gene IDs to be converted to human orthologs.
-        zfish_gene_type (str): The current gene ID type for the Zebrafish genes. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
-        keep_mapping (bool, optional): Whether to retain the mapping information. Default is False.
-        keep_missing_orthos (bool, optional): Whether to keep gene IDs with missing orthologs. Default is False.
+        - ``gene_list (list)``: A list of Zebrafish gene IDs to be converted to human orthologs.
+        - ``zfish_gene_type (str)``: The current gene ID type for the Zebrafish genes. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
+        - ``keep_mapping (bool, optional)``: Whether to retain the mapping information. Default is False.
+        - ``keep_missing_orthos (bool, optional)``: Whether to keep gene IDs with missing orthologs. Default is False.
 
     Returns:
-        list: A list of human gene IDs corresponding to the Zebrafish gene IDs.
+        - ``human_ids (list)``: A list of human gene IDs corresponding to the Zebrafish gene IDs.
 
     Notes:
-        - This function converts Zebrafish gene IDs to their human orthologs using orthology mapping.
-        - The `zfish_gene_type` parameter specifies the type of Zebrafish gene IDs. 
-        - To retain the mapping information, set `keep_mapping` to True.
+        - This function converts zebrafish gene IDs to their human orthologs using orthology mapping.
+        - The ``zfish_gene_type`` parameter specifies the type of Zebrafish gene IDs. 
+        - To retain the mapping information, set ``keep_mapping`` to True.
         - To keep Zebrafish gene IDs with missing orthologs, set `keep_missing_orthos` to True.
     """
     id_to = HUMAN_ID
@@ -244,19 +242,19 @@ def convert_to_zebrafish(gene_list: List[str],
     Convert a list of human gene IDs to their Zebrafish orthologs.
 
     Parameters:
-        gene_list (list): A list of human gene IDs to be converted to Zebrafish orthologs.
-        zfish_gene_type (str): The target gene ID type for the Zebrafish orthologs. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
-        keep_mapping (bool, optional): Whether to retain the mapping information. Default is False.
-        keep_missing_orthos (bool, optional): Whether to keep gene IDs with missing orthologs. Default is False.
+        - ``gene_list (list)``: A list of human gene IDs to be converted to Zebrafish orthologs.
+        - ``zfish_gene_type (str)``: The target gene ID type for the Zebrafish orthologs. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
+        - ``keep_mapping (bool, optional)``: Whether to retain the mapping information. Default is False.
+        - ``keep_missing_orthos (bool, optional)``: Whether to keep gene IDs with missing orthologs. Default is False.
 
     Returns:
-        list: A list of Zebrafish gene IDs corresponding to the human gene IDs.
+        - ``zebrafish_ids (list)``: A list of Zebrafish gene IDs corresponding to the human gene IDs.
 
     Notes:
         - This function converts human gene IDs to their Zebrafish orthologs using orthology mapping.
-        - The `zfish_gene_type` parameter specifies the type of Zebrafish gene IDs.
-        - To retain the mapping information, set `keep_mapping` to True.
-        - To keep human gene IDs with missing Zebrafish orthologs, set `keep_missing_orthos` to True.
+        - The ``zfish_gene_type`` parameter specifies the type of Zebrafish gene IDs.
+        - To retain the mapping information, set ``keep_mapping`` to True.
+        - To keep human gene IDs with missing Zebrafish orthologs, set ``keep_missing_orthos`` to True.
     """
     id_from = HUMAN_ID
     zebrafish_ids = get_ortho_ids(gene_list, id_from, zfish_gene_type, 
@@ -273,19 +271,19 @@ def get_ortho_ids(gene_list: List[str],
     Retrieve orthologous gene IDs for a given list of genes.
 
     Parameters:
-        gene_list (list): A list of gene IDs.
-        id_from (str): The current gene ID type. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or Human NCBI Gene ID.
-        id_to (str): The target gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or Human NCBI Gene ID.
-        keep_mapping (bool, optional): Whether to retain the mapping information. Default is False.
-        keep_missing_orthos (bool, optional): Whether to keep gene IDs with missing orthologs. Default is False.
+        - ``gene_list (list)``: A list of gene IDs.
+        - ``id_from (str)``: The current gene ID type. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or Human NCBI Gene ID.
+        - ``id_to (str)``: The target gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or Human NCBI Gene ID.
+        - ``keep_mapping (bool, optional)``: Whether to retain the mapping information. Default is False.
+        - ``keep_missing_orthos (bool, optional)``: Whether to keep gene IDs with missing orthologs. Default is False.
 
     Returns:
-        list: A list of orthologous gene IDs.
+        - ``mapped_genes (list)``: A list of orthologous gene IDs.
 
     Notes:
         - This function retrieves orthologous gene IDs for the provided gene list.
-        - The mapping information can be retained by setting `keep_mapping` to True.
-        - Gene IDs with missing orthologs can be retained by setting `keep_missing_orthos` to True.
+        - The mapping information can be retained by setting ``keep_mapping`` to True.
+        - Gene IDs with missing orthologs can be retained by setting ``keep_missing_orthos`` to True.
     """
 
     # last updated: July 13, 2023
@@ -360,17 +358,15 @@ def add_mapped_ortholog_column(data: pd.DataFrame,
     Add a new column to a pandas DataFrame with mapped ortholog Gene IDs.
 
     Parameters:
-        data (pd.DataFrame): A pandas DataFrame containing a column with Gene IDs of the specified 'id_from' type.
-        id_from (str): The current Gene ID type to convert from. Must be one of: NCBI Gene ID, ZFIN ID, 
-                       Ensembl ID, Symbol, or Human NCBI Gene ID.
-        id_to (str): The Gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID,
-                     Ensembl ID, Symbol, or Human NCBI Gene ID.
-        column_name_with_ids (str, optional): The name of the column containing the Gene IDs if it doesn't match 'id_from'.
-        keep_old_ids (bool, optional): Whether to keep the original Gene ID column. Default is True.
-        drop_na (bool, optional): Whether to drop rows with NA values in the resulting mapped column. Default is False.
+        - ``data (pd.DataFrame)``: A pandas DataFrame containing a column with Gene IDs of the specified 'id_from' type.
+        - ``id_from (str)``: The current Gene ID type to convert from. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or Human NCBI Gene ID.
+        - ``id_to (str)``: The Gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or Human NCBI Gene ID.
+        - ``column_name_with_ids (optional, str) ``: The name of the column containing the Gene IDs if it doesn't match 'id_from'.
+        - ``keep_old_ids (optional, bool)``: Whether to keep the original Gene ID column. Default is True.
+        - ``drop_na (optional, bool)``: Whether to drop rows with NA values in the resulting mapped column. Default is False.
 
     Returns:
-        pd.DataFrame: A pandas DataFrame containing the added mapped ortholog Gene IDs.
+        - data (pd.DataFrame): A pandas DataFrame containing the added mapped ortholog Gene IDs.
 
     Notes:
         - This function adds a new column to the input DataFrame containing the mapped ortholog Gene IDs.
@@ -434,28 +430,16 @@ def add_mapped_ortholog_column(data: pd.DataFrame,
 
 def build_gene_mapping():
     """
-    Build the master gene mapping file named 'master_gene_mapping_file_V<VERSION_NUM>.txt'.
-
-    This function reads data files from the database/raw_data subdirectory to create the mapping file.
-    The required data files include:
-    - 'zfin_to_ncbi_V<VERSION_NUM>.txt'
-    - 'zfin_to_ensembl_V<VERSION_NUM>.txt'
+    Build the master gene mapping file.
 
     Raises:
-        FileNotFoundError: If one or both of the required data files are not found in the raw_data folder
-                            of the database directory.
-        DatabaseNotFoundError: If the database directory is not found in the current working directory.
+        - ``FileNotFoundError``: If one or both of the required data files are not found in the ``raw_data`` folder of the database directory.
+        - ``DatabaseNotFoundError``: If the database directory is not found in the current working directory.
 
     Notes:
-        - This function merges the 'zfin_to_ncbi' and 'zfin_to_ensembl' datasets, removing unnecessary columns.
-        - The resulting merged DataFrame is saved as 'master_gene_mapping_file_V<VERSION_NUM>.txt' in the database directory.
-        - Make sure to have the required data files in the raw_data subdirectory before running this function.
-
-    Example:
-        To build the gene mapping file, you need the following data files:
-        - 'zfin_to_ncbi_V<VERSION_NUM>.txt'
-        - 'zfin_to_ensembl_V<VERSION_NUM>.txt'
-        Place them in the raw_data folder of the database directory.
+        - This function reads data files from the ``database/raw_data`` subdirectory to create the mapping file. The required data files includes ``zfin_to_ncbi_V<VERSION_NUM>.txt`` and ``zfin_to_ensembl_V<VERSION_NUM>.txt``.
+        - The resulting merged DataFrame is saved as ``master_gene_mapping_file_V<VERSION_NUM>.txt`` in the database directory.
+        - Make sure to have the required data files in the ``raw_data`` subdirectory before running this function.
     """
 
     # last updated: July 7, 2023
@@ -503,26 +487,17 @@ def build_gene_mapping():
 
 def build_ortho_mapping():
     """
-    Build the master orthology mapping file named 'master_ortho_mapping_file_V<VERSION_NUM>.txt'.
-
-    This function reads data files from the database/raw_data subdirectory to create the orthology mapping file.
-    The required data file includes:
-    - 'zfish_human_orthology_V<VERSION_NUM>.txt'
+    Build the master orthology mapping file.
 
     Raises:
-        FileNotFoundError: If the required data file is not found in the raw_data folder of the database directory.
-        DatabaseNotFoundError: If the database directory is not found in the current working directory.
+        ``FileNotFoundError``: If the required data file is not found in the ``raw_data`` folder of the database directory.
+        ``DatabaseNotFoundError``: If the database directory is not found in the current working directory.
 
     Notes:
+        - This function reads data files from the ``database/raw_data`` subdirectory to create the orthology mapping file. The required data file includes ``zfish_human_orthology_V<VERSION_NUM>.txt``.
         - This function processes the 'zfish_human_orthology' dataset, removing unnecessary columns.
-        - Duplicate entries are removed, and the DataFrame is saved as 'master_ortho_mapping_file_V<VERSION_NUM>.txt'
-          in the database directory.
-        - Ensure that you have the required data file in the raw_data folder of the database directory before running this function.
-
-    Example:
-        To build the orthology mapping file, you need the following data file:
-        - 'zfish_human_orthology_V<VERSION_NUM>.txt'
-        Place it in the raw_data folder of the database directory.
+        - Duplicate entries are removed, and the DataFrame is saved as ``master_ortho_mapping_file_V<VERSION_NUM>.txt`` in the database directory.
+        - Ensure that you have the required data file in the ``raw_data`` folder of the database directory before running this function.
     """
 
     # last updated: July 7, 2023
@@ -572,16 +547,16 @@ def _make_sure_is_pandas_series(gene_list: Union[pd.Series, pd.DataFrame, list],
     Ensure that the input is a pandas Series.
 
     Parameters:
-        gene_list (pd.Series, pd.DataFrame, list): Input data, which can be a Series, DataFrame, or list.
-        id_from (str): Identifier for the data.
+        - ``gene_list (pd.Series, pd.DataFrame, list)``: Input data, which can be a Series, DataFrame, or list.
+        - ``id_from (str)``: Identifier for the data.
 
     Returns:
-        pd.Series: A pandas Series based on the input data.
+        - gene_list (pd.Series): A pandas Series based on the input data.
 
     Notes:
-        This function checks the type of the input data and converts it into a pandas Series if necessary.
-        If the input is a DataFrame, it will be squeezed into a Series.
-        If the input is a list, it will be converted into a Series with the specified name.
+        - This function checks the type of the input data and converts it into a pandas Series if necessary.
+        - If the input is a DataFrame, it will be squeezed into a Series.
+        - If the input is a list, it will be converted into a Series with the specified name.
     """
     if type(gene_list) != pd.Series:
         if type(gene_list) == pd.DataFrame:

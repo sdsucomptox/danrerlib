@@ -1,6 +1,6 @@
 # Installation
 
-danRerLib was built with some dependencies. Therefore, to install danRerLib, you will need a proper version of Python and the required dependencies. The current dependencies are:
+`danRerLib` was built with some dependencies. Therefore, to install `danRerLib`, you will need a proper version of Python and the required dependencies. The current dependencies are:
 
 - python >=3.9,<3.13
 - numpy 1.26.0
@@ -12,18 +12,18 @@ Please see respective package information if dependencies are not already instal
 
 ### Conda
 
-If you use `conda`, you can install danRerLib as:
+If you use `conda`, you can install `danRerLib` as:
 
 ```
-conda install danRerLib
+conda install danrerlib
 ```
 
 ### PyPi/pip
 
-If you use `pip`, you can install danRerLib with:
+If you use `pip`, you can install `danRerLib` with:
 
 ```
-pip install danRerLib
+pip install danrerlib
 ```
 
 ### Development Version
@@ -55,7 +55,7 @@ conda activate my-env
 conda install numpy
 conda install pandas
 # install library
-conda install danRerLib
+conda install danrerlib
 ```
 
 **pip**
@@ -71,5 +71,5 @@ cd bin
 source activate
 pip install numpy
 pip install pandas
-pip install danRerLib
+pip install danrerlib
 ```

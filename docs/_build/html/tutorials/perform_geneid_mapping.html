@@ -168,7 +168,8 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># IMPORT PYTHON PACKAGE</span>
 <span class="c1"># ---------------------</span>
-<span class="kn">from</span> <span class="nn">danRerLib</span> <span class="kn">import</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">danrerlib</span> <span class="kn">import</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">utils</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
@@ -260,17 +261,51 @@ ZDB-GENE-120215-92
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">data_file_path</span> <span class="o">=</span> <span class="s1">&#39;data/test_data/ncbi_gene_list.txt&#39;</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">list_of_gene_ids</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">list_of_gene_ids</span>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<span class="ne">NameError</span>: name &#39;pd&#39; is not defined
-</pre></div>
-</div>
-</div>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NCBI Gene ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>30301</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>30459</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>57924</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>564772</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>794572</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>When we use the <code class="docutils literal notranslate"><span class="pre">pandas</span></code> package to read in the data, it organizes it into what is called a <code class="docutils literal notranslate"><span class="pre">Pandas</span> <span class="pre">DataFrame</span></code>. All other steps can be executed the same way.</p>
 <div class="cell docutils container">
@@ -287,18 +322,8 @@ ZDB-GENE-120215-92
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ZDB-GENE-000616-10
-ZDB-GENE-030131-1024
-ZDB-GENE-030131-174
-ZDB-GENE-030131-8872
-ZDB-GENE-030219-83
-ZDB-GENE-040718-198
-ZDB-GENE-040808-44
-ZDB-GENE-040912-16
 ZDB-GENE-050419-85
-ZDB-GENE-050522-533
 ZDB-GENE-080415-1
-ZDB-GENE-081105-136
-ZDB-GENE-150409-7
 ZDB-GENE-991229-12
 </pre></div>
 </div>
@@ -479,66 +504,16 @@ ZDB-GENE-991229-12
     </tr>
     <tr>
       <th>1</th>
-      <td>100003844</td>
-      <td>ZDB-GENE-030131-1024</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>337772</td>
-      <td>ZDB-GENE-030131-174</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>336928</td>
-      <td>ZDB-GENE-030131-8872</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>338183</td>
-      <td>ZDB-GENE-030219-83</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>436767</td>
-      <td>ZDB-GENE-040718-198</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>445326</td>
-      <td>ZDB-GENE-040808-44</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>447813</td>
-      <td>ZDB-GENE-040912-16</td>
-    </tr>
-    <tr>
-      <th>8</th>
       <td>794572</td>
       <td>ZDB-GENE-050419-85</td>
     </tr>
     <tr>
-      <th>9</th>
-      <td>553785</td>
-      <td>ZDB-GENE-050522-533</td>
-    </tr>
-    <tr>
-      <th>10</th>
+      <th>2</th>
       <td>564772</td>
       <td>ZDB-GENE-080415-1</td>
     </tr>
     <tr>
-      <th>11</th>
-      <td>100003419</td>
-      <td>ZDB-GENE-081105-136</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>105665603</td>
-      <td>ZDB-GENE-150409-7</td>
-    </tr>
-    <tr>
-      <th>13</th>
+      <th>3</th>
       <td>30459</td>
       <td>ZDB-GENE-991229-12</td>
     </tr>
@@ -591,51 +566,7 @@ ZDB-GENE-991229-12
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>NCBI Gene ID</th>
-      <th>PValue</th>
-      <th>logFC</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>100000006</td>
-      <td>0.792615</td>
-      <td>0.115009</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>100000044</td>
-      <td>0.015286</td>
-      <td>0.803879</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>100000085</td>
-      <td>0.264762</td>
-      <td>0.267360</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There are 5464 rows and 3 columns
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There are 5464 rows and 3 columns
 </pre></div>
 </div>
 </div>
