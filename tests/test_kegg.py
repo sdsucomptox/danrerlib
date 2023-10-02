@@ -1,5 +1,5 @@
-from danRerLib import KEGG
-from danRerLib.settings import *
+from danrerlib import KEGG
+from danrerlib.settings import *
 from pandas.testing import assert_frame_equal
 from itertools import permutations
 

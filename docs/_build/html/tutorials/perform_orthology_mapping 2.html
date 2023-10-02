@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orthology Mapping &mdash; danRerLib</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Changelog" href="../changelog.html" />
+    <link rel="prev" title="Gene ID Mapping" href="perform_geneid_mapping.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            danRerLib
+              <img src="../_static/danrerlib_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User's Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/usage.html">Usage Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="perform_geneid_mapping.html">Gene ID Mapping</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Orthology Mapping</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#purpose-and-background">Purpose and Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#execute-orthology-mappings">Execute Orthology Mappings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#simple-case-get-orthologs">Simple Case: Get orthologs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#zebrafish-to-human">Zebrafish to Human</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#human-to-zebrafish">Human to Zebrafish</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#simple-case-get-orthologs-and-keep-mapping">Simple Case: Get Orthologs and Keep Mapping</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Zebrafish to Human</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Human to Zebrafish</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-orthologs-for-genes-from-file">Get Orthologs for Genes from File</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Zebrafish to Human</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Human to Zebrafish</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-orthologs-for-a-column-of-a-larger-dataset">Get Orthologs for a Column of a Larger Dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../conduct.html">Code of Conduct</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">danRerLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Orthology Mapping</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/perform_orthology_mapping.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="orthology-mapping">
+<h1>Orthology Mapping<a class="headerlink" href="#orthology-mapping" title="Permalink to this heading"></a></h1>
+<p>Author: Ashley Schwartz</p>
+<p>Date: September 2023</p>
+<section id="purpose-and-background">
+<h2>Purpose and Background<a class="headerlink" href="#purpose-and-background" title="Permalink to this heading"></a></h2>
+<p>This tutorial goes over how to get the zebrafish or human gene orthologs from one organism to another. Gene orthology is useful when you want to determine which genes in zebrafish map to genes in the human genome and vice versa. As this is a zebrafish library, there are four different Gene ID options available. Human Gene IDs are only reported as NCBI Entrez Gene IDs. The Gene ID options are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Gene ID Name</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Example</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ZFIN ID</p></td>
+<td><p>ZFIN gene id: always starts with ‘ZDB’ for zebafish database</p></td>
+<td><p>ZDB-GENE-011219-1</p></td>
+<td><p>used as the “master” gene id (<a class="reference external" href="https://zfin.org/">link</a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>NCBI Gene ID</p></td>
+<td><p>integer gene id managed by NCBI: also known as Entrez Gene ID</p></td>
+<td><p>140634</p></td>
+<td><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/gene?Db=gene&amp;Cmd=DetailsSearch&amp;Term=140634">link</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Symbol</p></td>
+<td><p>descriptive symbol/name: RefSeq symbol used in RefSeq genome build</p></td>
+<td><p>cyp1a</p></td>
+<td><p>nomenclature defined by ZFIN</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ensembl Gene ID</p></td>
+<td><p>Ensembl database gene id: always starts with ‘ENSDAR’</p></td>
+<td><p>ENSDARG00000098315</p></td>
+<td><p><a class="reference external" href="http://useast.ensembl.org/Danio_rerio/Location/View?g=ENSDARG00000098315;r=18:5588068-5598958">link</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Human NCBI Gene ID</p></td>
+<td><p>integer gene id managed by NCBI: also known as Entrez Gene ID</p></td>
+<td><p>1543</p></td>
+<td><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/gene/1543">link</a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<p>In this tutorial we will be utilizing two key elements:</p>
+<ul class="simple">
+<li><p>a sample Gene ID list (format: .csv, .tsv, .txt) for reading in the Gene IDs, otherwise typing or copy/pasting Gene IDs is also supported. The Gene ID list can either be zebrafish Gene IDs in any of the supported formats or human Gene IDs in NCI Entrez format.</p>
+<ul>
+<li><p>the human gene list we will be using is located in the data/test_data subdirectory of this current working directory with relative path <code class="docutils literal notranslate"><span class="pre">data/test_data/hsa04911.txt</span></code></p></li>
+<li><p>the zebrafish gene list we will be using is located in the same subdirectory with relative path <code class="docutils literal notranslate"><span class="pre">data/test_data/dre04910.txt</span></code></p></li>
+</ul>
+</li>
+<li><p>the required python package</p>
+<ul>
+<li><p>See installation instructions if not already installed.</p></li>
+</ul>
+</li>
+</ul>
+<p>In general, while you do not need a large foundation in Python to execute the code listed in this tutorial, a general understanding of absolute and relative paths is useful.</p>
+<p><em>note: the Gene IDs are spelling and case sensitive</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># IMPORT PYTHON PACKAGE</span>
+<span class="c1"># ---------------------</span>
+<span class="kn">from</span> <span class="nn">danRerLib</span> <span class="kn">import</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">utils</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="execute-orthology-mappings">
+<h2>Execute Orthology Mappings<a class="headerlink" href="#execute-orthology-mappings" title="Permalink to this heading"></a></h2>
+<p>Gathering human and zebrafish orthology are especially useful when a mechanism has been characterized in humans but has yet to be looked at in zebrafish. We know that approximately 70% of human genes have zebrafish orthologs, meaning 70% of human genes also exist in zebrafish. We can use this to our advantage in various research scenarios. In some cases, you might just be interested in gathering the orthologs from a few genes. In other scenarios, you might want to get the orthology for a large list of genes. We will go through a variety of those scenarios here.</p>
+<section id="simple-case-get-orthologs">
+<h3>Simple Case: Get orthologs<a class="headerlink" href="#simple-case-get-orthologs" title="Permalink to this heading"></a></h3>
+<p><em>Purpose: given a small list Gene IDs that are of type A in organism x, convert to Gene ID type A in organism B.</em></p>
+<p>The simple case is useful for a quick ortholog investigation if you have a small list you can easily paste.</p>
+<section id="zebrafish-to-human">
+<h4>Zebrafish to Human<a class="headerlink" href="#zebrafish-to-human" title="Permalink to this heading"></a></h4>
+<p><strong>Step 1</strong>: Define your list of Gene IDs. In this case, you would have a list of Gene IDs in any of the supported zebrafish formats. I named the python list <code class="docutils literal notranslate"><span class="pre">list_of_zfish_ids</span></code> and included all the Gene IDs I want to find human orthologs for. I chose to use ZFIN IDs here, but any of the supported zebrafish Gene ID types will suffice.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_of_zfish_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ZDB-GENE-081113-5&#39;</span><span class="p">,</span> <span class="s1">&#39;ZDB-GENE-031002-50&#39;</span><span class="p">,</span> 
+                     <span class="s1">&#39;ZDB-GENE-120104-7&#39;</span><span class="p">,</span> <span class="s1">&#39;ZDB-GENE-000607-16&#39;</span><span class="p">,</span> 
+                     <span class="s1">&#39;ZDB-GENE-060503-934&#39;</span><span class="p">,</span> <span class="s1">&#39;ZDB-GENE-050320-72&#39;</span><span class="p">,</span> 
+                     <span class="s1">&#39;ZDB-GENE-030131-3147&#39;</span><span class="p">,</span> <span class="s1">&#39;ZDB-GENE-040426-2551&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 2:</strong> Tell the program which gene type you currently have.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zfish_gene_type</span> <span class="o">=</span> <span class="s1">&#39;ZFIN ID&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 3:</strong> Launch the conversion function to get your ids converted to human Gene IDs. Note that the only supported Gene ID type for humans is the Human NCBI Gene ID, aka Entrez Gene ID.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">human_ids</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">convert_to_human</span><span class="p">(</span><span class="n">list_of_zfish_ids</span><span class="p">,</span> <span class="n">zfish_gene_type</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 4:</strong> To visualize the human ids that have been converted from zebrafish ids, you can either print them to the python shell or save them to a file. If you would like to print them you can use the <code class="docutils literal notranslate"><span class="pre">print_series_pretty</span></code> function in the <code class="docutils literal notranslate"><span class="pre">utils</span></code> module.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">utils</span><span class="o">.</span><span class="n">pretty_print_series</span><span class="p">(</span><span class="n">human_ids</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4293
+81553
+26207
+605
+4861
+55022
+221143
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you would rather save the data to a file, you can save <code class="docutils literal notranslate"><span class="pre">human_ids</span></code> to a file name called <code class="docutils literal notranslate"><span class="pre">human_ids.txt</span></code> in the output data directory we defined previously. For some default options, you can use the <code class="docutils literal notranslate"><span class="pre">save_series</span></code> function in the <code class="docutils literal notranslate"><span class="pre">utils</span></code> module. Feel free to change the output directory to any folder of your choice.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;data/out_data/human_ids.txt&#39;</span>
+<span class="n">utils</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">human_ids</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="human-to-zebrafish">
+<h4>Human to Zebrafish<a class="headerlink" href="#human-to-zebrafish" title="Permalink to this heading"></a></h4>
+<p>To convert from human Gene IDs to zebrafish, you follow the same steps except we will use the <code class="docutils literal notranslate"><span class="pre">convert_to_zebrafish</span></code> function in the `mapping module.</p>
+<p><strong>Step 1:</strong> Define your list of Gene IDs. Reminder again that the only supported human Gene ID type is currently NCBI Gene ID. These are also known as Entrez Gene IDs and are of integer format. My list of Gene IDs is names <code class="docutils literal notranslate"><span class="pre">list_of_human_ids</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_of_human_ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">55585</span><span class="p">,</span> <span class="mi">23191</span><span class="p">,</span> <span class="mi">4192</span><span class="p">,</span> <span class="mi">5686</span><span class="p">,</span> 
+                     <span class="mi">197021</span><span class="p">,</span> <span class="mi">390</span><span class="p">,</span> <span class="mi">344805</span><span class="p">,</span> <span class="mi">2623</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 2:</strong> Tell the program which zebrafish Gene ID type you would like to convert to. I will choose the Symbol Gene ID type for this example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zfish_desired_gene_id_type</span> <span class="o">=</span> <span class="s1">&#39;Symbol&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 3:</strong> Launch the conversion function for human to zebrafish.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zebrafish_ids</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">convert_to_zebrafish</span><span class="p">(</span><span class="n">list_of_human_ids</span><span class="p">,</span> <span class="n">zfish_desired_gene_id_type</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 4:</strong> Print results to shell or save the results to a file. I will just print the results here using the <code class="docutils literal notranslate"><span class="pre">pretty_print_series</span></code> function in the <code class="docutils literal notranslate"><span class="pre">utils</span></code> module.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">utils</span><span class="o">.</span><span class="n">pretty_print_series</span><span class="p">(</span><span class="n">zebrafish_ids</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mdkb
+cyfip1
+psma5
+lctla
+rnd3b
+ube2q1
+gata1a
+mdka
+lctlb
+gata1b
+tmprss7
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you take a closer look, you will notice that the number of genes we started with does not always match what we will end up with. There is not a 1:1 mapping of genes between human and zebrafish, as stated previously. In fact, zebrafish often have a lot of duplicate genes (e.g. an a and b gene where a human just has one). Therefore, it is often useful to keep the mapping to know which genes in fact have orthologs and which don’t. To do this, it is better to add a column to an existing DataFrame.</p>
+</section>
+</section>
+<section id="simple-case-get-orthologs-and-keep-mapping">
+<h3>Simple Case: Get Orthologs and Keep Mapping<a class="headerlink" href="#simple-case-get-orthologs-and-keep-mapping" title="Permalink to this heading"></a></h3>
+<p><em>Purpose: given a small list Gene IDs that are of type A in organism x, convert to Gene ID type A in organism B and keep mapping.</em></p>
+<section id="id1">
+<h4>Zebrafish to Human<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h4>
+<p><strong>Step 1</strong>: Define your list of Gene IDs. In this case, you would have a list of Gene IDs in any of the supported zebrafish formats. I am using the same <code class="docutils literal notranslate"><span class="pre">list_of_zfish_ids</span></code> as before.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_of_zfish_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ZDB-GENE-081113-5&#39;</span><span class="p">,</span> <span class="s1">&#39;ZDB-GENE-031002-50&#39;</span><span class="p">,</span> 
+                     <span class="s1">&#39;ZDB-GENE-120104-7&#39;</span><span class="p">,</span> <span class="s1">&#39;ZDB-GENE-000607-16&#39;</span><span class="p">,</span> 
+                     <span class="s1">&#39;ZDB-GENE-060503-934&#39;</span><span class="p">,</span> <span class="s1">&#39;ZDB-GENE-050320-72&#39;</span><span class="p">,</span> 
+                     <span class="s1">&#39;ZDB-GENE-030131-3147&#39;</span><span class="p">,</span> <span class="s1">&#39;ZDB-GENE-040426-2551&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 2:</strong> Tell the program which gene type you currently have and that we want to keep the mapping.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zfish_gene_type</span> <span class="o">=</span> <span class="s1">&#39;ZFIN ID&#39;</span>
+<span class="n">keep_mapping</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 3:</strong> Launch the conversion function to get your ids converted to human Gene IDs. Note that the only supported Gene ID type for humans is the Human NCBI Gene ID, aka Entrez Gene ID. The <code class="docutils literal notranslate"><span class="pre">keep_mapping</span></code> variable is added here as well.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">human_ids</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">convert_to_human</span><span class="p">(</span><span class="n">list_of_zfish_ids</span><span class="p">,</span> <span class="n">zfish_gene_type</span><span class="p">,</span> <span class="n">keep_mapping</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 4:</strong> Print results to shell or save the results to a file. Both options are shown here. Notice the file name is specified.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">human_ids</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ZFIN ID</th>
+      <th>Human NCBI Gene ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ZDB-GENE-081113-5</td>
+      <td>4293</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ZDB-GENE-031002-50</td>
+      <td>81553</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ZDB-GENE-120104-7</td>
+      <td>26207</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ZDB-GENE-000607-16</td>
+      <td>605</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ZDB-GENE-060503-934</td>
+      <td>4861</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>ZDB-GENE-050320-72</td>
+      <td>55022</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ZDB-GENE-040426-2551</td>
+      <td>221143</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;data/out_data/human_ids_with_mapping.txt&#39;</span>
+<span class="n">utils</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">human_ids</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you notice in this case, row 6 has a <code class="docutils literal notranslate"><span class="pre">NaN</span></code> value for the <code class="docutils literal notranslate"><span class="pre">Human</span> <span class="pre">NCBI</span> <span class="pre">Gene</span> <span class="pre">ID</span></code> column. This is because there is no ortholog to the zebrafish gene <code class="docutils literal notranslate"><span class="pre">ZDB-GENE-030131-3147</span></code> in humans. If in the further downstream analysis this isn’t important to you, you can drop that row from the dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">human_ids</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ZFIN ID</th>
+      <th>Human NCBI Gene ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ZDB-GENE-081113-5</td>
+      <td>4293</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ZDB-GENE-031002-50</td>
+      <td>81553</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ZDB-GENE-120104-7</td>
+      <td>26207</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ZDB-GENE-000607-16</td>
+      <td>605</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ZDB-GENE-060503-934</td>
+      <td>4861</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>ZDB-GENE-050320-72</td>
+      <td>55022</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ZDB-GENE-040426-2551</td>
+      <td>221143</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Or you could have ran the <code class="docutils literal notranslate"><span class="pre">convert_to_human</span></code> function with the <code class="docutils literal notranslate"><span class="pre">keep_missing_orthos</span></code> option as <code class="docutils literal notranslate"><span class="pre">False</span></code>, the default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">keep_mapping</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">keep_missing_orthos</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">mapping</span><span class="o">.</span><span class="n">convert_to_human</span><span class="p">(</span><span class="n">list_of_zfish_ids</span><span class="p">,</span> <span class="n">zfish_gene_type</span><span class="p">,</span> 
+                         <span class="n">keep_mapping</span><span class="p">,</span> <span class="n">keep_missing_orthos</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ZFIN ID</th>
+      <th>Human NCBI Gene ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ZDB-GENE-081113-5</td>
+      <td>4293</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ZDB-GENE-031002-50</td>
+      <td>81553</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ZDB-GENE-120104-7</td>
+      <td>26207</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ZDB-GENE-000607-16</td>
+      <td>605</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ZDB-GENE-060503-934</td>
+      <td>4861</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>ZDB-GENE-050320-72</td>
+      <td>55022</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ZDB-GENE-040426-2551</td>
+      <td>221143</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="id2">
+<h4>Human to Zebrafish<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h4>
+<p>The steps for human to zebrafish are nearly the same. The repeated steps are shown below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_of_human_ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">55585</span><span class="p">,</span> <span class="mi">23191</span><span class="p">,</span> <span class="mi">4192</span><span class="p">,</span> <span class="mi">5686</span><span class="p">,</span> 
+                     <span class="mi">197021</span><span class="p">,</span> <span class="mi">390</span><span class="p">,</span> <span class="mi">344805</span><span class="p">,</span> <span class="mi">2623</span><span class="p">]</span>
+
+<span class="n">zfish_desired_gene_id_type</span> <span class="o">=</span> <span class="s1">&#39;Symbol&#39;</span>
+<span class="n">keep_mapping</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">zebrafish_ids</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">convert_to_zebrafish</span><span class="p">(</span><span class="n">list_of_human_ids</span><span class="p">,</span> 
+                                             <span class="n">zfish_desired_gene_id_type</span><span class="p">,</span> 
+                                             <span class="n">keep_mapping</span><span class="p">)</span>
+<span class="n">zebrafish_ids</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Human NCBI Gene ID</th>
+      <th>Symbol</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>55585</td>
+      <td>ube2q1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>23191</td>
+      <td>cyfip1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4192</td>
+      <td>mdkb</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4192</td>
+      <td>mdka</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5686</td>
+      <td>psma5</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>197021</td>
+      <td>lctla</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>197021</td>
+      <td>lctlb</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>390</td>
+      <td>rnd3b</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>344805</td>
+      <td>tmprss7</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2623</td>
+      <td>gata1b</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>2623</td>
+      <td>gata1a</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>In this case, every human gene has an ortholog in zebrafish. In fact, some of the human genes here have more than one zebrafish ortholog. For example, the <code class="docutils literal notranslate"><span class="pre">2623</span></code> gene has the zebrafish orthologs <code class="docutils literal notranslate"><span class="pre">gata1b</span></code> and <code class="docutils literal notranslate"><span class="pre">gata1a</span></code>. All orthologs are kept in this method.</p>
+</section>
+</section>
+<section id="get-orthologs-for-genes-from-file">
+<h3>Get Orthologs for Genes from File<a class="headerlink" href="#get-orthologs-for-genes-from-file" title="Permalink to this heading"></a></h3>
+<p><em>Purpose: given a list of Gene IDs from a file that are of type A in organism x, convert to Gene ID type A in organism B and save to file.</em></p>
+<section id="id3">
+<h4>Zebrafish to Human<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h4>
+<p><strong>Step 1</strong>: Read in your list of Gene IDs.  The data in the <code class="docutils literal notranslate"><span class="pre">test_data</span></code> sub-directory is in a <code class="docutils literal notranslate"><span class="pre">tsv</span></code> type format with a <code class="docutils literal notranslate"><span class="pre">.txt</span></code> extension. The <code class="docutils literal notranslate"><span class="pre">pandas</span></code> package can read this without an issue (same with <code class="docutils literal notranslate"><span class="pre">excel</span></code> or a <code class="docutils literal notranslate"><span class="pre">csv</span></code> file), we just need to specify the separator. <code class="docutils literal notranslate"><span class="pre">\t</span></code> is really the best for this type of data. Note that any excel file or csv file should work here. I am using a file named <code class="docutils literal notranslate"><span class="pre">dre04910.txt</span></code> which is a list of zebrafish genes in the KEGG pathway <code class="docutils literal notranslate"><span class="pre">04910</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_file_path</span> <span class="o">=</span> <span class="s1">&#39;data/test_data/dre04910.txt&#39;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">19</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">data_file_path</span> <span class="o">=</span> <span class="s1">&#39;data/test_data/dre04910.txt&#39;</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;pd&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>To get a quick look at the data, we can print the first three table entries and some data stats:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># print first three lines</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;There are </span><span class="si">{</span><span class="n">rows</span><span class="si">}</span><span class="s1"> rows and </span><span class="si">{</span><span class="n">cols</span><span class="si">}</span><span class="s1"> columns&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There are 180 rows and 1 columns
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see, this list of Gene IDs has 180 entries.</p>
+<p><strong>Step 2:</strong> Tell the program which Gene ID type you currently have.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zfish_gene_type</span> <span class="o">=</span> <span class="s1">&#39;NCBI Gene ID&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 3:</strong> Launch the conversion function to get your ids converted to human Gene IDs. Note that the only supported Gene ID type for humans is the Human NCBI Gene ID, aka Entrez Gene ID.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">human_ids</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">convert_to_human</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">zfish_gene_type</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 4:</strong> Print results to shell or save the results to a file. Both options are shown here. Notice the file name is specified.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">human_ids</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">human_ids</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;There are </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s1"> rows in this dataset.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There are 117 rows in this dataset.
+</pre></div>
+</div>
+</div>
+</div>
+<p>By printing some of the stats as shown above, we see that we are left with 117 human genes. This means that out of the 180 zebrafish genes we had, we only have 117 human orthologs. This is expected as, if you recall, only approximately 70% of human genes have zebrafish orthologs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;data/out_data/dre05910_human_genes.txt&#39;</span>
+<span class="n">utils</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">human_ids</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h4>Human to Zebrafish<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h4>
+<p>Below is a quick run-though of the human to zebrafish case. The dataset used is a file named <code class="docutils literal notranslate"><span class="pre">hsa04911.txt</span></code> which contains all human genes in the KEGG pathway 04911.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># read in data and print some stats</span>
+<span class="n">data_file_path</span> <span class="o">=</span> <span class="s1">&#39;data/test_data/hsa04911.txt&#39;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;There are </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s1"> rows in this dataset.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There are 86 rows in this dataset.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># launch conversion</span>
+<span class="n">desired_zfish_gene_type</span> <span class="o">=</span> <span class="s1">&#39;NCBI Gene ID&#39;</span>
+<span class="n">zfish_ids</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">convert_to_zebrafish</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">zfish_gene_type</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># print some results stats</span>
+<span class="n">zfish_ids</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    64272
+1    64269
+2    64267
+Name: NCBI Gene ID, dtype: object
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There are 113 rows in this dataset.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">zfish_ids</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;There are </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2"> rows in this dataset.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="get-orthologs-for-a-column-of-a-larger-dataset">
+<h3>Get Orthologs for a Column of a Larger Dataset<a class="headerlink" href="#get-orthologs-for-a-column-of-a-larger-dataset" title="Permalink to this heading"></a></h3>
+<p><em>Purpose: you have a dataset with columns x, y, z. Column x has Gene IDs in from organism $\alpha$ in type A. You would like to get orthologs for these Gene IDs to organism $\beta$ in type B while maintaining the information of columns y, z.</em></p>
+<p>In this scenario, you might have some data that looks like:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>NCBI Gene ID</p></th>
+<th class="head"><p>PValue</p></th>
+<th class="head"><p>logFC</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>100002263</p></td>
+<td><p>2.3</p></td>
+<td><p>0.03</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<p>and you might want to get something like:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>NCBI Gene ID</p></th>
+<th class="head"><p>Human NCBI Gene ID</p></th>
+<th class="head"><p>PValue</p></th>
+<th class="head"><p>logFC</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>140615</p></td>
+<td><p>9415</p></td>
+<td><p>2.3</p></td>
+<td><p>0.03</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>The information in the log2FC and PValue columns are essential to keep ‘in order’ with the GeneID column. It is often that in this scenario, you will have an entire gene set and will be dealing with a lot more data. Lets look at a test dataset for this case.</p>
+<p><strong>Step 1:</strong> Read in the data as done previously.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_file_path</span> <span class="o">=</span> <span class="s1">&#39;data/test_data/example_diff_express_data.txt&#39;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To get a quick look at the data, we can print the first three table entries and some data stats:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># print first three lines</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NCBI Gene ID</th>
+      <th>PValue</th>
+      <th>logFC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>100000006</td>
+      <td>0.792615</td>
+      <td>0.115009</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>100000044</td>
+      <td>0.015286</td>
+      <td>0.803879</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>100000085</td>
+      <td>0.264762</td>
+      <td>0.267360</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There are 5464 rows and 3 columns
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;There are </span><span class="si">{</span><span class="n">rows</span><span class="si">}</span><span class="s1"> rows and </span><span class="si">{</span><span class="n">cols</span><span class="si">}</span><span class="s1"> columns&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 2:</strong> Get Human Orthologs. To execute the mapping and add the column, we will use the <code class="docutils literal notranslate"><span class="pre">add_mapped_ortholg_column</span></code> function from the <code class="docutils literal notranslate"><span class="pre">mapping</span></code> module. We will give this function the data read in above, and we need to specify the <code class="docutils literal notranslate"><span class="pre">id_from</span></code> and <code class="docutils literal notranslate"><span class="pre">id_to</span></code> as before.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">id_from</span> <span class="o">=</span> <span class="s1">&#39;NCBI Gene ID&#39;</span>
+<span class="n">id_to</span> <span class="o">=</span> <span class="s1">&#39;Human NCBI Gene ID&#39;</span>
+<span class="n">new_data</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">add_mapped_ortholog_column</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">id_from</span><span class="p">,</span> <span class="n">id_to</span><span class="p">)</span>
+<span class="n">new_data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NCBI Gene ID</th>
+      <th>Human NCBI Gene ID</th>
+      <th>PValue</th>
+      <th>logFC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>100000006</td>
+      <td>84561</td>
+      <td>0.792615</td>
+      <td>0.115009</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>100000044</td>
+      <td>NaN</td>
+      <td>0.015286</td>
+      <td>0.803879</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>100000085</td>
+      <td>968</td>
+      <td>0.264762</td>
+      <td>0.267360</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Step 3:</strong> Save to file. You can save this dataframe to a file as done previously.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;data/out_data/ortholog_dataframe.txt&#39;</span>
+<span class="n">utils</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">new_data</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<p>This concludes the mapping tutorial! In summary, the key functions in this library for mapping are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>function</p></th>
+<th class="head"><p>purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>convert_to_human</p></td>
+<td><p>convert a list of Zebrafish Gene IDs to Human Gene IDs</p></td>
+</tr>
+<tr class="row-odd"><td><p>convert_to_zebrafish</p></td>
+<td><p>convert a list of Human Gene IDs to Zebrafish Gene IDs</p></td>
+</tr>
+<tr class="row-even"><td><p>add_mapped_ortholog_column</p></td>
+<td><p>add a ortholog column of Gene IDs to an existing DataFrame</p></td>
+</tr>
+</tbody>
+</table>
+<p>In the human to zebrafish case, we see that we went from 86 Human NCBI Gene IDs to 113 zebrafish NCBI Gene IDs.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="perform_geneid_mapping.html" class="btn btn-neutral float-left" title="Gene ID Mapping" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ashley Schwartz.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1209 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Gene ID Mapping\n",
+    "\n",
+    "Author: Ashley Schwartz\n",
+    "\n",
+    "Date: September 2023\n",
+    "\n",
+    "## Purpose and Background\n",
+    "\n",
+    "This tutorial goes over how to simply convert a list of zebrafish Gene IDs to another Gene ID type. Gene IDs come in very different forms depending on the database or genome build you are using. This can get confusing! The Gene ID options are:\n",
+    "\n",
+    "| Gene ID Name | Description | Example | Notes |\n",
+    "|--|--|--|--|\n",
+    "| ZFIN ID | ZFIN gene id: always starts with 'ZDB' for zebafish database | ZDB-GENE-011219-1 | used as the \"master\" gene id ([link](https://zfin.org/))|\n",
+    "| NCBI Gene ID | integer gene id managed by NCBI: also known as Entrez Gene ID | 140634 | [link](https://www.ncbi.nlm.nih.gov/gene?Db=gene&Cmd=DetailsSearch&Term=140634) |\n",
+    "| Symbol | descriptive symbol/name: RefSeq symbol used in RefSeq genome build | cyp1a | nomenclature defined by ZFIN |\n",
+    "| Ensembl Gene ID | Ensembl database gene id: always starts with 'ENSDAR'| ENSDARG00000098315 | [link](http://useast.ensembl.org/Danio_rerio/Location/View?g=ENSDARG00000098315;r=18:5588068-5598958) |\n",
+    "\n",
+    "## Requirements\n",
+    "\n",
+    "In this tutorial we will be utilizing two key elements:\n",
+    "- a sample Gene ID list (format: .csv, .tsv, .txt) for reading in the Gene IDs, otherwise typing or copy/pasting Gene IDs is also supported\n",
+    "    - the gene list we will be using is located in the data/test_data subdirectory of this current working directory with relative path `data/test_data/example_diff_express_data.txt`\n",
+    "- the required python package\n",
+    "    - see install notes if not currently installed.\n",
+    "\n",
+    "In general, while you do not need a large foundation in Python to execute the code listed in this tutorial, a general understanding of absolute and relative paths is useful.\n",
+    "\n",
+    "_note: the Gene IDs are spelling and case sensitive_"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# IMPORT PYTHON PACKAGE\n",
+    "# ---------------------\n",
+    "from danRerLib import mapping, utils"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Execute Mappings\n",
+    "\n",
+    "There are a variety of scenarios when you might need to map Gene IDs. In the most simplest case, you might have a few IDs you would like to map to Entrez NCBI Gene IDs since that is a common Gene ID used in pathway databases. Other times, you might want to convert an entire column in an excel fil you have. We will go through a few different options. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Simple Case: Convert a list of Gene IDs\n",
+    "\n",
+    "_Purpose: Given a small list of Gene IDs that are of Gene ID type A, convert to Gene ID type B._\n",
+    "\n",
+    "You would most likely use the simple case if you have a small list of gene ids that you need to convert. Especially useful if you just want to copy and paste and retrieve your converted ids!\n",
+    "\n",
+    "__Step 1__: Define your list of ids. In this case, I have NCBI Gene IDs. I named the python list `list_of_gene_ids` and include all the Gene IDs I want to convert. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list_of_gene_ids = [ \n",
+    "    100000252, 100000750, 100001198, 100001260, 100002225, 100002263, \n",
+    "    100002756, 100003223, 100007521, 100149273, 100149794, 100170795,\n",
+    "    100321746, 100329897, 100330617,\n",
+    "]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "__Step 2__: Tell the program which ID you currently have and which ID you would like to convert to. I currently have NCBI Gene IDs and I want to convert to ZFIN Gene IDs. Note that Gene ID options are spelling and case sensitive. Options are listed at the beginning of this document. (don't worry, the program will let you know if you have made a mistake when you launch the program!)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "current_gene_id_type = 'NCBI Gene ID'\n",
+    "desired_gene_id_type = 'ZFIN ID'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "__Step 3__: Launch the conversion function to get your converted ids. This means we want to run the `convert_ids` function in the `mapping` module of our library. Once executed, the converted ids will be stored in the `converted_ids` variable."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# do conversion\n",
+    "converted_ids = mapping.convert_ids(list_of_gene_ids, current_gene_id_type, desired_gene_id_type)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "__Step 4__: To visualize your converted ids, you can either print them to the python shell or save them to a file. If you would like to print them, which is a fine idea if you only have a few, you can use the `print_series_pretty` function in the `utils` module of the library. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "ZDB-GENE-030131-1904\n",
+      "ZDB-GENE-030131-3404\n",
+      "ZDB-GENE-030325-1\n",
+      "ZDB-GENE-030616-609\n",
+      "ZDB-GENE-040426-743\n",
+      "ZDB-GENE-050309-246\n",
+      "ZDB-GENE-071009-6\n",
+      "ZDB-GENE-080219-34\n",
+      "ZDB-GENE-080723-44\n",
+      "ZDB-GENE-081223-2\n",
+      "ZDB-GENE-090313-141\n",
+      "ZDB-GENE-091117-28\n",
+      "ZDB-GENE-110309-3\n",
+      "ZDB-GENE-120215-92\n"
+     ]
+    }
+   ],
+   "source": [
+    "utils.pretty_print_series(converted_ids)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "If you would rather save the data to a file, you can save `converted_ids` to a file name called `converted_ids.txt` in the output data directory we defined previously. For some default options, you can use the `save_data` function in the `utils` module. Feel free to change the output directory to any folder of your choice.  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "file_name = 'data/out_data/converted_ids.txt'\n",
+    "utils.save_data(converted_ids, file_name)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Simple Case: Convert a list of Gene IDs From a File\n",
+    "\n",
+    "_Purpose: Given a list of Gene IDs from a file that are of Gene ID type A, convert to Gene ID type B._\n",
+    "\n",
+    "If you have a file that contains a list of Gene IDs, you can easily repeat these steps by reading in that file first. Check it out:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>NCBI Gene ID</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>30301</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>30459</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>57924</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>564772</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>794572</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>337772</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>338183</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>445326</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>105665603</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9</th>\n",
+       "      <td>336928</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>10</th>\n",
+       "      <td>100003844</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>11</th>\n",
+       "      <td>436767</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>12</th>\n",
+       "      <td>100003419</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>13</th>\n",
+       "      <td>553785</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>14</th>\n",
+       "      <td>447813</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "    NCBI Gene ID\n",
+       "0          30301\n",
+       "1          30459\n",
+       "2          57924\n",
+       "3         564772\n",
+       "4         794572\n",
+       "5         337772\n",
+       "6         338183\n",
+       "7         445326\n",
+       "8      105665603\n",
+       "9         336928\n",
+       "10     100003844\n",
+       "11        436767\n",
+       "12     100003419\n",
+       "13        553785\n",
+       "14        447813"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data_file_path = 'data/test_data/ncbi_gene_list.txt'\n",
+    "list_of_gene_ids = pd.read_csv(data_file_path, sep='\\t')\n",
+    "list_of_gene_ids"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "When we use the `pandas` package to read in the data, it organizes it into what is called a `Pandas DataFrame`. All other steps can be executed the same way."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "ZDB-GENE-000616-10\n",
+      "ZDB-GENE-030131-1024\n",
+      "ZDB-GENE-030131-174\n",
+      "ZDB-GENE-030131-8872\n",
+      "ZDB-GENE-030219-83\n",
+      "ZDB-GENE-040718-198\n",
+      "ZDB-GENE-040808-44\n",
+      "ZDB-GENE-040912-16\n",
+      "ZDB-GENE-050419-85\n",
+      "ZDB-GENE-050522-533\n",
+      "ZDB-GENE-080415-1\n",
+      "ZDB-GENE-081105-136\n",
+      "ZDB-GENE-150409-7\n",
+      "ZDB-GENE-991229-12\n"
+     ]
+    }
+   ],
+   "source": [
+    "current_gene_id_type = 'NCBI Gene ID'\n",
+    "desired_gene_id_type = 'ZFIN ID'\n",
+    "\n",
+    "# do conversion\n",
+    "converted_ids = mapping.convert_ids(list_of_gene_ids, current_gene_id_type, desired_gene_id_type)\n",
+    "\n",
+    "utils.pretty_print_series(converted_ids)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "You could also save the data to a file in the same manner. As you can see, we now have our converted ids. The ids will be in order based on the original Gene IDs given to the program. If you would like to keep the mapping, adding a column to the gene IDs you currently have might be useful (see below). Limitations of this method include a non 1:1 mapping between Gene ID options. It is quite common that there is more than one Ensembl Gene ID for another Gene ID option. This function will return all mappings, but, since it just returns the list, you do not know which gene in your original set has mapped to two different genes in the new set. This may not be an issue for some use cases, but sometimes it is important to know. \n",
+    "\n",
+    "If you would like to keep the old Gene IDs along with the mapping, follow the next set of instructions!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Simple Case: Convert a list of Gene IDs and Keep Mapping\n",
+    "\n",
+    "_Purpose: Given a list of Gene IDs that are of Gene ID type A, convert to Gene ID type B and keep both Gene ID A and Gene ID B in a table._\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "__Step 1__: Define your list of ids. This is the same list I used above, and remember they are NCBI Gene IDs. I am also defining my current Gene ID type and the Gene ID type I would like to convert to here."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list_of_gene_ids = [ \n",
+    "    100000252, 100000750, 100001198, 100001260, 100002225, 100002263, \n",
+    "    100002756, 100003223, 100007521, 100149273, 100149794, 100170795,\n",
+    "    100321746, 100329897, 100330617,\n",
+    "]\n",
+    "\n",
+    "current_gene_id_type = 'NCBI Gene ID'\n",
+    "desired_gene_id_type = 'ZFIN ID'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "__Step 2:__ Do converstion. If we would like to keep the mapping, we would use the `convert_ids` function in the `mapping` module of our library but activate the `keep_mapping` parameter. By default, as used earlier, `keep_mapping = False`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>NCBI Gene ID</th>\n",
+       "      <th>ZFIN ID</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>100002263</td>\n",
+       "      <td>ZDB-GENE-030131-1904</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>100330617</td>\n",
+       "      <td>ZDB-GENE-030131-3404</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>100001198</td>\n",
+       "      <td>ZDB-GENE-030325-1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>100003223</td>\n",
+       "      <td>ZDB-GENE-030616-609</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>100000252</td>\n",
+       "      <td>ZDB-GENE-040426-743</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>100001260</td>\n",
+       "      <td>ZDB-GENE-050309-246</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>100321746</td>\n",
+       "      <td>ZDB-GENE-071009-6</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>100002225</td>\n",
+       "      <td>ZDB-GENE-080219-34</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>100170795</td>\n",
+       "      <td>ZDB-GENE-080723-44</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9</th>\n",
+       "      <td>100000750</td>\n",
+       "      <td>ZDB-GENE-081223-2</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>10</th>\n",
+       "      <td>100007521</td>\n",
+       "      <td>ZDB-GENE-090313-141</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>11</th>\n",
+       "      <td>100149273</td>\n",
+       "      <td>ZDB-GENE-091117-28</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>12</th>\n",
+       "      <td>100149794</td>\n",
+       "      <td>ZDB-GENE-110309-3</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>13</th>\n",
+       "      <td>100329897</td>\n",
+       "      <td>ZDB-GENE-120215-92</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   NCBI Gene ID               ZFIN ID\n",
+       "0     100002263  ZDB-GENE-030131-1904\n",
+       "1     100330617  ZDB-GENE-030131-3404\n",
+       "2     100001198     ZDB-GENE-030325-1\n",
+       "3     100003223   ZDB-GENE-030616-609\n",
+       "4     100000252   ZDB-GENE-040426-743\n",
+       "5     100001260   ZDB-GENE-050309-246\n",
+       "6     100321746     ZDB-GENE-071009-6\n",
+       "7     100002225    ZDB-GENE-080219-34\n",
+       "8     100170795    ZDB-GENE-080723-44\n",
+       "9     100000750     ZDB-GENE-081223-2\n",
+       "10    100007521   ZDB-GENE-090313-141\n",
+       "11    100149273    ZDB-GENE-091117-28\n",
+       "12    100149794     ZDB-GENE-110309-3\n",
+       "13    100329897    ZDB-GENE-120215-92"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# do conversion\n",
+    "converted_id_table = mapping.convert_ids(list_of_gene_ids, current_gene_id_type, desired_gene_id_type, keep_mapping=True)\n",
+    "converted_id_table"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "You can save the data in the same way. In this case, since we have a `Pandas DataFrame` with column headings, the column names will be saved automatically. \n",
+    "\n",
+    "If you would like to read the Gene IDs in from a file, all steps are the same besides the initialization of the Gene IDs:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>NCBI Gene ID</th>\n",
+       "      <th>ZFIN ID</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>57924</td>\n",
+       "      <td>ZDB-GENE-000616-10</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>100003844</td>\n",
+       "      <td>ZDB-GENE-030131-1024</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>337772</td>\n",
+       "      <td>ZDB-GENE-030131-174</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>336928</td>\n",
+       "      <td>ZDB-GENE-030131-8872</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>338183</td>\n",
+       "      <td>ZDB-GENE-030219-83</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>436767</td>\n",
+       "      <td>ZDB-GENE-040718-198</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>445326</td>\n",
+       "      <td>ZDB-GENE-040808-44</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>447813</td>\n",
+       "      <td>ZDB-GENE-040912-16</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>794572</td>\n",
+       "      <td>ZDB-GENE-050419-85</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9</th>\n",
+       "      <td>553785</td>\n",
+       "      <td>ZDB-GENE-050522-533</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>10</th>\n",
+       "      <td>564772</td>\n",
+       "      <td>ZDB-GENE-080415-1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>11</th>\n",
+       "      <td>100003419</td>\n",
+       "      <td>ZDB-GENE-081105-136</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>12</th>\n",
+       "      <td>105665603</td>\n",
+       "      <td>ZDB-GENE-150409-7</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>13</th>\n",
+       "      <td>30459</td>\n",
+       "      <td>ZDB-GENE-991229-12</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   NCBI Gene ID               ZFIN ID\n",
+       "0         57924    ZDB-GENE-000616-10\n",
+       "1     100003844  ZDB-GENE-030131-1024\n",
+       "2        337772   ZDB-GENE-030131-174\n",
+       "3        336928  ZDB-GENE-030131-8872\n",
+       "4        338183    ZDB-GENE-030219-83\n",
+       "5        436767   ZDB-GENE-040718-198\n",
+       "6        445326    ZDB-GENE-040808-44\n",
+       "7        447813    ZDB-GENE-040912-16\n",
+       "8        794572    ZDB-GENE-050419-85\n",
+       "9        553785   ZDB-GENE-050522-533\n",
+       "10       564772     ZDB-GENE-080415-1\n",
+       "11    100003419   ZDB-GENE-081105-136\n",
+       "12    105665603     ZDB-GENE-150409-7\n",
+       "13        30459    ZDB-GENE-991229-12"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data_file_path = 'data/test_data/ncbi_gene_list.txt'\n",
+    "list_of_gene_ids = pd.read_csv(data_file_path, sep='\\t')\n",
+    "\n",
+    "current_gene_id_type = 'NCBI Gene ID'\n",
+    "desired_gene_id_type = 'ZFIN ID'\n",
+    "\n",
+    "# do conversion\n",
+    "converted_id_table = mapping.convert_ids(list_of_gene_ids, current_gene_id_type, desired_gene_id_type, keep_mapping=True)\n",
+    "converted_id_table"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The above methodologies are great if you have list of Gene IDs you would like to convert. There are cases where you might have a large dataset and one column in that dataset has the Gene IDs that you would like to convert. In this scenario, keeping all columns properly sorted is extremely important. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Convert Gene IDs in a Column of a Larger Dataset\n",
+    "\n",
+    "_Purpose: you have a dataset with columns x, y, z. Column x has Gene IDs in type A. You would like to convert these Gene IDs to type B while maintaining the information of columns y, z._\n",
+    "\n",
+    "In this scenario, you might have some data that looks like:\n",
+    "\n",
+    "| NCBI Gene ID | PValue | logFC | \n",
+    "|-|-|-|\n",
+    "| 100002263 | 2.3 | 0.03 | \n",
+    "|... | ... | ... |\n",
+    "\n",
+    "The information in the log2FC and PValue columns are essential to keep 'in order' with the GeneID column. It is often that in this scenario, you will have an entire gene set and will be dealing with a lot more data. Lets look at a test dataset for this case."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "__Step 1:__ Read in the data. The data in the `test_data` sub-directory is in a `tsv` type format with a `.txt` extension. The `pandas` package can read this without an issue (same with `excel` or a `csv` file), we just need to specify the separator. `\\t` is really the best for this type of data. Note that any excel file or csv file should work here."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data_file_path = 'data/test_data/example_diff_express_data.txt'\n",
+    "data = pd.read_csv(data_file_path, sep='\\t')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To get a quick look at the data, we can print the first three table entries and some data stats:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>NCBI Gene ID</th>\n",
+       "      <th>PValue</th>\n",
+       "      <th>logFC</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>100000006</td>\n",
+       "      <td>0.792615</td>\n",
+       "      <td>0.115009</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>100000044</td>\n",
+       "      <td>0.015286</td>\n",
+       "      <td>0.803879</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>100000085</td>\n",
+       "      <td>0.264762</td>\n",
+       "      <td>0.267360</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   NCBI Gene ID    PValue     logFC\n",
+       "0     100000006  0.792615  0.115009\n",
+       "1     100000044  0.015286  0.803879\n",
+       "2     100000085  0.264762  0.267360"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "There are 5464 rows and 3 columns\n"
+     ]
+    }
+   ],
+   "source": [
+    "# print first three lines\n",
+    "data.head(3)\n",
+    "rows, cols = data.shape\n",
+    "print(f'There are {rows} rows and {cols} columns')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "__Step 2:__ Convert Gene IDs. To execute the mapping and add the column, we will use the `add_mapped_column` function from the `mapping` module. We will give this function the data read in above, and we need to specify the `id_from` and `id_to` as before. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>NCBI Gene ID</th>\n",
+       "      <th>ZFIN ID</th>\n",
+       "      <th>PValue</th>\n",
+       "      <th>logFC</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>100000006</td>\n",
+       "      <td>ZDB-GENE-030131-5654</td>\n",
+       "      <td>0.792615</td>\n",
+       "      <td>0.115009</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>100000044</td>\n",
+       "      <td>ZDB-GENE-121214-60</td>\n",
+       "      <td>0.015286</td>\n",
+       "      <td>0.803879</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>100000085</td>\n",
+       "      <td>ZDB-GENE-030131-1312</td>\n",
+       "      <td>0.264762</td>\n",
+       "      <td>0.267360</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  NCBI Gene ID               ZFIN ID    PValue     logFC\n",
+       "0    100000006  ZDB-GENE-030131-5654  0.792615  0.115009\n",
+       "1    100000044    ZDB-GENE-121214-60  0.015286  0.803879\n",
+       "2    100000085  ZDB-GENE-030131-1312  0.264762  0.267360"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "id_from = 'NCBI Gene ID'\n",
+    "id_to = 'ZFIN ID'\n",
+    "new_data = mapping.add_mapped_column(data, id_from, id_to)\n",
+    "new_data.head(3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "__Step 3:__ Save to file. You can save this dataframe to a file as done previously."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "file_name = 'data/out_data/converted_dataframe.txt'\n",
+    "utils.save_data(new_data, file_name)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Special Cases\n",
+    "\n",
+    "Reminder that the `id_from` and `id_to` must match the specificed options: NCBI Gene ID, Symbol, ZFIN ID, or Ensembl Gene ID. If the column in your dataset does not match one of the ID type options, that is fine. The `add_mapped_column` function has an option to deal with that. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>NCBI ID</th>\n",
+       "      <th>PValue</th>\n",
+       "      <th>logFC</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>100000006</td>\n",
+       "      <td>0.792615</td>\n",
+       "      <td>0.115009</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>100000009</td>\n",
+       "      <td>0.607285</td>\n",
+       "      <td>-0.144714</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>100000026</td>\n",
+       "      <td>0.021338</td>\n",
+       "      <td>0.603871</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "     NCBI ID    PValue     logFC\n",
+       "0  100000006  0.792615  0.115009\n",
+       "1  100000009  0.607285 -0.144714\n",
+       "2  100000026  0.021338  0.603871"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "data_file_path = 'data/test_data/test_set_invalid_col_name.txt'\n",
+    "data = pd.read_csv(data_file_path, sep='\\t')\n",
+    "data.head(3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "As you can see here, the column name we have is `NCBI ID`, which is not one of the options. We can use the `column_name_with_ids` parameter to get around this. Note that the `id_from` parameter must be one of the options and the `column_name_with_ids` must match the column name with the IDs in the dataset exactly. Of course, we would want `id_from` and `column_name_with_ids` to be of the same Gene ID type, likely with just a different spelling or naming convention as seen here."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>NCBI ID</th>\n",
+       "      <th>ZFIN ID</th>\n",
+       "      <th>PValue</th>\n",
+       "      <th>logFC</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>100000006</td>\n",
+       "      <td>ZDB-GENE-030131-5654</td>\n",
+       "      <td>0.792615</td>\n",
+       "      <td>0.115009</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>100000009</td>\n",
+       "      <td>ZDB-GENE-130530-778</td>\n",
+       "      <td>0.607285</td>\n",
+       "      <td>-0.144714</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>100000026</td>\n",
+       "      <td>ZDB-GENE-120823-1</td>\n",
+       "      <td>0.021338</td>\n",
+       "      <td>0.603871</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "     NCBI ID               ZFIN ID    PValue     logFC\n",
+       "0  100000006  ZDB-GENE-030131-5654  0.792615  0.115009\n",
+       "1  100000009   ZDB-GENE-130530-778  0.607285 -0.144714\n",
+       "2  100000026     ZDB-GENE-120823-1  0.021338  0.603871"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "id_from = 'NCBI Gene ID'\n",
+    "id_to = 'ZFIN ID'\n",
+    "column_name_with_ids = 'NCBI ID'\n",
+    "new_data = mapping.add_mapped_column(data, id_from, id_to, column_name_with_ids)\n",
+    "new_data.head(3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can see that the mapping was executed successfully even though the column name is not one of our specified options. \n",
+    "\n",
+    "In the final special case, we could also drop the old column ids if we don't need them anymore. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>ZFIN ID</th>\n",
+       "      <th>PValue</th>\n",
+       "      <th>logFC</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>ZDB-GENE-030131-5654</td>\n",
+       "      <td>0.792615</td>\n",
+       "      <td>0.115009</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>ZDB-GENE-130530-778</td>\n",
+       "      <td>0.607285</td>\n",
+       "      <td>-0.144714</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>ZDB-GENE-120823-1</td>\n",
+       "      <td>0.021338</td>\n",
+       "      <td>0.603871</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                ZFIN ID    PValue     logFC\n",
+       "0  ZDB-GENE-030131-5654  0.792615  0.115009\n",
+       "1   ZDB-GENE-130530-778  0.607285 -0.144714\n",
+       "2     ZDB-GENE-120823-1  0.021338  0.603871"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "new_data = mapping.add_mapped_column(data, id_from, id_to, \n",
+    "                                     column_name_with_ids, keep_old_ids=False)\n",
+    "new_data.head(3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In this run I specified the parameter `keep_old_ids` to be `False`; therefore, it is no longer included in the output. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Conclusion"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This concludes the mapping tutorial! In summary, the key functions in this library for mapping are:\n",
+    "\n",
+    "| function | purpose |\n",
+    "| - | - | \n",
+    "|convert_ids | convert a list of Gene IDs |\n",
+    "| add_mapped_column | add a converted list of Gene IDs to an existing DataFrame|\n",
+    "\n",
+    "For more information about the full functionality of each function, please refer to the API Reference."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "bioinfo",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.16"
+  },
+  "orig_nbformat": 4
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

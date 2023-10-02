@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "danRerlib"
+name = "danrerlib"
 version = "0.1.0"
 description = "Zebrafish gene mapping and functional enrichment library"
 authors = ["Ashley Schwartz"]

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>danRerLib.KEGG &mdash; danRerLib</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/fonts.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            danRerLib
+              <img src="../../../_static/danrerlib_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User's Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../userguide/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../userguide/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../userguide/usage.html">Usage Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/perform_geneid_mapping.html">Gene ID Mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/perform_orthology_mapping.html">Orthology Mapping</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">danRerLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.KEGG</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/danRerLib/KEGG/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-danRerLib.KEGG">
+<span id="danrerlib-kegg"></span><h1><a class="reference internal" href="#module-danRerLib.KEGG" title="danRerLib.KEGG"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danRerLib.KEGG</span></code></a><a class="headerlink" href="#module-danRerLib.KEGG" title="Permalink to this heading"></a></h1>
+<section id="kegg-module">
+<p>This module provides functions for retrieving gene information associated with KEGG pathways and diseases
+for various organisms, including human, zebrafish, and mapped zebrafish.</p>
+<dl class="simple">
+<dt>Functions:</dt><dd><ul class="simple">
+<li><p><cite>get_genes_in_pathway</cite>: Retrieve genes associated with a specific KEGG pathway.</p></li>
+<li><p><cite>get_genes_in_disease</cite>: Retrieve genes associated with a disease for a specified organism.</p></li>
+</ul>
+</dd>
+<dt>Constants:</dt><dd><ul class="simple">
+<li><p><cite>NCBI_ID</cite>: Identifier for ‘NCBI Gene ID’.</p></li>
+<li><p><cite>ZFIN_ID</cite>: Identifier for ‘ZFIN ID’.</p></li>
+<li><p><cite>ENS_ID</cite>: Identifier for ‘Ensembl ID’.</p></li>
+<li><p><cite>SYMBOL</cite>: Identifier for gene ‘Symbol’.</p></li>
+<li><p><cite>HUMAN_ID</cite>: Identifier for ‘Human NCBI Gene ID’.</p></li>
+</ul>
+</dd>
+<dt>Database Rebuild Functions:</dt><dd><ul class="simple">
+<li><p><cite>build_kegg_database</cite>: Build or update the KEGG pathway and disease database.</p></li>
+</ul>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This module is designed for accessing gene information from KEGG pathways and diseases.</p></li>
+<li><p>It provides functions to retrieve gene data associated with specific pathways and diseases.</p></li>
+<li><p>Data is obtained either through direct API calls or by reading pre-processed files.</p></li>
+<li><p>Organism options include ‘dre’ (Danio rerio), ‘hsa’ (Human), or ‘dreM’ (Mapped Danio rerio from Human).</p></li>
+</ul>
+</dd>
+<dt>Example:</dt><dd><p>To retrieve genes associated with a specific KEGG pathway:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">pathway_genes</span> <span class="pre">=</span> <span class="pre">get_genes_in_pathway('hsa04010',</span> <span class="pre">'hsa')</span>
+<span class="pre">`</span></code></p>
+</dd>
+</dl>
+<p>For detailed information on each function and their usage, please refer to the documentation. For more examples of full functionality, please refer to tutorials.</p>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.get_genes_in_pathway" title="danRerLib.KEGG.get_genes_in_pathway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_genes_in_pathway</span></code></a>(pathway_id[, org])</p></td>
+<td><p>Retrieve genes associated with a specific pathway from KEGG.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danRerLib.KEGG.get_genes_in_disease" title="danRerLib.KEGG.get_genes_in_disease"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_genes_in_disease</span></code></a>(→ pandas.DataFrame)</p></td>
+<td><p>Retrieve genes associated with a disease for a specified organism.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danRerLib.KEGG.build_kegg_database" title="danRerLib.KEGG.build_kegg_database"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_kegg_database</span></code></a>()</p></td>
+<td><p>Build or update the KEGG pathway and disease database.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG.get_genes_in_pathway">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathway_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG.get_genes_in_pathway" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve genes associated with a specific pathway from KEGG.</p>
+<dl>
+<dt>Parameters:</dt><dd><p>pathway_id (str): The KEGG pathway ID for the pathway of interest.
+org (str, optional): The organism for which to retrieve pathway information.</p>
+<blockquote>
+<div><dl>
+<dt>Options:</dt><dd><ul class="simple">
+<li><p>‘dre’: Danio rerio (Zebrafish) pathways from KEGG.</p></li>
+<li><p>‘hsa’: Human pathways from KEGG.</p></li>
+<li><p>‘dreM’: Mapped Danio rerio pathways from human.</p></li>
+</ul>
+<p>(Default is None, which will use the provided ‘org’ or ‘hsa’ if ‘org’ is None.)</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt><dd><p>pd.DataFrame: A pandas DataFrame containing genes associated with the specified pathway.</p>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This function retrieves gene information associated with a specific KEGG pathway.</p></li>
+<li><p>The ‘pathway_id’ parameter should be a valid KEGG pathway identifier.</p></li>
+<li><p>The ‘org’ parameter specifies the organism for which to retrieve pathway information.</p></li>
+<li><p>Organism options include ‘dre’ (Danio rerio), ‘hsa’ (Human), or ‘dreM’ (Mapped Danio rerio from Human).</p></li>
+<li><p>Data is obtained from KEGG and may require internet access to download pathway information.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG.get_genes_in_disease">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">get_genes_in_disease</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disease_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">API</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#danRerLib.KEGG.get_genes_in_disease" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve genes associated with a disease for a specified organism.</p>
+<dl>
+<dt>Parameters:</dt><dd><p>disease_id (str): The disease ID for which genes are to be retrieved.
+org (str): The organism for which genes should be retrieved. Options:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘hsa’: Returns human genes associated with the disease.</p></li>
+<li><p>‘dre’ or ‘dreM’: Returns human genes mapped to Zebrafish genes (same result, as Zebrafish disease not characterized on KEGG).</p></li>
+</ul>
+</div></blockquote>
+<p>API (bool, optional): Whether to use the KEGG REST API for retrieval. Default is False.</p>
+</dd>
+<dt>Returns:</dt><dd><p>pd.DataFrame: A pandas DataFrame containing genes associated with the disease for the specified organism.</p>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>If ‘API’ is set to True, the function fetches gene information using the KEGG REST API.</p></li>
+<li><p>If ‘API’ is False, the function reads gene information from pre-processed files.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danRerLib.KEGG.build_kegg_database">
+<span class="sig-prename descclassname"><span class="pre">danRerLib.KEGG.</span></span><span class="sig-name descname"><span class="pre">build_kegg_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danRerLib.KEGG.build_kegg_database" title="Permalink to this definition"></a></dt>
+<dd><p>Build or update the KEGG pathway and disease database.</p>
+<dl class="simple">
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This function is intended for database creation or update and should be run only during version updates.</p></li>
+<li><p>The process may take some time, so exercise caution when running it.</p></li>
+<li><dl class="simple">
+<dt>The function performs the following steps:</dt><dd><ol class="arabic simple">
+<li><p>Downloads zebrafish pathway IDs and stores them in a specified file.</p></li>
+<li><p>Downloads human pathway IDs and stores them in a specified file.</p></li>
+<li><p>Creates mapped zebrafish pathway IDs from human pathways and stores them in a specified file.</p></li>
+<li><p>Downloads genes associated with true KEGG pathways for zebrafish.</p></li>
+<li><p>Downloads genes associated with true KEGG pathways for humans.</p></li>
+<li><p>Builds mapped zebrafish KEGG pathways from human pathways and stores them in a specified directory.</p></li>
+<li><p>Downloads KEGG disease IDs and stores them in a specified file.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>Running this function should be done carefully, as it involves downloading and processing data from KEGG.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ashley Schwartz.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

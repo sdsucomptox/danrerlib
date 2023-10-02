@@ -15,7 +15,7 @@ Please see respective package information if dependencies are not already instal
 If you use `conda`, you can install `danRerLib` as:
 
 ```
-conda install danRerLib
+conda install danrerlib
 ```
 
 ### PyPi/pip
@@ -23,7 +23,7 @@ conda install danRerLib
 If you use `pip`, you can install `danRerLib` with:
 
 ```
-pip install danRerLib
+pip install danrerlib
 ```
 
 ### Development Version
@@ -55,7 +55,7 @@ conda activate my-env
 conda install numpy
 conda install pandas
 # install library
-conda install danRerLib
+conda install danrerlib
 ```
 
 **pip**
@@ -71,5 +71,5 @@ cd bin
 source activate
 pip install numpy
 pip install pandas
-pip install danRerLib
+pip install danrerlib
 ```

@@ -1,0 +1,60 @@
+:py:mod:`danRerLib.enrichment`
+==============================
+
+.. py:module:: danRerLib.enrichment
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   danRerLib.enrichment.logistic
+   danRerLib.enrichment.fishers
+   danRerLib.enrichment.enrich_KEGG
+   danRerLib.enrichment.enrich_GO
+   danRerLib.enrichment.test_KEGG_enrich
+   danRerLib.enrichment.investigation
+   danRerLib.enrichment.test_GO_enrich
+   danRerLib.enrichment.testing
+
+
+
+.. py:function:: logistic(gene_universe: danRerLib.settings.pd.DataFrame, gene_set: danRerLib.settings.pd.DataFrame, gene_id_type: str, concept_type: str, concept_id: str, concept_name: str, sig_cutoff=0.05) -> danRerLib.settings.pd.DataFrame
+
+   This function performs gene enrichment using the logistic regression method. A 
+   p-value cutoff is required for this method and the default is taken to be 0.05
+
+
+.. py:function:: fishers(gene_universe, gene_set, concept_type, concept_id, concept_name, sig_cutoff=0.05)
+
+   gene_universe - all genes 
+   gene_set - genes in the concept of interest
+   concept_type - the database (KEGG, GO, etc)
+   concept_id - the id (e.g. the KEGG pathway id)
+
+
+.. py:function:: enrich_KEGG(gene_universe: str, gene_id_type=NCBI_ID, database='pathway', concept_ids=None, org='dre', method='logistic', sig_gene_cutoff_pvalue=0.05, sig_conceptID_cutoff_pvalue=None, sig_conceptID_cutoff_FDR=None, order_by_p_value=True)
+
+   gene_universe:  the given dataset containing genes, pvalues, and log2FC (in that order)
+
+
+.. py:function:: enrich_GO(gene_universe: str, gene_id_type=ZFIN_ID, database=None, concept_ids=None, org='dre', method='logistic', sig_gene_cutoff_pvalue=0.05, sig_conceptID_cutoff_pvalue=None, sig_conceptID_cutoff_FDR=None, order_by_p_value=True)
+
+
+.. py:function:: test_KEGG_enrich(option1=False, option2=False, option3=False)
+
+
+.. py:function:: investigation()
+
+
+.. py:function:: test_GO_enrich(option1, option2, option3, option4, option5)
+
+
+.. py:function:: testing()
+
+

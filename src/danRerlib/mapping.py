@@ -39,7 +39,7 @@ For detailed information on each function and their usage, please refer to the d
 """
 
 
-from danRerLib.settings import *
+from danrerlib.settings import *
 import os.path 
 from pathlib import Path
 import numpy as np

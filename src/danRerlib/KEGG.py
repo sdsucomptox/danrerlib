@@ -34,8 +34,8 @@ Example:
 For detailed information on each function and their usage, please refer to the documentation. For more examples of full functionality, please refer to tutorials.
 """
 
-from danRerLib.settings import *
-import danRerLib.mapping as mapping
+from danrerlib.settings import *
+import danrerlib.mapping as mapping
 import os.path 
 from pathlib import Path
 import numpy as np
