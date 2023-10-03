@@ -55,6 +55,9 @@ def test_mapping_list_of_ids_zfin_and_ens():
     out_ids = mapping.convert_ids(ens_ids, ENS_ID, ZFIN_ID, out_format = list)
     assert sorted(zfin_ids) ==  sorted(out_ids)
 
+    out_ids = mapping.convert_ids(ens_ids, 'ens', 'zfin', out_format = list)
+    assert sorted(zfin_ids) ==  sorted(out_ids)
+
 
 def test_mapping_list_of_ids_ncbi_and_symbol():
 
@@ -62,6 +65,9 @@ def test_mapping_list_of_ids_ncbi_and_symbol():
     symbols = ['uts2b', 'mdkb', 'si:ch211-215a10.4', 'krt97', 'wu:fc18g07']
     
     out_ids = mapping.convert_ids(ncbi_ids, NCBI_ID, SYMBOL, out_format = list)
+    assert sorted(symbols) ==  sorted(out_ids)
+
+    out_ids = mapping.convert_ids(ncbi_ids, 'ncbi id', 'sym', out_format = list)
     assert sorted(symbols) ==  sorted(out_ids)
 
     out_ids = mapping.convert_ids(symbols, SYMBOL, NCBI_ID, out_format = list)
@@ -90,7 +96,7 @@ def test_mapping_list_of_ids_ens_and_symbol():
 
     out_ids = mapping.convert_ids(symbols, SYMBOL, ENS_ID, out_format = list)
     assert sorted(ens_ids) ==  sorted(out_ids)
-        
+
 
 # ------------------------
 # test add_mapped_column
@@ -119,6 +125,10 @@ def test_mapping_df_of_ids_to_mapped_df():
 
         generated_df, true_df = generate_mapped_df(pair[0], pair[1])
         assert_frame_equal(generated_df, true_df, False) 
+
+def test_non_normalized_id_type():
+    # TODO
+    pass
 
 def generate_mapped_df(in_id, out_id, list = True):
 
@@ -187,6 +197,9 @@ def test_mapping_df_of_ids_to_ortho_df_keep_mapping():
     ids = [ZFIN_ID, ENS_ID, SYMBOL, NCBI_ID]
     for option in ids:
         
+        generated_df, true_df = generate_ortho_df(HUMAN_ID, option, False, True)
+        assert_frame_equal(generated_df, true_df) 
+
         generated_df, true_df = generate_ortho_df(HUMAN_ID, option, False, True)
         assert_frame_equal(generated_df, true_df) 
 

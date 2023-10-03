@@ -3,7 +3,7 @@ GO Module
 ===========
 
 The Gene Ontology (GO) module provides functions for retrieving gene information associated with 
-Gene Ontology Biological Process (BP), Molecular Functions (MF) and Cellular Components (CC)
+Gene Ontology Biological Process (BP), Molecularfunctionsns (MF) and Cellular Components (CC)
 for various organisms, including human, zebrafish, and mapped zebrafish.
 
 Functions:
@@ -35,8 +35,7 @@ For detailed information on each function and their usage, please refer to the d
 """
 
 from danrerlib.settings import *
-import danrerlib.mapping as mapping
-import danrerlib.utils as utils
+from danrerlib import mapping, utils
 from typing import Optional
 import pandas as pd
 
@@ -86,35 +85,48 @@ def get_genes_in_GO_concept(concept_id: str,
         gene_ids = get_genes_in_GO_concept(concept_id, organism)
         ```
     """
-    # check if ID is in required format:
-    concept_id = _check_id_format(concept_id)
-    if not id_exists_given_organism(concept_id, organism):
-        raise ValueError('GO ID does not exist for given organism.')
-    
-    # the default gene id types for the GO database
-    if organism == 'hsa':
-        path = GO_PATH_hsa
-        gene_id_type_from_db = HUMAN_ID
-    elif organism == 'dre':
-        path = GO_PATH_dre
-        gene_id_type_from_db = ZFIN_ID
-    elif organism == 'dreM':
-        path = GO_PATH_dreM
-        gene_id_type_from_db = ZFIN_ID
-    else:
-        raise ValueError('Invalid organism.')
-    
-    df = pd.read_csv(path, sep = '\t')
-    filtered_df = df[df['GO ID'] == concept_id]
+    try:
+        # check given ID format and raise exception if invalid
+        if gene_id_type:
+            gene_id_type = utils.normalize_gene_id_type(gene_id_type)
+            utils.check_valid_zebrafish_gene_id_type(gene_id_type)
 
-    gene_ids_series = filtered_df[gene_id_type_from_db]
-    if gene_id_type and (organism != 'hsa'):
-        # map to desired gene id type
-        if gene_id_type != gene_id_type_from_db:
-            gene_ids_series = mapping.convert_ids(gene_ids_series, 
-                            gene_id_type_from_db, gene_id_type)
-            
-    return gene_ids_series
+        # check given organism format and raise exception if invalid
+        organism = utils.normalize_organism_name(organism)
+        utils.check_valid_organism(organism)
+
+        # check if ID is in required format:
+        concept_id = _check_id_format(concept_id)
+        # check to see if the GO id exists for given organism
+        if not id_exists_given_organism(concept_id, organism):
+            raise ValueError('GO ID does not exist for given organism.')
+        
+        # the default gene id types for the GO database
+        if organism == 'hsa':
+            path = GO_PATH_hsa
+            gene_id_type_from_db = HUMAN_ID
+        elif organism == 'dre':
+            path = GO_PATH_dre
+            gene_id_type_from_db = ZFIN_ID
+        elif organism == 'dreM':
+            path = GO_PATH_dreM
+            gene_id_type_from_db = ZFIN_ID
+        else:
+            raise ValueError('Invalid organism.')
+        
+        df = pd.read_csv(path, sep = '\t')
+        filtered_df = df[df['GO ID'] == concept_id]
+
+        gene_ids_series = filtered_df[gene_id_type_from_db]
+        if gene_id_type and (organism != 'hsa'):
+            # map to desired gene id type
+            if gene_id_type != gene_id_type_from_db:
+                gene_ids_series = mapping.convert_ids(gene_ids_series, 
+                                gene_id_type_from_db, gene_id_type)
+        gene_ids_series = gene_ids_series.reset_index(drop=True)
+        return gene_ids_series
+    except utils.InvalidGeneTypeError as e:
+        pass
 
 def id_exists_given_organism(concept_id: str, organism: str):
     """

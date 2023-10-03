@@ -38,7 +38,7 @@ Example:
 For detailed information on each function and their usage, please refer to the documentation. For more examples of full functionality, please refer to tutorials.
 """
 
-
+from danrerlib import utils
 from danrerlib.settings import *
 import os.path 
 from pathlib import Path
@@ -65,7 +65,7 @@ def convert_ids(gene_list: Union[list, pd.Series, pd.DataFrame, np.array],
                 out_format: Optional[str] = None
                 ) -> Union[pd.Series, pd.DataFrame]:
     """
-    Convert a list of Gene IDs.
+    Convert a list of zebrafish Gene IDs.
 
     Parameters:
         - ``gene_list (array-like)``: A list of Gene IDs with supported formats like list, pd.Series, pd.DataFrame, or np.array.
@@ -91,6 +91,8 @@ def convert_ids(gene_list: Union[list, pd.Series, pd.DataFrame, np.array],
     try: 
         # some error handling
         # -------------------
+        id_from = utils.normalize_gene_id_type(id_from)
+        id_to = utils.normalize_gene_id_type(id_to)
         _check_valid_zebrafish_gene_id_type([id_from, id_to])
         gene_list = _make_sure_is_pandas_series(gene_list, id_from)
         # just in case the NCBI Gene IDs are not strings
@@ -132,7 +134,7 @@ def add_mapped_column(data: Union[pd.DataFrame, list],
                       drop_na: bool = False
                       ) -> pd.DataFrame:
     """
-    Add a new column to a pandas DataFrame with mapped Gene IDs.
+    Add a new column to a pandas DataFrame with mapped zebrafish Gene IDs.
 
     Parameters:
         - ``data (pd.DataFrame, list)``: A pandas DataFrame containing a column that has Gene IDs of some type.
@@ -157,6 +159,8 @@ def add_mapped_column(data: Union[pd.DataFrame, list],
     try:
         # some error handling
         # -------------------    
+        id_from = utils.normalize_gene_id_type(id_from)
+        id_to = utils.normalize_gene_id_type(id_to)
         _check_valid_zebrafish_gene_id_type([id_from, id_to])
         if type(data) != pd.DataFrame:
             if type(data) == list:
@@ -211,7 +215,7 @@ def convert_to_human(gene_list: List[str],
                      keep_missing_orthos: bool = False
                      ) -> List[str]:
     """
-    Convert a list of Zebrafish gene IDs to their human orthologs.
+    Convert a list of zebrafish gene IDs to their human orthologs.
 
     Parameters:
         - ``gene_list (list)``: A list of Zebrafish gene IDs to be converted to human orthologs.
@@ -239,19 +243,19 @@ def convert_to_zebrafish(gene_list: List[str],
                          keep_missing_orthos: bool = False
                          ) -> List[str]:
     """
-    Convert a list of human gene IDs to their Zebrafish orthologs.
+    Convert a list of human gene IDs to their zebrafish orthologs.
 
     Parameters:
-        - ``gene_list (list)``: A list of human gene IDs to be converted to Zebrafish orthologs.
-        - ``zfish_gene_type (str)``: The target gene ID type for the Zebrafish orthologs. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
+        - ``gene_list (list)``: A list of human gene IDs to be converted to zebrafish orthologs.
+        - ``zfish_gene_type (str)``: The target gene ID type for the zebrafish orthologs. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
         - ``keep_mapping (bool, optional)``: Whether to retain the mapping information. Default is False.
         - ``keep_missing_orthos (bool, optional)``: Whether to keep gene IDs with missing orthologs. Default is False.
 
     Returns:
-        - ``zebrafish_ids (list)``: A list of Zebrafish gene IDs corresponding to the human gene IDs.
+        - ``zebrafish_ids (list)``: A list of zebrafish gene IDs corresponding to the human gene IDs.
 
     Notes:
-        - This function converts human gene IDs to their Zebrafish orthologs using orthology mapping.
+        - This function converts human gene IDs to their zebrafish orthologs using orthology mapping.
         - The ``zfish_gene_type`` parameter specifies the type of Zebrafish gene IDs.
         - To retain the mapping information, set ``keep_mapping`` to True.
         - To keep human gene IDs with missing Zebrafish orthologs, set ``keep_missing_orthos`` to True.
@@ -292,7 +296,9 @@ def get_ortho_ids(gene_list: List[str],
 
     try:
         # some error handling
-        # -------------------    
+        # -------------------
+        id_from = utils.normalize_gene_id_type(id_from)
+        id_to = utils.normalize_gene_id_type(id_to)    
         _check_valid_gene_id_type_for_orthology(id_from, id_to)
         gene_list = _make_sure_is_pandas_series(gene_list, id_from)
         gene_list = gene_list.drop_duplicates()
@@ -385,6 +391,8 @@ def add_mapped_ortholog_column(data: pd.DataFrame,
                 data = pd.DataFrame(data)
             else:
                 raise TypeError
+        id_from = utils.normalize_gene_id_type(id_from)
+        id_to = utils.normalize_gene_id_type(id_to)
         _check_valid_gene_id_type_for_orthology(id_from, id_to)
         _check_column_name_matches_id_choice(data, id_from, column_name_with_ids)
         # get the gene list from the given data

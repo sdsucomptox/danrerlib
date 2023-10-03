@@ -35,7 +35,7 @@ For detailed information on each function and their usage, please refer to the d
 """
 
 from danrerlib.settings import *
-import danrerlib.mapping as mapping
+from danrerlib import mapping, utils
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -76,6 +76,8 @@ def get_genes_in_pathway(pathway_id: str, org=None):
         - Organism options include 'dre' (Danio rerio), 'hsa' (Human), or 'dreM' (Mapped Danio rerio from Human).
     """
     try:
+        if org:
+            org = utils.normalize_organism_name(org)
         org, pathway_id = _check_for_organism(pathway_id, org)
         _check_if_pathway_id_exists(pathway_id, org)
 
@@ -125,6 +127,8 @@ def get_genes_in_disease(disease_id: str,
                 genes[NCBI_ID] = genes[NCBI_ID].values.astype(np.int64)
             return genes
     else:
+        org = utils.normalize_organism_name(org)
+
         file_dict_by_org = {
             'hsa': human_disease_genes_path,
             'dre': dre_disease_genes_path,

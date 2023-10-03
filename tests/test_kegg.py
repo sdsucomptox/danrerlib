@@ -15,6 +15,10 @@ def test_get_genes_from_pathway():
     generated_gene_ids = KEGG.get_genes_in_pathway(pathway_id, 'hsa')
     assert_frame_equal(true_gene_ids, generated_gene_ids) 
 
+    pathway_id = '04010'
+    generated_gene_ids = KEGG.get_genes_in_pathway(pathway_id, 'human')
+    assert_frame_equal(true_gene_ids, generated_gene_ids) 
+
     pathway_id = 'hsa04010'
     generated_gene_ids = KEGG.get_genes_in_pathway(pathway_id)
     assert_frame_equal(true_gene_ids, generated_gene_ids) 
@@ -27,6 +31,10 @@ def test_get_genes_from_pathway():
     
     pathway_id = '04910'
     generated_gene_ids = KEGG.get_genes_in_pathway(pathway_id, 'dre')
+    assert_frame_equal(true_gene_ids, generated_gene_ids) 
+
+    pathway_id = '04910'
+    generated_gene_ids = KEGG.get_genes_in_pathway(pathway_id, 'zfish')
     assert_frame_equal(true_gene_ids, generated_gene_ids) 
 
     pathway_id = 'dre04910'

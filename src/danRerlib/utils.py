@@ -1,5 +1,156 @@
 import pandas as pd
 import urllib.request
+from danrerlib.settings import *
+from typing import Union, Optional, List
+
+class InvalidGeneTypeError(Exception):
+    "Raised when the Gene ID Type is invalid"
+    pass
+
+class InvalidOrganismError(Exception):
+    "Raised when the organism is invalid"
+    pass
+
+def check_valid_organism(org: str) -> None:
+    """
+    Check the validity of the chosen organism.
+
+    This function checks if the provided organism is a valid option.
+
+    Parameters:
+        org (str): A string representing an organism to be validated.
+
+    Raises:
+        InvalidOrganismError: If one or more of the provided gene ID types are invalid.
+
+    Notes:
+        - Valid organisms include: hsa, dre, dreM.
+    """
+    org = ['dre', 'hsa', 'dreM']
+
+    if type(org) == str:
+        org = [org]
+
+    invalid_orgs = [item for item in org if item not in org]
+    if invalid_orgs:
+        print('The organism choice you gave is invalid. The valid organisms for this library are:')
+        print('library are: dre, hsa, and dreM. The organism you gave that is invalid is:')
+        print('----------')
+        for item in invalid_orgs:
+            print(item)
+        print('----------')
+        print('Reminder: The organism is case and spelling sensitive.')
+        raise InvalidOrganismError   
+    
+def normalize_organism_name(organism_name: str) -> str:
+    """
+    Normalize an organism name to a specified format.
+
+    Parameters:
+       - organism_name (str): The organism name to be normalized.
+
+    Returns:
+        - organism_name (str): The normalized organism name.
+    """
+    # Define mappings from common variations to the desired format
+    organism_mappings = {
+        'human': 'hsa',
+        'homo sapiens': 'hsa',
+        'hsa' : 'hsa',
+        'zebrafish': 'dre',
+        'zfish': 'dre',
+        'dre' : 'dre',
+        'danio rerio' : 'dre',
+        'mapped zebrafish': 'dreM',
+        'mapped': 'dreM',
+    }
+
+    # Strip the input organism name just in case
+    stripped_organism_name = organism_name.strip()
+    # Convert the input organism name to lowercase for case-insensitive matching
+    lowercase_organism_name = stripped_organism_name.lower()
+
+    # Check if the lowercase organism name exists in the mappings
+    if lowercase_organism_name in organism_mappings:
+        return organism_mappings[lowercase_organism_name]
+    else:
+        # If no mapping is found, return the original input
+        return organism_name
+    
+def check_valid_zebrafish_gene_id_type(gene_id_types: Union[str, List[str]]) -> None:
+    """
+    Check the validity of Zebrafish gene ID types.
+
+    This function checks if the provided Zebrafish gene ID types are valid options.
+
+    Parameters:
+        - ``gene_id_types (str or list)``: A string or a list of Zebrafish gene ID types to be validated.
+
+    Raises:
+        InvalidGeneTypeError: If one or more of the provided gene ID types are invalid.
+
+    Notes:
+        - Valid Zebrafish gene ID types include: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
+        - The input can be a single gene ID type as a string or multiple types in a list.
+        - Gene ID types are case and spelling sensitive.
+    """
+    gene_id_options = [NCBI_ID, ZFIN_ID, ENS_ID, SYMBOL]
+
+    if type(gene_id_types) == str:
+        gene_id_types = [gene_id_types]
+
+    invalid_gene_id_types = [item for item in gene_id_types if item not in gene_id_options]
+    if invalid_gene_id_types:
+        print('One or more of the zebrafish Gene ID types you gave is invalid. The valid zebrafish')
+        print(f'Gene ID options are: {NCBI_ID}, {ZFIN_ID}, {ENS_ID}, and {SYMBOL}. The ID(s) you gave')
+        print('that are invalid are:')
+        print('----------')
+        for item in invalid_gene_id_types:
+            print(item)
+        print('----------')
+        print('Reminder: Gene ID types are case and spelling sensitive.')
+        raise InvalidGeneTypeError
+    
+def normalize_gene_id_type(gene_id_type: str) -> str:
+    """
+    Normalize a gene ID type to a specified format.
+
+    Parameters:
+       - ``gene_id_type (str)``: The gene ID type to be normalized.
+
+    Returns:
+        - ``gene_id_type (str)``: The normalized gene ID type.
+    """
+    # Define mappings from common variations to the desired format
+    id_type_mappings = {
+        'symbol': SYMBOL,
+        'sym': SYMBOL,
+        'ncbi gene id': NCBI_ID,
+        'ncbi': NCBI_ID,
+        'ncbi id': NCBI_ID,
+        'zebrafish ncbi': NCBI_ID,
+        'zfin': ZFIN_ID,
+        'zfin id': ZFIN_ID,
+        'ensembl_id': ENS_ID,
+        'ensembl id': ENS_ID,
+        'ens': ENS_ID,
+        'ensembl': ENS_ID,
+        'human id': HUMAN_ID,
+        'human ncbi gene id': HUMAN_ID, 
+        'human ncbi': HUMAN_ID,
+    }
+
+    # Strip the gene id string just in case
+    stripped_gene_id_type = gene_id_type.strip()
+    # Convert the input gene ID type to lowercase for case-insensitive matching
+    lowercase_gene_id_type = stripped_gene_id_type.lower() 
+
+    # Check if the lowercase gene ID type exists in the mappings
+    if lowercase_gene_id_type in id_type_mappings:
+        return id_type_mappings[lowercase_gene_id_type]
+    else:
+        # If no mapping is found, return the original input
+        return gene_id_type
 
 def pretty_print_series(series: pd.Series):
     for element in series:
