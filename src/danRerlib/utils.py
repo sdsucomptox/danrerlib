@@ -110,7 +110,40 @@ def check_valid_zebrafish_gene_id_type(gene_id_types: Union[str, List[str]]) -> 
         print('----------')
         print('Reminder: Gene ID types are case and spelling sensitive.')
         raise InvalidGeneTypeError
-    
+
+def check_valid_human_gene_id_type(gene_id_types: Union[str, List[str]]) -> None:
+    """
+    Check the validity of Zebrafish gene ID types.
+
+    This function checks if the provided Zebrafish gene ID types are valid options.
+
+    Parameters:
+        - ``gene_id_types (str or list)``: A string or a list of Zebrafish gene ID types to be validated.
+
+    Raises:
+        InvalidGeneTypeError: If one or more of the provided gene ID types are invalid.
+
+    Notes:
+        - Valid Zebrafish gene ID types include: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
+        - The input can be a single gene ID type as a string or multiple types in a list.
+        - Gene ID types are case and spelling sensitive.
+    """
+    gene_id_options = [HUMAN_ID]
+
+    if type(gene_id_types) == str:
+        gene_id_types = [gene_id_types]
+
+    invalid_gene_id_types = [item for item in gene_id_types if item not in gene_id_options]
+    if invalid_gene_id_types:
+        print('The human Gene ID type you gave is invalid. The only valid Gene ID option')
+        print(f'is: {HUMAN_ID}. The ID(s) you gave that are invalid are:')
+        print('----------')
+        for item in invalid_gene_id_types:
+            print(item)
+        print('----------')
+        print('Reminder: Gene ID types are case and spelling sensitive.')
+        raise InvalidGeneTypeError
+     
 def normalize_gene_id_type(gene_id_type: str) -> str:
     """
     Normalize a gene ID type to a specified format.

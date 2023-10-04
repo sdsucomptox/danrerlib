@@ -86,14 +86,17 @@ def get_genes_in_GO_concept(concept_id: str,
         ```
     """
     try:
-        # check given ID format and raise exception if invalid
-        if gene_id_type:
-            gene_id_type = utils.normalize_gene_id_type(gene_id_type)
-            utils.check_valid_zebrafish_gene_id_type(gene_id_type)
-
         # check given organism format and raise exception if invalid
         organism = utils.normalize_organism_name(organism)
         utils.check_valid_organism(organism)
+
+        # check given ID format and raise exception if invalid
+        if gene_id_type:
+            gene_id_type = utils.normalize_gene_id_type(gene_id_type)
+            if organism == 'hsa':
+                utils.check_valid_human_gene_id_type(gene_id_type)
+            else:
+                utils.check_valid_zebrafish_gene_id_type(gene_id_type)
 
         # check if ID is in required format:
         concept_id = _check_id_format(concept_id)
