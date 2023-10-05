@@ -28,7 +28,7 @@ pip install danrerlib
 
 ### Development Version
 
-If you would like to make changes to the library, either for your own purposes or to contribute, you should install the development version of this package. Please see the [Contributing Guidelines](../contributing.md) in the Developer's Guide to follow the recommended steps.
+If you would like to make changes to the library, either for your own purposes or to contribute, you should install the development version of this package. Please see the [Contributing Guidelines](../devguide/contributing.md) in the Developer's Guide to follow the recommended steps.
 
 ## Installation Guide
 

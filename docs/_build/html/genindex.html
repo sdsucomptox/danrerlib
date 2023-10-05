@@ -60,10 +60,10 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer's Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
-<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devguide/changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devguide/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devguide/conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devguide/license.html">License</a></li>
 </ul>
 
         </div>
@@ -109,7 +109,6 @@
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
- | <a href="#T"><strong>T</strong></a>
  | <a href="#V"><strong>V</strong></a>
  | <a href="#Z"><strong>Z</strong></a>
  
@@ -145,10 +144,16 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/danrerlib/mapping/index.html#danrerlib.mapping.convert_ids">convert_ids() (in module danrerlib.mapping)</a>
+      <li><a href="autoapi/danrerlib/utils/index.html#danrerlib.utils.check_valid_human_gene_id_type">check_valid_human_gene_id_type() (in module danrerlib.utils)</a>
+</li>
+      <li><a href="autoapi/danrerlib/utils/index.html#danrerlib.utils.check_valid_organism">check_valid_organism() (in module danrerlib.utils)</a>
+</li>
+      <li><a href="autoapi/danrerlib/utils/index.html#danrerlib.utils.check_valid_zebrafish_gene_id_type">check_valid_zebrafish_gene_id_type() (in module danrerlib.utils)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/danrerlib/mapping/index.html#danrerlib.mapping.convert_ids">convert_ids() (in module danrerlib.mapping)</a>
+</li>
       <li><a href="autoapi/danrerlib/mapping/index.html#danrerlib.mapping.convert_to_human">convert_to_human() (in module danrerlib.mapping)</a>
 </li>
       <li><a href="autoapi/danrerlib/mapping/index.html#danrerlib.mapping.convert_to_zebrafish">convert_to_zebrafish() (in module danrerlib.mapping)</a>
@@ -287,9 +292,9 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/danrerlib/mapping/index.html#danrerlib.mapping.InvalidGeneTypeError">InvalidGeneTypeError</a>
+      <li><a href="autoapi/danrerlib/mapping/index.html#danrerlib.mapping.InvalidGeneTypeError">InvalidGeneTypeError</a>, <a href="autoapi/danrerlib/utils/index.html#danrerlib.utils.InvalidGeneTypeError">[1]</a>
 </li>
-      <li><a href="autoapi/danrerlib/enrichment/index.html#danrerlib.enrichment.investigation">investigation() (in module danrerlib.enrichment)</a>
+      <li><a href="autoapi/danrerlib/utils/index.html#danrerlib.utils.InvalidOrganismError">InvalidOrganismError</a>
 </li>
   </ul></td>
 </tr></table>
@@ -347,6 +352,12 @@
       <li><a href="autoapi/danrerlib/settings/index.html#danrerlib.settings.NCBI_ID">NCBI_ID (in module danrerlib.settings)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/danrerlib/utils/index.html#danrerlib.utils.normalize_gene_id_type">normalize_gene_id_type() (in module danrerlib.utils)</a>
+</li>
+      <li><a href="autoapi/danrerlib/utils/index.html#danrerlib.utils.normalize_organism_name">normalize_organism_name() (in module danrerlib.utils)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="P">P</h2>
@@ -373,20 +384,6 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/danrerlib/settings/index.html#danrerlib.settings.SYMBOL">SYMBOL (in module danrerlib.settings)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="T">T</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/danrerlib/enrichment/index.html#danrerlib.enrichment.test_GO_enrich">test_GO_enrich() (in module danrerlib.enrichment)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/danrerlib/enrichment/index.html#danrerlib.enrichment.test_KEGG_enrich">test_KEGG_enrich() (in module danrerlib.enrichment)</a>
-</li>
-      <li><a href="autoapi/danrerlib/enrichment/index.html#danrerlib.enrichment.testing">testing() (in module danrerlib.enrichment)</a>
 </li>
   </ul></td>
 </tr></table>

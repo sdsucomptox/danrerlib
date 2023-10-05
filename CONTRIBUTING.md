@@ -70,4 +70,4 @@ Before you submit a pull request, check that it meets these guidelines:
 ## Code of Conduct
 
 Please note that the `danrerlib` project is released with a
-[Code of Conduct](CONDUCT.md). By contributing to this project you agree to abide by its terms.
+{ref}`Code of Conduct <conduct>`. By contributing to this project you agree to abide by its terms.

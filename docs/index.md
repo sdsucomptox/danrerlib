@@ -32,10 +32,10 @@ Learn by doing with our hands-on tutorials:
 
 If you're interested in contributing or want to learn more about the toolkit's development:
 
-- [Changelog](changelog.md): Stay up-to-date with the latest changes and updates.
-- [Contributing](contributing.md): Join our community and contribute to danRerLib's development.
-- [Code of Conduct](conduct.md): Familiarize yourself with our code of conduct.
-- [License](license.md): license.
+- [Changelog](devguide/changelog.md): Stay up-to-date with the latest changes and updates.
+- [Contributing](devguide/contributing.md): Join our community and contribute to danRerLib's development.
+- [Code of Conduct](devguide/conduct.md): Familiarize yourself with our code of conduct.
+- [License](devguide/license.md): license.
 
 
 ```{toctree}
@@ -63,8 +63,8 @@ tutorials/perform_orthology_mapping.ipynb
 :caption: Developer's Guide
 :hidden: true
 
-changelog.md
-contributing.md
-conduct.md
-license.md
+devguide/changelog.md
+devguide/contributing.md
+devguide/conduct.md
+devguide/license.md
 ```

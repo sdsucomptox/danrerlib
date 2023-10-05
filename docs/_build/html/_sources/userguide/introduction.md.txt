@@ -1,11 +1,13 @@
 # Introduction
 
-Welcome to the official documentation for `danRerLib`! `danRerLib` is a Python package specifically designed for zebrafish researchers interested in genomics and transcriptomics. It is designed to assist with gene ID mapping, ortholog mapping, and functional enrichment analysis using different pathway and annotation databases. 
+Welcome to the official documentation for `danRerLib`! `danRerLib` is a Python package specifically designed for zebrafish researchers interested in genomics and transcriptomics. It is designed to assist with gene ID mapping, ortholog mapping, and functional enrichment analysis using different pathway and functional annotation databases. 
 
 ## Key Features
 
 - **Gene ID Conversion**: Easily convert gene IDs between different types, such as NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
-- **Orthology Mapping**: Perform orthology checks between Zebrafish and human genes, helping you understand the relationships between genes in these species.
+- **Orthology Mapping**: Perform orthology mapping between zebrafish and human genes.
+- **Functional Annotation Retrieval**: Explore and retrieve the gene sets for the following databases: the Kyoto Encyclopedia of Genes and Genomes (KEGG), Gene Ontology (GO) Biological Process (BP), GO Molecular Function (MF), and GO Cellular Component (CC).
+- **Enrichment Testing**: Conduct functional enrichment analyses to identify statistically significant gene sets or concepts from the KEGG or GO databases.
 - **Database Building**: Rebuild essential databases for gene and pathway information to ensure you have the most up-to-date data for your research.
 
 ## Getting Started
@@ -24,7 +26,7 @@ If you're new to `danRerLib`, we recommend starting with the following resources
 
 ## Contributing
 
-We welcome contributions from the community to improve and enhance `danRerLib`. If you're interested in contributing, please review our [Contributing Guidelines](../contributing.md) for more information.
+We welcome contributions from the community to improve and enhance `danRerLib`. If you're interested in contributing, please review our [Contributing Guidelines](../devguide/contributing.md) for more information.
 
 ## Support and Feedback
 

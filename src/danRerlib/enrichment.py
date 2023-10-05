@@ -1,24 +1,78 @@
-# Set up python environment
-from danRerLib.settings import *
+"""
+Enrichment Module
+=================
 
-import danRerLib.mapping as mapping
-import danRerLib.KEGG as KEGG
-import danRerLib.GO as GO
+The Enrichment module offers a collection of functions to perform gene enrichment analyses. These analyses allow you to identify overrepresented gene sets or concepts in a given set of genes compared to a background or universe of genes. The module supports various enrichment databases, methods, and organisms, making it a versatile tool for uncovering biological insights.
+
+Functions:
+    - ``enrich_GO``: Perform Gene Ontology (GO) enrichment analysis.
+    - ``enrich_KEGG``: Conduct enrichment analysis using the Kyoto Encyclopedia of Genes and Genomes (KEGG) database.
+    - ``logistic``: Perform gene enrichment using logistic regression.
+    - ``fishers``: Perform gene enrichment using Fisher's exact test.
+
+Constants:
+    - ``NCBI_ID``: Identifier for NCBI Gene ID.
+    - ``ZFIN_ID``: Identifier for ZFIN ID.
+    - ``ENS_ID``: Identifier for Ensembl ID.
+    - ``SYMBOL``: Identifier for gene Symbol.
+    - ``HUMAN_ID``: Identifier for Human NCBI Gene ID.
+
+Notes:
+    - The Enrichment module is designed for conducting gene enrichment analyses using various databases and methods.
+    - It provides functions to analyze gene sets in the context of Gene Ontology (GO) and Kyoto Encyclopedia of Genes and Genomes (KEGG) concepts.
+    - Users can choose from different gene ID types and organisms for analysis, enhancing flexibility.
+    - The module includes statistical methods such as logistic regression and Fisher's exact test for enrichment analysis.
+
+Example:
+    To perform GO enrichment analysis for a set of zebrafish genes:
+    
+    ``results = enrich_GO(gene_universe, gene_id_type=ZFIN_ID, database='BP', concept_ids=['GO:0007582'], org='dre')``
+
+    This example retrieves genes associated with the specified GO concept ID ('GO:0007582') for zebrafish genes (org='dre').
+
+For comprehensive details on each function and usage examples, please consult the documentation. You can also find tutorials demonstrating the full functionality of the Enrichment module.
+"""
+
+# Set up python environment
+from danrerlib.settings import *
+from danrerlib import mapping, KEGG, GO
 
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import statsmodels.stats.multitest as smm
 import scipy.stats
-from scipy.stats import chi2
-from scipy.stats import fisher_exact
+from scipy.stats import chi2, fisher_exact
 
 def logistic(gene_universe: pd.DataFrame, gene_set: pd.DataFrame, gene_id_type: str,
              concept_type: str, concept_id: str, concept_name: str,
              sig_cutoff = 0.05) -> pd.DataFrame:
-    '''
-    This function performs gene enrichment using the logistic regression method. A 
-    p-value cutoff is required for this method and the default is taken to be 0.05
-    '''
+    """
+    Perform gene enrichment analysis using the logistic regression method.
+
+    Parameters:
+        - ``gene_universe (pd.DataFrame)``: A DataFrame representing the universe of genes.
+        - ``gene_set (pd.DataFrame)``: A DataFrame containing the genes of interest.
+        - ``gene_id_type (str)``: The type of gene identifier used in the DataFrames.
+        - ``concept_type (str)``: The type of concept (e.g., GO term) being analyzed.
+        - ``concept_id (str)``: The ID of the concept being analyzed.
+        - ``concept_name (str)``: The name or description of the concept being analyzed.
+        - ``sig_cutoff (float, optional)``: The significance cutoff for gene inclusion. Default is 0.05.
+
+    Returns:
+        - ``df (pd.DataFrame)``: A DataFrame containing enrichment analysis results, including concept details,
+        the number of genes in the concept in the universe, the number of significant genes belonging
+        to the concept, the proportion of genes in the concept, the coefficient, p-value, false discovery
+        rate (FDR)-adjusted p-value, odds ratio, and enrichment status ('enriched' or 'depleted').
+
+    Notes:
+        - This function performs gene enrichment analysis using logistic regression.
+        - It calculates enrichment statistics for a specified concept (e.g., GO term) by comparing a gene set
+          of interest to a larger gene universe.
+        - The 'gene_id_type' parameter specifies the type of gene identifiers used in the DataFrames.
+        - The 'sig_cutoff' parameter sets the significance cutoff for gene inclusion based on p-values.
+        - Enrichment results include the coefficient (slope) of the logistic regression, p-value,
+          FDR-adjusted p-value, odds ratio, and enrichment status.
+    """
     # TODO:
     # - include a log2FC cutoff as well?
     gene_set = gene_set[gene_set[gene_id_type].isin(gene_universe[gene_id_type])]
@@ -105,13 +159,35 @@ def logistic(gene_universe: pd.DataFrame, gene_set: pd.DataFrame, gene_id_type: 
     df = pd.DataFrame(data, index = [0])
     return df
 
-def fishers(gene_universe, gene_set, concept_type, concept_id, concept_name, sig_cutoff = 0.05):
-    '''
-    gene_universe - all genes 
-    gene_set - genes in the concept of interest
-    concept_type - the database (KEGG, GO, etc)
-    concept_id - the id (e.g. the KEGG pathway id)
-    '''
+def fishers(gene_universe: pd.DataFrame,
+            gene_set: pd.DataFrame, 
+            concept_type: str, 
+            concept_id: str, 
+            concept_name: str, 
+            sig_cutoff=0.05):
+    """
+    Perform gene enrichment analysis using Fisher's exact test.
+
+    Parameters:
+        - ``gene_universe (pd.DataFrame)``: A DataFrame representing the universe of genes.
+        - ``gene_set (pd.DataFrame)``: A DataFrame containing the genes of interest.
+        - ``concept_type (str)``: The type of concept (e.g., KEGG pathway, GO term) being analyzed.
+        - ``concept_id (str)``: The ID of the concept being analyzed (e.g., KEGG pathway ID).
+        - ``concept_name (str)``: The name or description of the concept being analyzed.
+        - ``sig_cutoff (float, optional)``: The significance cutoff for gene inclusion. Default is 0.05.
+
+    Returns:
+        - ``df (pd.DataFrame)``: A DataFrame containing enrichment analysis results, including concept details,
+        the number of genes in the concept in the universe, the number of significant genes belonging
+        to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.
+
+    Notes:
+        - This function performs gene enrichment analysis using Fisher's exact test.
+        - It calculates enrichment statistics for a specified concept (e.g., KEGG pathway) by comparing a gene set
+          of interest to a larger gene universe.
+        - The 'sig_cutoff' parameter sets the significance cutoff for gene inclusion based on p-values.
+        - Enrichment results include p-value, odds ratio, and enrichment direction ('enriched' or 'depleted').
+    """
 
     # only include genes in the gene set that are in 
     # our gene universe (full gene de)
@@ -182,16 +258,43 @@ def fishers(gene_universe, gene_set, concept_type, concept_id, concept_name, sig
 
     return df
 
-def enrich_KEGG(gene_universe: str, gene_id_type = NCBI_ID,
-                database =  'pathway', concept_ids = None, 
-                org = 'dre', method = 'logistic',
+def enrich_KEGG(gene_universe: str, 
+                gene_id_type = NCBI_ID,
+                database =  'pathway', 
+                concept_ids = None, 
+                org = 'dre', 
+                method = 'logistic',
                 sig_gene_cutoff_pvalue = 0.05,
                 sig_conceptID_cutoff_pvalue = None,
                 sig_conceptID_cutoff_FDR = None,
                 order_by_p_value = True):
-    '''
-    gene_universe:  the given dataset containing genes, pvalues, and log2FC (in that order)
-    '''
+    """
+    Perform gene enrichment analysis using KEGG pathway or disease databases.
+
+    Parameters:
+        - ``gene_universe (pd.DataFrame)``: A DataFrame containing gene information, including gene IDs, p-values, and log2FC.
+        - ``gene_id_type (str, optional)``: The type of gene ID in the gene universe. Default is NCBI Gene ID (NCBI_ID).
+        - ``database (str, optional)``: The KEGG database to use ('pathway' or 'disease'). Default is 'pathway'.
+        - ``concept_ids (list, optional)``: A list of concept IDs (e.g., pathway IDs or disease IDs) to analyze. Default is None.
+        - ``org (str, optional)``: The organism code ('dre' for zebrafish, 'dreM' for mapped zebrafish, 'hsa' for human). Default is 'dre'.
+        - ``method (str, optional):`` The enrichment analysis method ('logistic' or 'fishers'). Default is 'logistic'.
+        - ``sig_gene_cutoff_pvalue (float, optional)``: The significance cutoff for gene inclusion based on p-values. Default is 0.05.
+        - ``sig_conceptID_cutoff_pvalue (float, optional)``: The significance cutoff for concept IDs based on p-values. Default is None.
+        - ``sig_conceptID_cutoff_FDR (float, optional)``: The significance cutoff for concept IDs based on FDR (only for 'logistic' method). Default is None.
+        - ``order_by_p_value (bool, optional)``: Whether to order the results by p-value. Default is True.
+
+    Returns:
+        - ``result (pd.DataFrame)``: A DataFrame containing enrichment analysis results, including concept details, the number of genes in the concept in the universe,
+        the number of significant genes belonging to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.
+
+    Notes:
+        - This function performs gene enrichment analysis using the KEGG pathway or disease database.
+        - It supports two enrichment analysis methods: 'logistic' and 'fishers'.
+        - The 'sig_gene_cutoff_pvalue' parameter sets the significance cutoff for gene inclusion based on gene p-values.
+        - The 'sig_conceptID_cutoff_pvalue' parameter can be used to filter concept IDs based on their p-values.
+        - The 'sig_conceptID_cutoff_FDR' parameter is applicable when using the 'logistic' method and filters concept IDs based on FDR.
+        - The 'order_by_p_value' parameter determines whether to order the results by p-value.
+    """
     
     # TODO
     # - make it so that the first column is assumed to be the Gene ID
@@ -304,7 +407,33 @@ def enrich_GO(gene_universe: str, gene_id_type = ZFIN_ID,
               sig_conceptID_cutoff_pvalue = None,
               sig_conceptID_cutoff_FDR = None,
               order_by_p_value = True):
-    
+    """
+    Perform gene enrichment analysis using Gene Ontology (GO) databases.
+
+    Parameters:
+        - ``gene_universe (pd.DataFrame)``: A DataFrame containing gene information, including gene IDs, p-values, and log2FC.
+        - ``gene_id_type (str, optional)``: The type of gene ID in the gene universe. Default is ZFIN ID (ZFIN_ID).
+        - ``database (str, optional)``: The GO database to use ('BP' for Biological Processes, 'CC' for Cellular Component, 'MF' for Molecular Function). Default is None.
+        - ``concept_ids (list, optional)``: A list of GO concept IDs to analyze. Default is None.
+        - ``org (str, optional)``: The organism code ('dre' for zebrafish, 'hsa' for human). Default is 'dre'.
+        - ``method (str, optional)``: The enrichment analysis method ('logistic' or 'fishers'). Default is 'logistic'.
+        - ``sig_gene_cutoff_pvalue (float, optional)``: The significance cutoff for gene inclusion based on p-values. Default is 0.05.
+        - ``sig_conceptID_cutoff_pvalue (float, optional)``: The significance cutoff for concept IDs based on p-values. Default is None.
+        - ``sig_conceptID_cutoff_FDR (float, optional)``: The significance cutoff for concept IDs based on FDR (only for 'logistic' method). Default is None.
+        - ``order_by_p_value (bool, optional)``: Whether to order the results by p-value. Default is True.
+
+    Returns:
+        - ``result (pd.DataFrame)``: A DataFrame containing enrichment analysis results, including concept details, the number of genes in the concept in the universe,
+        the number of significant genes belonging to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.
+
+    Notes:
+        - This function performs gene enrichment analysis using the Gene Ontology (GO) databases.
+        - It supports two enrichment analysis methods: 'logistic' and 'fishers'.
+        - The 'sig_gene_cutoff_pvalue' parameter sets the significance cutoff for gene inclusion based on gene p-values.
+        - The 'sig_conceptID_cutoff_pvalue' parameter can be used to filter concept IDs based on their p-values.
+        - The 'sig_conceptID_cutoff_FDR' parameter is applicable when using the 'logistic' method and filters concept IDs based on FDR.
+        - The 'order_by_p_value' parameter determines whether to order the results by p-value.
+    """ 
     # TODO
     # - make it so that the first column is assumed to be the Gene ID
     #  and the second column is the p-value
@@ -545,108 +674,108 @@ def _check_valid_org(org):
     if org not in valid_orgs:
         raise ValueError('Invalid organism chosen. Options are: [\'dre\', \'hsa\', \'dreM\']')
 
-def test_KEGG_enrich(option1  = False, option2 = False, option3 = False):
-    # option 1: all pathways
-    test_data_dir = FILE_DIR / Path('../../tutorials/data/test_data/')
-    file_path = test_data_dir / Path('TPP.txt')
-    tpp_df = pd.read_csv(file_path, sep='\t')
-    if option1:
-        id_type = 'NCBI Gene ID'
-        out = enrich_KEGG(tpp_df, gene_id_type = id_type, org = 'dreM')
-        print(out.head(3))
-    if option2:
-        file_path = test_data_dir / Path('kegg_pathways.txt')
-        pathway_ids = pd.read_csv(file_path, sep='\t')
-        zfish_gene_type = 'NCBI Gene ID' # the gene type in the tpp_df
-        out = enrich_KEGG(tpp_df, 
-                             gene_id_type = zfish_gene_type,
-                             org = 'dreM',
-                             database = 'pathway',
-                             concept_ids = pathway_ids)
-        print(out.head(3))
-    # kegg disease
-    if option3:
-        file_path = test_data_dir / Path('kegg_disease.txt')
-        pathway_ids = pd.read_csv(file_path, sep='\t')
-        zfish_gene_type = 'NCBI Gene ID' # the gene type in the tpp_df
-        out = enrich_KEGG(tpp_df, 
-                        gene_id_type = zfish_gene_type,
-                        org = 'dreM',
-                        database = 'disease',
-                        concept_ids = pathway_ids)
-        print(out)
+# def test_KEGG_enrich(option1  = False, option2 = False, option3 = False):
+#     # option 1: all pathways
+#     test_data_dir = FILE_DIR / Path('../../tutorials/data/test_data/')
+#     file_path = test_data_dir / Path('TPP.txt')
+#     tpp_df = pd.read_csv(file_path, sep='\t')
+#     if option1:
+#         id_type = 'NCBI Gene ID'
+#         out = enrich_KEGG(tpp_df, gene_id_type = id_type, org = 'dreM')
+#         print(out.head(3))
+#     if option2:
+#         file_path = test_data_dir / Path('kegg_pathways.txt')
+#         pathway_ids = pd.read_csv(file_path, sep='\t')
+#         zfish_gene_type = 'NCBI Gene ID' # the gene type in the tpp_df
+#         out = enrich_KEGG(tpp_df, 
+#                              gene_id_type = zfish_gene_type,
+#                              org = 'dreM',
+#                              database = 'pathway',
+#                              concept_ids = pathway_ids)
+#         print(out.head(3))
+#     # kegg disease
+#     if option3:
+#         file_path = test_data_dir / Path('kegg_disease.txt')
+#         pathway_ids = pd.read_csv(file_path, sep='\t')
+#         zfish_gene_type = 'NCBI Gene ID' # the gene type in the tpp_df
+#         out = enrich_KEGG(tpp_df, 
+#                         gene_id_type = zfish_gene_type,
+#                         org = 'dreM',
+#                         database = 'disease',
+#                         concept_ids = pathway_ids)
+#         print(out)
 
-def investigation():
-    # kegg_id = '04911'
-    # org = 'dreM'
-    # genes = KEGG.get_genes_in_pathway(kegg_id, org)
-    # print(genes)
-    # print(type(genes[NCBI_ID].values[0]))
-    concept_id = 'H00019'
-    genes = KEGG.get_genes_in_disease(concept_id, 'dreM')
-    # print(genes)
-    # print(type(genes[NCBI_ID].values[0]))
-
-
-    test_data_dir = FILE_DIR / Path('../../tutorials/data/test_data/')
-    file_path = test_data_dir / Path('TPP.txt')
-    tpp_df = pd.read_csv(file_path, sep='\t')
-    gene_universe = tpp_df
+# def investigation():
+#     # kegg_id = '04911'
+#     # org = 'dreM'
+#     # genes = KEGG.get_genes_in_pathway(kegg_id, org)
+#     # print(genes)
+#     # print(type(genes[NCBI_ID].values[0]))
+#     concept_id = 'H00019'
+#     genes = KEGG.get_genes_in_disease(concept_id, 'dreM')
+#     # print(genes)
+#     # print(type(genes[NCBI_ID].values[0]))
 
 
-    gene = genes[NCBI_ID].values[0]
+#     test_data_dir = FILE_DIR / Path('../../tutorials/data/test_data/')
+#     file_path = test_data_dir / Path('TPP.txt')
+#     tpp_df = pd.read_csv(file_path, sep='\t')
+#     gene_universe = tpp_df
 
-    is_in_universe = gene in gene_universe[NCBI_ID].values
-    print(is_in_universe)
+
+#     gene = genes[NCBI_ID].values[0]
+
+#     is_in_universe = gene in gene_universe[NCBI_ID].values
+#     print(is_in_universe)
     
-def test_GO_enrich(option1, option2, option3, option4, option5):
-    test_data_dir = FILE_DIR / Path('../../tutorials/data/test_data/')
-    file_path = test_data_dir / Path('TPP.txt')
-    tpp_df = pd.read_csv(file_path, sep='\t')
-    zfish_gene_type = 'NCBI Gene ID' # the gene type in the tpp_df
-    # note: these take forever
-    # option 1 all BP
-    if option1:
-        out = enrich_GO(tpp_df, gene_id_type = zfish_gene_type,
-                                org = 'dre', database='BP')
-    # option 2 all MF
-    if option2:
-        out = enrich_GO(tpp_df, gene_id_type = zfish_gene_type,
-                                org = 'dre', database='BP')
-    # option 3 all CC
-    if option3:
-        out = enrich_GO(tpp_df, gene_id_type = zfish_gene_type,
-                                org = 'dre', database='BP')
-    # option 4 all GO!
-    if option4:
-        out = enrich_GO(tpp_df, gene_id_type = zfish_gene_type,
-                                org = 'dre', database='BP')
-    # option 5 given list
-    if option4:
-        file_path = test_data_dir / Path('go_ids.txt')
-        pathway_ids = pd.read_csv(file_path, sep='\t')
-        out = enrich_GO(tpp_df, 
-                                gene_id_type = zfish_gene_type,
-                                org = 'dre',
-                                concept_ids = pathway_ids)
-        print(out)
+# def test_GO_enrich(option1, option2, option3, option4, option5):
+#     test_data_dir = FILE_DIR / Path('../../tutorials/data/test_data/')
+#     file_path = test_data_dir / Path('TPP.txt')
+#     tpp_df = pd.read_csv(file_path, sep='\t')
+#     zfish_gene_type = 'NCBI Gene ID' # the gene type in the tpp_df
+#     # note: these take forever
+#     # option 1 all BP
+#     if option1:
+#         out = enrich_GO(tpp_df, gene_id_type = zfish_gene_type,
+#                                 org = 'dre', database='BP')
+#     # option 2 all MF
+#     if option2:
+#         out = enrich_GO(tpp_df, gene_id_type = zfish_gene_type,
+#                                 org = 'dre', database='BP')
+#     # option 3 all CC
+#     if option3:
+#         out = enrich_GO(tpp_df, gene_id_type = zfish_gene_type,
+#                                 org = 'dre', database='BP')
+#     # option 4 all GO!
+#     if option4:
+#         out = enrich_GO(tpp_df, gene_id_type = zfish_gene_type,
+#                                 org = 'dre', database='BP')
+#     # option 5 given list
+#     if option4:
+#         file_path = test_data_dir / Path('go_ids.txt')
+#         pathway_ids = pd.read_csv(file_path, sep='\t')
+#         out = enrich_GO(tpp_df, 
+#                                 gene_id_type = zfish_gene_type,
+#                                 org = 'dre',
+#                                 concept_ids = pathway_ids)
+#         print(out)
 
 
-def testing():
+# def testing():
 
-    # cwd = Path().absolute() 
-    # test_data_path = cwd / Path('tutorials/data/test_data/example_diff_express_data.txt')
-    # gene_univese_full_data = pd.read_csv(test_data_path, sep='\t')
+#     # cwd = Path().absolute() 
+#     # test_data_path = cwd / Path('tutorials/data/test_data/example_diff_express_data.txt')
+#     # gene_univese_full_data = pd.read_csv(test_data_path, sep='\t')
 
-    # concept_ids = ['dreM00010', 'dreM00020']
-    # concept_ids = ['10', '20']
-    # org = 'dreM'
-    # df = _check_concept_ids(concept_ids, org)
-    # print(df)
-    # test_KEGG_enrich(option3  = True)
-    # investigation()
+#     # concept_ids = ['dreM00010', 'dreM00020']
+#     # concept_ids = ['10', '20']
+#     # org = 'dreM'
+#     # df = _check_concept_ids(concept_ids, org)
+#     # print(df)
+#     # test_KEGG_enrich(option3  = True)
+#     # investigation()
 
-    return None
+#     return None
 
-if __name__ == '__main__':
-    testing()
+# if __name__ == '__main__':
+#     testing()
