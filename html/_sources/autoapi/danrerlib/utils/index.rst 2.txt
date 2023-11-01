@@ -1,0 +1,131 @@
+:orphan:
+
+:py:mod:`danrerlib.utils`
+=========================
+
+.. py:module:: danrerlib.utils
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   danrerlib.utils.check_valid_organism
+   danrerlib.utils.normalize_organism_name
+   danrerlib.utils.check_valid_zebrafish_gene_id_type
+   danrerlib.utils.check_valid_human_gene_id_type
+   danrerlib.utils.normalize_gene_id_type
+   danrerlib.utils.pretty_print_series
+   danrerlib.utils.save_data
+   danrerlib.utils.download_url
+   danrerlib.utils.download_url_to_file
+
+
+
+.. py:exception:: InvalidGeneTypeError
+
+
+   Bases: :py:obj:`Exception`
+
+   Raised when the Gene ID Type is invalid
+
+
+.. py:exception:: InvalidOrganismError
+
+
+   Bases: :py:obj:`Exception`
+
+   Raised when the organism is invalid
+
+
+.. py:function:: check_valid_organism(org: str) -> None
+
+   Check the validity of the chosen organism.
+
+   This function checks if the provided organism is a valid option.
+
+   Parameters:
+       org (str): A string representing an organism to be validated.
+
+   Raises:
+       InvalidOrganismError: If one or more of the provided gene ID types are invalid.
+
+   Notes:
+       - Valid organisms include: hsa, dre, dreM.
+
+
+.. py:function:: normalize_organism_name(organism_name: str) -> str
+
+   Normalize an organism name to a specified format.
+
+   Parameters:
+      - organism_name (str): The organism name to be normalized.
+
+   Returns:
+       - organism_name (str): The normalized organism name.
+
+
+.. py:function:: check_valid_zebrafish_gene_id_type(gene_id_types: Union[str, List[str]]) -> None
+
+   Check the validity of Zebrafish gene ID types.
+
+   This function checks if the provided Zebrafish gene ID types are valid options.
+
+   Parameters:
+       - ``gene_id_types (str or list)``: A string or a list of Zebrafish gene ID types to be validated.
+
+   Raises:
+       InvalidGeneTypeError: If one or more of the provided gene ID types are invalid.
+
+   Notes:
+       - Valid Zebrafish gene ID types include: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
+       - The input can be a single gene ID type as a string or multiple types in a list.
+       - Gene ID types are case and spelling sensitive.
+
+
+.. py:function:: check_valid_human_gene_id_type(gene_id_types: Union[str, List[str]]) -> None
+
+   Check the validity of Zebrafish gene ID types.
+
+   This function checks if the provided Zebrafish gene ID types are valid options.
+
+   Parameters:
+       - ``gene_id_types (str or list)``: A string or a list of Zebrafish gene ID types to be validated.
+
+   Raises:
+       InvalidGeneTypeError: If one or more of the provided gene ID types are invalid.
+
+   Notes:
+       - Valid Zebrafish gene ID types include: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
+       - The input can be a single gene ID type as a string or multiple types in a list.
+       - Gene ID types are case and spelling sensitive.
+
+
+.. py:function:: normalize_gene_id_type(gene_id_type: str) -> str
+
+   Normalize a gene ID type to a specified format.
+
+   Parameters:
+      - ``gene_id_type (str)``: The gene ID type to be normalized.
+
+   Returns:
+       - ``gene_id_type (str)``: The normalized gene ID type.
+
+
+.. py:function:: pretty_print_series(series: danrerlib.settings.pd.Series)
+
+
+.. py:function:: save_data(data: pd.Series or pd.DataFrame, location)
+
+
+.. py:function:: download_url(url_to_download: str) -> list
+
+
+.. py:function:: download_url_to_file(url_to_download: str, output_file_path: str) -> None
+
+
