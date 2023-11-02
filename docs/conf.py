@@ -60,7 +60,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages. 
-html_theme = "renku-sphinx-theme"
+html_theme = "renku"
 html_static_path = ['_static']
 html_css_files = ["css/custom.css"]
 html_show_sphinx = False
