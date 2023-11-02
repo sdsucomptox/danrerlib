@@ -66,4 +66,3 @@ html_css_files = ["css/custom.css"]
 html_show_sphinx = False
 html_logo = '_static/img/danrerlib_logo.png'
 html_title = "danrerlib"
-html_baseurl = 'https://sdsucomptox.github.io/danrerlib/'
