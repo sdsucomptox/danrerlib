@@ -1,0 +1,69 @@
+:orphan:
+
+:py:mod:`danrerlib.settings`
+============================
+
+.. py:module:: danrerlib.settings
+
+
+Module Contents
+---------------
+
+.. py:data:: VERSION_NUM
+   :value: 1
+
+   
+
+.. py:data:: NCBI_ID
+   :value: 'NCBI Gene ID'
+
+   
+
+.. py:data:: ENS_ID
+   :value: 'Ensembl ID'
+
+   
+
+.. py:data:: ZFIN_ID
+   :value: 'ZFIN ID'
+
+   
+
+.. py:data:: SYMBOL
+   :value: 'Symbol'
+
+   
+
+.. py:data:: HUMAN_ID
+   :value: 'Human NCBI Gene ID'
+
+   
+
+.. py:data:: FILE_DIR
+
+   
+
+.. py:data:: DATABASE_DIR
+
+   
+
+.. py:data:: RAW_DATA_DIR
+
+   
+
+.. py:data:: KEGG_DATA_DIR
+
+   
+
+.. py:data:: GO_DATA_DIR
+
+   
+
+.. py:data:: MASTER_MAPPING_FILE_PATH
+
+   
+
+.. py:data:: MASTER_ORTHO_FILE_PATH
+
+   
+

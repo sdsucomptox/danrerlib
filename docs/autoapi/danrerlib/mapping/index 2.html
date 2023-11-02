@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>danrerlib.mapping &mdash; danrerlib</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/fonts.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Gene ID Mapping" href="../../../tutorials/perform_geneid_mapping.html" />
+    <link rel="prev" title="danrerlib.enrichment" href="../enrichment/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            danrerlib
+              <img src="../../../_static/danrerlib_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User's Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../userguide/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../userguide/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../userguide/usage.html">Usage Principles</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../GO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.GO</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.KEGG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../enrichment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.enrichment</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.mapping</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/perform_geneid_mapping.html">Gene ID Mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/perform_orthology_mapping.html">Orthology Mapping</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer's Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../devguide/changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../devguide/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../devguide/conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../devguide/license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">danrerlib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.mapping</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/danrerlib/mapping/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-danrerlib.mapping">
+<span id="danrerlib-mapping"></span><h1><a class="reference internal" href="#module-danrerlib.mapping" title="danrerlib.mapping"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.mapping</span></code></a><a class="headerlink" href="#module-danrerlib.mapping" title="Permalink to this heading"></a></h1>
+<section id="gene-mapping-module">
+<p>This module provides functions for gene ID mapping and orthology checks between different species,
+with a focus on Zebrafish and human gene IDs.</p>
+<dl class="simple">
+<dt>Functions:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">convert_ids</span></code>: Convert a list of Gene IDs between different types.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">add_mapped_column</span></code>: Add a new column with mapped Gene IDs to a pandas DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">convert_to_human</span></code>: Convert Zebrafish gene IDs to their corresponding human orthologs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">convert_to_zebrafish</span></code>: Convert human gene IDs to their corresponding Zebrafish orthologs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">add_mapped_ortholog_column</span></code>: Add a new column with mapped ortholog Gene IDs to a pandas DataFrame.</p></li>
+</ul>
+</dd>
+<dt>Constants:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NCBI_ID</span></code>: Identifier for NCBI Gene ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ZFIN_ID</span></code>: Identifier for ZFIN ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENS_ID</span></code>: Identifier for Ensembl ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SYMBOL</span></code>: Identifier for gene Symbol.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HUMAN_ID</span></code>: Identifier for Human NCBI Gene ID.</p></li>
+</ul>
+</dd>
+<dt>Database Rebuild Functions:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">build_gene_mapping</span></code>: Build a master gene mapping file based on Zebrafish gene ID conversions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_ortho_mapping</span></code>: Build a master orthology mapping file between Zebrafish and human genes.</p></li>
+</ul>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This module is designed for use in genomics research and gene ID mapping projects.</p></li>
+<li><p>It provides functions to convert gene IDs between different types, build mapping files, and perform orthology checks.</p></li>
+<li><p>If you would like to re-build mapping files, ensure that your dataset and mapping files are accurately named and organized as per the function requirements. It is recommended to use the current package database build.</p></li>
+</ul>
+</dd>
+<dt>Example:</dt><dd><p>To convert a list of Zebrafish gene IDs to human orthologs:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">gene_list</span> <span class="pre">=</span> <span class="pre">['ENSDARG00000012345',</span> <span class="pre">'ENSDARG00000067890']</span>
+<span class="pre">converted_genes</span> <span class="pre">=</span> <span class="pre">convert_to_human(gene_list,</span> <span class="pre">ENS_ID,</span> <span class="pre">HUMAN_ID)</span>
+<span class="pre">`</span></code></p>
+</dd>
+</dl>
+<p>For detailed information on each function and their usage, please refer to the documentation. For more examples of full functionality, please refer to tutorials.</p>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.mapping.convert_ids" title="danrerlib.mapping.convert_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_ids</span></code></a>(→ Union[pandas.Series, pandas.DataFrame])</p></td>
+<td><p>Convert a list of zebrafish Gene IDs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.mapping.add_mapped_column" title="danrerlib.mapping.add_mapped_column"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_mapped_column</span></code></a>(→ pandas.DataFrame)</p></td>
+<td><p>Add a new column to a pandas DataFrame with mapped zebrafish Gene IDs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.mapping.convert_to_human" title="danrerlib.mapping.convert_to_human"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_human</span></code></a>(→ List[str])</p></td>
+<td><p>Convert a list of zebrafish gene IDs to their human orthologs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.mapping.convert_to_zebrafish" title="danrerlib.mapping.convert_to_zebrafish"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_zebrafish</span></code></a>(→ List[str])</p></td>
+<td><p>Convert a list of human gene IDs to their zebrafish orthologs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.mapping.get_ortho_ids" title="danrerlib.mapping.get_ortho_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ortho_ids</span></code></a>(→ List[str])</p></td>
+<td><p>Retrieve orthologous gene IDs for a given list of genes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.mapping.add_mapped_ortholog_column" title="danrerlib.mapping.add_mapped_ortholog_column"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_mapped_ortholog_column</span></code></a>(→ pandas.DataFrame)</p></td>
+<td><p>Add a new column to a pandas DataFrame with mapped ortholog Gene IDs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.mapping.build_gene_mapping" title="danrerlib.mapping.build_gene_mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_gene_mapping</span></code></a>()</p></td>
+<td><p>Build the master gene mapping file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.mapping.build_ortho_mapping" title="danrerlib.mapping.build_ortho_mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_ortho_mapping</span></code></a>()</p></td>
+<td><p>Build the master orthology mapping file.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py exception">
+<dt class="sig sig-object py" id="danrerlib.mapping.DatabaseNotFoundError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">danrerlib.mapping.</span></span><span class="sig-name descname"><span class="pre">DatabaseNotFoundError</span></span><a class="headerlink" href="#danrerlib.mapping.DatabaseNotFoundError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when the the database directory is not found</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="danrerlib.mapping.InvalidGeneTypeError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">danrerlib.mapping.</span></span><span class="sig-name descname"><span class="pre">InvalidGeneTypeError</span></span><a class="headerlink" href="#danrerlib.mapping.InvalidGeneTypeError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when the Gene ID Type is invalid</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danrerlib.mapping.convert_ids">
+<span class="sig-prename descclassname"><span class="pre">danrerlib.mapping.</span></span><span class="sig-name descname"><span class="pre">convert_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.Series</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.array</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.Series</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#danrerlib.mapping.convert_ids" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a list of zebrafish Gene IDs.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_list</span> <span class="pre">(array-like)</span></code>: A list of Gene IDs with supported formats like list, pd.Series, pd.DataFrame, or np.array.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id_from</span> <span class="pre">(str)</span></code>: The current Gene ID type.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id_to</span> <span class="pre">(str)</span></code>: The Gene ID type to convert to.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keep_mapping</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Whether to keep a mapping of the original IDs to the converted IDs. Default is False.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">out_format</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: The desired output format for the result. Default is None.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mapped_genes</span> <span class="pre">(pd.Series</span> <span class="pre">or</span> <span class="pre">pd.DataFrame)</span></code>: A pandas Series or DataFrame containing the converted Gene IDs.</p></li>
+</ul>
+</dd>
+<dt>Other:</dt><dd><ul class="simple">
+<li><p>Gene ID Type Options: NCBI Gene ID, ZFIN ID, Symbol, Ensembl ID</p></li>
+</ul>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>If the order is important, it is recommended to have keep_mapping = True. Otherwise,
+the mapping order is not guaranteed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danrerlib.mapping.add_mapped_column">
+<span class="sig-prename descclassname"><span class="pre">danrerlib.mapping.</span></span><span class="sig-name descname"><span class="pre">add_mapped_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_with_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_old_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#danrerlib.mapping.add_mapped_column" title="Permalink to this definition"></a></dt>
+<dd><p>Add a new column to a pandas DataFrame with mapped zebrafish Gene IDs.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">(pd.DataFrame,</span> <span class="pre">list)</span></code>: A pandas DataFrame containing a column that has Gene IDs of some type.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id_from</span> <span class="pre">(str)</span></code>: The current Gene ID type. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id_to</span> <span class="pre">(str)</span></code>: The Gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">column_name_with_ids</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: The name of the column containing the Gene IDs if it doesn’t match id_from.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keep_old_ids</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Whether to keep the old Gene ID column. Default is True.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">drop_na</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Whether to drop rows with NA values in the resulting mapped column. Default is False.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">(pd.DataFrame)</span></code>: A pandas DataFrame containing the added mapped column.</p></li>
+</ul>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This function adds a new column to the input DataFrame containing the mapped Gene IDs.</p></li>
+<li><p>The new column will have the name ‘Gene ID (Mapped)’ unless specified otherwise.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danrerlib.mapping.convert_to_human">
+<span class="sig-prename descclassname"><span class="pre">danrerlib.mapping.</span></span><span class="sig-name descname"><span class="pre">convert_to_human</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zfish_gene_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_missing_orthos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#danrerlib.mapping.convert_to_human" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a list of zebrafish gene IDs to their human orthologs.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_list</span> <span class="pre">(list)</span></code>: A list of Zebrafish gene IDs to be converted to human orthologs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zfish_gene_type</span> <span class="pre">(str)</span></code>: The current gene ID type for the Zebrafish genes. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keep_mapping</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Whether to retain the mapping information. Default is False.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keep_missing_orthos</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Whether to keep gene IDs with missing orthologs. Default is False.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">human_ids</span> <span class="pre">(list)</span></code>: A list of human gene IDs corresponding to the Zebrafish gene IDs.</p></li>
+</ul>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This function converts zebrafish gene IDs to their human orthologs using orthology mapping.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">zfish_gene_type</span></code> parameter specifies the type of Zebrafish gene IDs.</p></li>
+<li><p>To retain the mapping information, set <code class="docutils literal notranslate"><span class="pre">keep_mapping</span></code> to True.</p></li>
+<li><p>To keep Zebrafish gene IDs with missing orthologs, set <cite>keep_missing_orthos</cite> to True.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danrerlib.mapping.convert_to_zebrafish">
+<span class="sig-prename descclassname"><span class="pre">danrerlib.mapping.</span></span><span class="sig-name descname"><span class="pre">convert_to_zebrafish</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zfish_gene_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_missing_orthos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#danrerlib.mapping.convert_to_zebrafish" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a list of human gene IDs to their zebrafish orthologs.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_list</span> <span class="pre">(list)</span></code>: A list of human gene IDs to be converted to zebrafish orthologs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zfish_gene_type</span> <span class="pre">(str)</span></code>: The target gene ID type for the zebrafish orthologs. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keep_mapping</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Whether to retain the mapping information. Default is False.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keep_missing_orthos</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Whether to keep gene IDs with missing orthologs. Default is False.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zebrafish_ids</span> <span class="pre">(list)</span></code>: A list of zebrafish gene IDs corresponding to the human gene IDs.</p></li>
+</ul>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This function converts human gene IDs to their zebrafish orthologs using orthology mapping.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">zfish_gene_type</span></code> parameter specifies the type of Zebrafish gene IDs.</p></li>
+<li><p>To retain the mapping information, set <code class="docutils literal notranslate"><span class="pre">keep_mapping</span></code> to True.</p></li>
+<li><p>To keep human gene IDs with missing Zebrafish orthologs, set <code class="docutils literal notranslate"><span class="pre">keep_missing_orthos</span></code> to True.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danrerlib.mapping.get_ortho_ids">
+<span class="sig-prename descclassname"><span class="pre">danrerlib.mapping.</span></span><span class="sig-name descname"><span class="pre">get_ortho_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_missing_orthos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#danrerlib.mapping.get_ortho_ids" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve orthologous gene IDs for a given list of genes.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_list</span> <span class="pre">(list)</span></code>: A list of gene IDs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id_from</span> <span class="pre">(str)</span></code>: The current gene ID type. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or Human NCBI Gene ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id_to</span> <span class="pre">(str)</span></code>: The target gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or Human NCBI Gene ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keep_mapping</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Whether to retain the mapping information. Default is False.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keep_missing_orthos</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Whether to keep gene IDs with missing orthologs. Default is False.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mapped_genes</span> <span class="pre">(list)</span></code>: A list of orthologous gene IDs.</p></li>
+</ul>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This function retrieves orthologous gene IDs for the provided gene list.</p></li>
+<li><p>The mapping information can be retained by setting <code class="docutils literal notranslate"><span class="pre">keep_mapping</span></code> to True.</p></li>
+<li><p>Gene IDs with missing orthologs can be retained by setting <code class="docutils literal notranslate"><span class="pre">keep_missing_orthos</span></code> to True.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danrerlib.mapping.add_mapped_ortholog_column">
+<span class="sig-prename descclassname"><span class="pre">danrerlib.mapping.</span></span><span class="sig-name descname"><span class="pre">add_mapped_ortholog_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_with_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_old_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#danrerlib.mapping.add_mapped_ortholog_column" title="Permalink to this definition"></a></dt>
+<dd><p>Add a new column to a pandas DataFrame with mapped ortholog Gene IDs.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">(pd.DataFrame)</span></code>: A pandas DataFrame containing a column with Gene IDs of the specified ‘id_from’ type.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id_from</span> <span class="pre">(str)</span></code>: The current Gene ID type to convert from. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or Human NCBI Gene ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id_to</span> <span class="pre">(str)</span></code>: The Gene ID type to convert to. Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or Human NCBI Gene ID.</p></li>
+<li><p><a href="#id1"><span class="problematic" id="id2">``</span></a>column_name_with_ids (optional, str) <a href="#id3"><span class="problematic" id="id4">``</span></a>: The name of the column containing the Gene IDs if it doesn’t match ‘id_from’.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keep_old_ids</span> <span class="pre">(optional,</span> <span class="pre">bool)</span></code>: Whether to keep the original Gene ID column. Default is True.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">drop_na</span> <span class="pre">(optional,</span> <span class="pre">bool)</span></code>: Whether to drop rows with NA values in the resulting mapped column. Default is False.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>data (pd.DataFrame): A pandas DataFrame containing the added mapped ortholog Gene IDs.</p></li>
+</ul>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This function adds a new column to the input DataFrame containing the mapped ortholog Gene IDs.</p></li>
+<li><p>The new column will have the name ‘Ortholog Gene ID (Mapped)’ unless specified otherwise.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danrerlib.mapping.build_gene_mapping">
+<span class="sig-prename descclassname"><span class="pre">danrerlib.mapping.</span></span><span class="sig-name descname"><span class="pre">build_gene_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.mapping.build_gene_mapping" title="Permalink to this definition"></a></dt>
+<dd><p>Build the master gene mapping file.</p>
+<dl class="simple">
+<dt>Raises:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FileNotFoundError</span></code>: If one or both of the required data files are not found in the <code class="docutils literal notranslate"><span class="pre">raw_data</span></code> folder of the database directory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DatabaseNotFoundError</span></code>: If the database directory is not found in the current working directory.</p></li>
+</ul>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This function reads data files from the <code class="docutils literal notranslate"><span class="pre">database/raw_data</span></code> subdirectory to create the mapping file. The required data files includes <code class="docutils literal notranslate"><span class="pre">zfin_to_ncbi_V&lt;VERSION_NUM&gt;.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">zfin_to_ensembl_V&lt;VERSION_NUM&gt;.txt</span></code>.</p></li>
+<li><p>The resulting merged DataFrame is saved as <code class="docutils literal notranslate"><span class="pre">master_gene_mapping_file_V&lt;VERSION_NUM&gt;.txt</span></code> in the database directory.</p></li>
+<li><p>Make sure to have the required data files in the <code class="docutils literal notranslate"><span class="pre">raw_data</span></code> subdirectory before running this function.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danrerlib.mapping.build_ortho_mapping">
+<span class="sig-prename descclassname"><span class="pre">danrerlib.mapping.</span></span><span class="sig-name descname"><span class="pre">build_ortho_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.mapping.build_ortho_mapping" title="Permalink to this definition"></a></dt>
+<dd><p>Build the master orthology mapping file.</p>
+<dl class="simple">
+<dt>Raises:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">FileNotFoundError</span></code>: If the required data file is not found in the <code class="docutils literal notranslate"><span class="pre">raw_data</span></code> folder of the database directory.
+<code class="docutils literal notranslate"><span class="pre">DatabaseNotFoundError</span></code>: If the database directory is not found in the current working directory.</p>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>This function reads data files from the <code class="docutils literal notranslate"><span class="pre">database/raw_data</span></code> subdirectory to create the orthology mapping file. The required data file includes <code class="docutils literal notranslate"><span class="pre">zfish_human_orthology_V&lt;VERSION_NUM&gt;.txt</span></code>.</p></li>
+<li><p>This function processes the ‘zfish_human_orthology’ dataset, removing unnecessary columns.</p></li>
+<li><p>Duplicate entries are removed, and the DataFrame is saved as <code class="docutils literal notranslate"><span class="pre">master_ortho_mapping_file_V&lt;VERSION_NUM&gt;.txt</span></code> in the database directory.</p></li>
+<li><p>Ensure that you have the required data file in the <code class="docutils literal notranslate"><span class="pre">raw_data</span></code> folder of the database directory before running this function.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../enrichment/index.html" class="btn btn-neutral float-left" title="danrerlib.enrichment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../../tutorials/perform_geneid_mapping.html" class="btn btn-neutral float-right" title="Gene ID Mapping" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ashley Schwartz.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
