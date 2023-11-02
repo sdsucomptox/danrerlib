@@ -1,0 +1,16 @@
+version: 2
+
+sphinx:
+  configuration: docs/conf.py
+
+python:
+  version: 3.9
+
+# Optionally, you can specify additional requirements needed for building your documentation.
+# You can include dependencies that your documentation may require, such as Sphinx extensions.
+# For example, you mentioned "sphinx-autoapi" and "sphinx-rtd-theme" in your pyproject.toml.
+# You can specify them here.
+
+dependencies:
+  - sphinx-autoapi==2.1.1
+  - sphinx-rtd-theme==1.3.0
