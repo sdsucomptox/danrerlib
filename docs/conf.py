@@ -48,7 +48,7 @@ extensions = [
     # "sphinx.ext.napoleon",
     # "sphinx.ext.viewcode",
 ]
-autoapi_dirs = ["../src/danrerlib/"]
+autoapi_dirs = "../src/danrerlib/"
 autoapi_template_dir = "_templates/autoapi"
 stylesheet = "_static/css/parsing.css"
 
