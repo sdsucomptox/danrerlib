@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage Principles &mdash; danrerlib</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../autoapi/index.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            danrerlib
+              <img src="../_static/danrerlib_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User's Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Principles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#zebrafish-gene-id-types">Zebrafish Gene ID Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#human-gene-id-type">Human Gene ID Type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pathway-databases">Pathway Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enrichment-types">Enrichment Types</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/perform_geneid_mapping.html">Gene ID Mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/perform_orthology_mapping.html">Orthology Mapping</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer's Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../devguide/changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devguide/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devguide/conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devguide/license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">danrerlib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage Principles</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/userguide/usage.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage-principles">
+<h1>Usage Principles<a class="headerlink" href="#usage-principles" title="Permalink to this heading"></a></h1>
+<section id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this heading"></a></h2>
+<p>To import and begin using <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> in your Python project, import <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">danRerLib</span> <span class="k">as</span> <span class="nn">drl</span>
+</pre></div>
+</div>
+<p>To import a specific module, for example the mapping module, you can import as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">danRerLib</span> <span class="kn">import</span> <span class="n">mapping</span>
+</pre></div>
+</div>
+<p>A typical workflow of <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> depends on the feature you wish to use (see <a class="reference internal" href="introduction.html"><span class="doc std std-doc">Introduction</span></a>). Please the <a class="reference internal" href="../tutorials/index.html#tutorials"><span class="std std-ref">tutorial page</span></a> for some typical workflows.</p>
+</section>
+<section id="zebrafish-gene-id-types">
+<h2>Zebrafish Gene ID Types<a class="headerlink" href="#zebrafish-gene-id-types" title="Permalink to this heading"></a></h2>
+<p>This toolkit supports conversions between a variety of gene id types for the zebrafish. To properly identify the correct gene id, please utilize the following reference. The currently supported zebrafish Gene ID types are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Gene ID Type</p></th>
+<th class="head"><p>Referenced as</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>More Information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NCBI Gene ID</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'NCBI</span> <span class="pre">Gene</span> <span class="pre">ID'</span> <span class="pre">(str)</span></code> or <code class="docutils literal notranslate"><span class="pre">danrerlib.NCBI_ID</span></code></p></td>
+<td><p>Integer Gene IF managed by NCBI, also known as Entrez Gene ID</p></td>
+<td><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/">NCBI Website</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>ZFIN ID</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'ZFIN</span> <span class="pre">ID'</span> <span class="pre">(str)</span></code> or <code class="docutils literal notranslate"><span class="pre">danrerlib.ZFIN_ID</span></code></p></td>
+<td><p>Each ID starts with ‘ZFIN-’ and is managed by the Zebrafish Information Network</p></td>
+<td><p><a class="reference external" href="https://zfin.org/">ZFIN Website</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Ensembl ID</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'Ensembl</span> <span class="pre">ID'</span> <span class="pre">(str)</span></code> or <code class="docutils literal notranslate"><span class="pre">danrerlib.ENS_ID</span></code></p></td>
+<td><p>Each ID starts with ‘ENSDAR’ and is managed by ensembl</p></td>
+<td><p><a class="reference external" href="https://useast.ensembl.org/index.html">Ensembl Website</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Symbol</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'Symbol'</span> <span class="pre">(str)</span></code> or <code class="docutils literal notranslate"><span class="pre">danrerlib.SYMBOL</span></code></p></td>
+<td><p>A alphabetic gene id type where the nomenclature is managed by ZFIN and further supported by NCBI</p></td>
+<td><p><a class="reference external" href="https://zfin.org/">ZFIN Website</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>Mor information can also be found in <a class="reference internal" href="../tutorials/index.html#tutorials"><span class="std std-ref">Tutorials</span></a> and the <a class="reference internal" href="../autoapi/index.html#apiref"><span class="std std-ref">API Reference</span></a>.</p>
+</section>
+<section id="human-gene-id-type">
+<h2>Human Gene ID Type<a class="headerlink" href="#human-gene-id-type" title="Permalink to this heading"></a></h2>
+<p>This toolkit supports orthology mapping between zebrafish and human. It is possible to map to and from any of the above zebrafish gene id types listed and the supported human gene id type. The currently supported human gene ID type:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Gene ID Type</p></th>
+<th class="head"><p>Referenced as</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>More Information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NCBI Gene ID</p></td>
+<td><p>‘NCBI Gene ID’ (<em>str</em>) or NCBI_ID</p></td>
+<td><p>Integer Gene IF managed by NCBI, also known as Entrez Gene ID</p></td>
+<td><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/">NCBI Website</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>More information can also be found in <a class="reference internal" href="../tutorials/index.html#tutorials"><span class="std std-ref">Tutorials</span></a> and the <a class="reference internal" href="../autoapi/index.html#apiref"><span class="std std-ref">API Reference</span></a> for the mapping module.</p>
+</section>
+<section id="pathway-databases">
+<h2>Pathway Databases<a class="headerlink" href="#pathway-databases" title="Permalink to this heading"></a></h2>
+<p>This toolkit supports the retrieval and usage of a variety of pathway and annotation databases. Each database has been developed using unique modules within the toolkit. The currently supported databases are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Database</p></th>
+<th class="head"><p>Module</p></th>
+<th class="head"><p>Short Description</p></th>
+<th class="head"><p>More Information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KEGG Pathway</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">danrerlib.KEGG</span></code></p></td>
+<td><p>Collection of curated biochemical pathways</p></td>
+<td><p><a class="reference external" href="https://www.genome.jp/kegg/pathway.html">KEGG Pathway Website</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>KEGG Disease</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">danrerlib.KEGG</span></code></p></td>
+<td><p>Database cataloging human diseases and genes</p></td>
+<td><p><a class="reference external" href="https://www.genome.jp/kegg/disease/">KEGG Disease Website</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Gene Ontology Biological Processes (GO BP)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">danrerlib.GO</span></code></p></td>
+<td><p>Standardized vocabulary for biological processes</p></td>
+<td><p><a class="reference external" href="https://geneontology.org/">Gene Ontology Website</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Gene Ontology Molecular Function (GO MF)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">danrerlib.GO</span></code></p></td>
+<td><p>Description of molecular activities of genes</p></td>
+<td><p><a class="reference external" href="https://geneontology.org/">Gene Ontology Website</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Gene Ontology Cellular Components (GO CC)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">danrerlib.GO</span></code></p></td>
+<td><p>Definition of subcellular structures and locations</p></td>
+<td><p><a class="reference external" href="https://geneontology.org/">Gene Ontology Website</a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="enrichment-types">
+<h2>Enrichment Types<a class="headerlink" href="#enrichment-types" title="Permalink to this heading"></a></h2>
+<p>This toolkit supports enrichment testing for the pathway and annotation databases listed above. Enrichment testing, also known as pathway enrichment analysis or functional enrichment analysis, is used to determine if a set of genes associated with a specific biological process, function, or pathway is statistically overrepresented or underrepresented compared to what would be expected by chance. A variety of statistical tests can be used to determine over or under representation. The currently supported methods are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enrichment Analysis Method</p></th>
+<th class="head"><p>Function</p></th>
+<th class="head"><p>Short Description</p></th>
+<th class="head"><p>More Information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Fisher’s Exact Test</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">danrerlib.enrichment.fishers()</span></code></p></td>
+<td><p>Statistical test for pathway enrichment</p></td>
+<td><p><span class="xref myst">More Info</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Logistic Regression</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">danrerlib.enrichment.logistic()</span></code></p></td>
+<td><p>Regression-based method for enrichment</p></td>
+<td><p><span class="xref myst">More Info</span></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../autoapi/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ashley Schwartz.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
