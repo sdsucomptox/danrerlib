@@ -1,4 +1,0 @@
-(conduct)=
-
-```{include} ../../CONDUCT.md
-```
