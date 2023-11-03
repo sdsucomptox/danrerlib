@@ -18,3 +18,6 @@ danRerLib/
 │   └───tutorials
 
 ```
+
+cp -a sphinx/_build/html/. docs/
+make sure .nojekyll is in docs/
