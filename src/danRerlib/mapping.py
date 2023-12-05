@@ -428,7 +428,7 @@ def add_mapped_ortholog_column(data: pd.DataFrame,
         if drop_na:
             data = data.dropna(subset=[id_to])
 
-        return data.drop_duplicates()
+        return data.drop_duplicates().reset_index(drop=True)
     
     except InvalidGeneTypeError:
         pass

@@ -50,7 +50,9 @@ GO_NCBI_URL = 'https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2go.gz'
 
 def get_genes_in_GO_concept(concept_id: str, 
                             organism: str, 
-                            gene_id_type: Optional[str] = None
+                            gene_id_type: Optional[str] = None,
+                            out_data_type: Optional[type] = pd.DataFrame,
+                            do_check = True
                             ) -> pd.Series:
     """
     Retrieve gene IDs associated with a Gene Ontology (GO) concept for a specified organism.
@@ -86,24 +88,25 @@ def get_genes_in_GO_concept(concept_id: str,
         ```
     """
     try:
-        # check given organism format and raise exception if invalid
-        organism = utils.normalize_organism_name(organism)
-        utils.check_valid_organism(organism)
+        if do_check:
+            # check given organism format and raise exception if invalid
+            organism = utils.normalize_organism_name(organism)
+            utils.check_valid_organism(organism)
 
-        # check given ID format and raise exception if invalid
-        if gene_id_type:
-            gene_id_type = utils.normalize_gene_id_type(gene_id_type)
-            if organism == 'hsa':
-                utils.check_valid_human_gene_id_type(gene_id_type)
-            else:
-                utils.check_valid_zebrafish_gene_id_type(gene_id_type)
+            # check given ID format and raise exception if invalid
+            if gene_id_type:
+                gene_id_type = utils.normalize_gene_id_type(gene_id_type)
+                if organism == 'hsa':
+                    utils.check_valid_human_gene_id_type(gene_id_type)
+                else:
+                    utils.check_valid_zebrafish_gene_id_type(gene_id_type)
 
-        # check if ID is in required format:
-        concept_id = _check_id_format(concept_id)
-        # check to see if the GO id exists for given organism
-        if not id_exists_given_organism(concept_id, organism):
-            raise ValueError('GO ID does not exist for given organism.')
-        
+            # check if ID is in required format:
+            concept_id = _check_id_format(concept_id)
+            # check to see if the GO id exists for given organism
+            if not id_exists_given_organism(concept_id, organism):
+                raise ValueError('GO ID does not exist for given organism.')
+            
         # the default gene id types for the GO database
         if organism == 'hsa':
             path = GO_PATH_hsa
@@ -127,7 +130,16 @@ def get_genes_in_GO_concept(concept_id: str,
                 gene_ids_series = mapping.convert_ids(gene_ids_series, 
                                 gene_id_type_from_db, gene_id_type)
         gene_ids_series = gene_ids_series.reset_index(drop=True)
-        return gene_ids_series
+
+        if out_data_type == pd.Series:
+            return gene_ids_series
+        elif out_data_type == pd.DataFrame:
+            return pd.DataFrame(gene_ids_series)
+        elif out_data_type == list:
+            return gene_ids_series.tolist()
+        else:
+            return gene_ids_series
+        
     except utils.InvalidGeneTypeError as e:
         pass
 

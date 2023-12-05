@@ -35,7 +35,7 @@ For comprehensive details on each function and usage examples, please consult th
 
 # Set up python environment
 from danrerlib.settings import *
-from danrerlib import mapping, KEGG, GO
+from danrerlib import mapping, KEGG, GO, utils
 
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
@@ -159,11 +159,12 @@ def logistic(gene_universe: pd.DataFrame, gene_set: pd.DataFrame, gene_id_type: 
     df = pd.DataFrame(data, index = [0])
     return df
 
-def fishers(gene_universe: pd.DataFrame,
+def fishers_old(gene_universe: pd.DataFrame,
             gene_set: pd.DataFrame, 
             concept_type: str, 
             concept_id: str, 
             concept_name: str, 
+            background_gene_list: pd.DataFrame,
             sig_cutoff=0.05):
     """
     Perform gene enrichment analysis using Fisher's exact test.
@@ -189,8 +190,11 @@ def fishers(gene_universe: pd.DataFrame,
         - Enrichment results include p-value, odds ratio, and enrichment direction ('enriched' or 'depleted').
     """
 
-    # only include genes in the gene set that are in 
-    # our gene universe (full gene de)
+    # Input validation
+    if gene_universe.empty or gene_set.empty:
+        raise ValueError("Input DataFrames cannot be empty")
+
+    # Filter genes in the gene set that are in our gene universe
     gene_set = gene_set[gene_set[NCBI_ID].isin(gene_universe[NCBI_ID])]
 
     # create essential dataframe
@@ -258,6 +262,312 @@ def fishers(gene_universe: pd.DataFrame,
 
     return df
 
+def produce_gene_universe(gene_id_type, 
+                          gene_universe, 
+                          background_gene_set,
+                          sig_cutoff,
+                          log2FC_cutoff):
+
+    if not background_gene_set:
+        background_gene_set = pd.DataFrame(gene_universe[gene_id_type])
+        gene_universe = pd.merge(gene_universe, background_gene_set, on=gene_id_type, how='right', suffixes=('_universe', '_background'))
+    
+    total_number_of_genes_in_universe = len(gene_universe)
+
+    if log2FC_cutoff:
+        sig_genes_set = set(gene_universe[gene_id_type][(gene_universe['PValue'] < sig_cutoff) 
+                                                     & (np.abs(gene_universe['logFC']) > log2FC_cutoff)])
+    else:
+        sig_genes_set = set(gene_universe[gene_id_type][gene_universe['PValue'].lt(sig_cutoff)])
+    
+    return total_number_of_genes_in_universe,  sig_genes_set
+
+def fishers(gene_universe: pd.DataFrame,
+            sig_genes_set: pd.DataFrame,
+           gene_set: pd.DataFrame,
+           gene_id_type: str, 
+           concept_type: str, 
+           concept_id: str, 
+           concept_name: str,
+           total_number_of_genes_in_universe: int):
+    
+
+    # Filter genes in the gene set that are in our gene universe
+    gene_set = gene_set[gene_set[gene_id_type].isin(gene_universe[gene_id_type])]
+    gene_set_set = set(gene_set[gene_id_type])
+
+    # Number of genes that are both in the gene set and significantly expressed
+    a = len(sig_genes_set.intersection(gene_set_set))
+
+    # Number of genes in the gene set but not significantly expressed
+    b = len(gene_set_set.difference(sig_genes_set))
+
+    # Number of genes that are significantly expressed but not in the gene set
+    c = len(sig_genes_set.difference(gene_set_set))
+
+    # Number of genes neither in the gene set nor significantly expressed
+    d = total_number_of_genes_in_universe - (a + b + c)
+
+    # Perform Fisher's exact test
+    odds_ratio, p_value = fisher_exact([[a, b], [c, d]], alternative='two-sided')
+
+    # Determine enrichment direction
+    direction = 'enriched' if odds_ratio > 1 else 'depleted'
+
+    # Calculate the proportion of significant genes in the set (avoid division by zero)
+    proportion_sig_genes_in_set = a / (a + b) if (a + b) > 0 else 0
+
+    # organize important stats
+    # ------------------------
+    data = {
+        'Concept Type': concept_type,
+        'Concept ID': concept_id,
+        'Concept Name': concept_name,
+        '# Genes in Concept in Universe': a+b,
+        '# Sig Genes Belong to Concept': a,
+        'Proportion of Sig Genes in Set': proportion_sig_genes_in_set,
+        'Odds Ratio': odds_ratio,
+        'P-value': p_value,
+        'Direction': direction
+    }
+
+    return data
+
+def enrich(gene_universe: pd.DataFrame, 
+            gene_id_type: str,
+            database: str, 
+            org: 'dre',
+            method = 'logistic',
+            direction = 'both',
+            sig_gene_cutoff_pvalue = 0.05,
+            log2FC_cutoff_value = 0,
+            concept_ids = None, 
+            background_gene_set = None,
+            sig_conceptID_cutoff_pvalue = 0.05,
+            order_by_p_value = True,
+            include_all = False):
+    """
+    Perform gene enrichment analysis.
+
+    Parameters:
+        - ``gene_universe (pd.DataFrame)``: A DataFrame containing gene information, including gene IDs, p-values, and log2FC.
+        - ``gene_id_type (str)``: The type of gene ID in the gene universe. The recommended gene id type is NCBI Gene ID (NCBI_ID). Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or for human: Human NCBI Gene ID.
+        - ``database (str)``: The functional annotation database. Options include:
+
+                - 'KEGG Pathway': 
+                - 'KEGG Disease': 
+                - 'GO Biological Processes': 
+                - 'GO Cellular Component': 
+                - 'GO Molecular Function': 
+                - 'all': all databases shown above
+
+        - ``org (str, optional)``: The organism code ('dre' for zebrafish, 'dreM' for mapped zebrafish, 'hsa' for human). Default is 'dre'.
+        - ``method (str, optional):`` The enrichment analysis method ('logistic' or 'fishers'). Default is 'logistic'.
+        - ``sig_gene_cutoff_pvalue (float, optional)``: The significance cutoff for gene inclusion based on p-values. Default is 0.05.
+        - ``concept_ids (list, optional)``: A list of concept IDs (e.g., pathway IDs or disease IDs) to analyze. Default is None.
+        - ``sig_conceptID_cutoff_pvalue (float, optional)``: The significance cutoff for concept IDs based on p-values. Default is None.
+        - ``sig_conceptID_cutoff_FDR (float, optional)``: The significance cutoff for concept IDs based on FDR (only for 'logistic' method). Default is None.
+        - ``order_by_p_value (bool, optional)``: Whether to order the results by p-value. Default is True.
+
+    Returns:
+        - ``result (pd.DataFrame)``: A DataFrame containing enrichment analysis results, including concept details, the number of genes in the concept in the universe,
+        the number of significant genes belonging to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.
+    """    
+
+    # QUALITY CONTROL :
+    # Provided gene universe must be a dataframe
+    if type(gene_universe) != pd.DataFrame:
+        gene_universe = pd.DataFrame(gene_universe)
+    gene_id_type = utils.normalize_gene_id_type(gene_id_type)
+
+    org = utils.normalize_organism_name(org)
+    utils.check_valid_organism(org)
+
+    if org == 'dre' or org == 'dreM':
+        utils.check_valid_zebrafish_gene_id_type(gene_id_type)
+        _check_gene_universe(gene_universe, gene_id_type, org)
+    elif org == 'hsa':
+        utils.check_valid_human_gene_id_type(gene_id_type)
+        _check_gene_universe(gene_universe, gene_id_type, org)
+
+    # -------------------------
+    # DEAL WITH DATABASE CHOICE
+    # -------------------------
+    # identify concept function to use
+    concept_dict = {
+        'KEGG Pathway': KEGG.get_genes_in_pathway,
+        'KEGG Disease': KEGG.get_genes_in_disease,
+        'GO': GO.get_genes_in_GO_concept,
+        'GO BP': GO.get_genes_in_GO_concept,
+        'GO CC': GO.get_genes_in_GO_concept,
+        'GO MF': GO.get_genes_in_GO_concept,
+    }
+
+    get_genes_function = concept_dict[database]
+    concept_type = database
+    all_ids, id_column_name, name_column_name = _get_pathway_ids_and_names(database, org)
+
+    # -------------------------
+    # DEAL WITH METHODS CHOICE
+    # -------------------------
+    # identify enrichment method (function)
+    methods_dict = {
+        'logistic': logistic,
+        'fishers': fishers
+    }
+
+    # Check if the method is valid
+    if method not in methods_dict:
+        raise ValueError(f"Invalid method: {method}")
+    
+    # Get the function based on the method name
+    enrich_method_function = methods_dict[method]
+
+    # DEAL WITH CONCEPT_IDS CHOICE
+    if concept_ids is None:
+        concept_ids = all_ids[id_column_name]
+    else: 
+        concept_ids = _check_concept_ids_KEGG(concept_ids, org, database)
+        print(concept_ids)
+
+    # -------------------------
+    # SIGNIFICANT GENE UNIVERSE
+    # -------------------------  
+
+    # the background gene set is all genes in the universe since the gene universe is 
+    # all genes detected (not just the significant genes)
+    # maybe I should actually do all the genes in the genome .....
+
+    # DEAL WITH THIS EVENTUALLY - I THINK SOMETHING IS MESSED UP
+    # if not background_gene_set:
+    #     background_gene_set = pd.DataFrame(gene_universe[gene_id_type])
+    #     gene_universe = pd.merge(gene_universe, background_gene_set, on=gene_id_type, how='right', suffixes=('_universe', '_background'))
+
+    if background_gene_set:
+        gene_universe = _preprocess_gene_universe(gene_universe, background_gene_set, gene_id_type)
+        # another option would be to use all genes in the genome. 
+    total_number_of_genes_in_universe = len(gene_universe) 
+    
+    sig_genes_set = _get_sig_genes_set(gene_universe, direction, gene_id_type, 
+                                       sig_gene_cutoff_pvalue, log2FC_cutoff_value)
+
+    # -------------------------
+    # LAUNCH ENRICHMENT
+    # -------------------------
+    resulting_dictionary_list = []    
+    for concept_id in concept_ids:
+        gene_set =  get_genes_function(concept_id, org, do_check = False)
+        concept_name = all_ids.loc[all_ids[id_column_name] == concept_id, name_column_name].values[0]
+        out = enrich_method_function(gene_universe, 
+                                     sig_genes_set,
+                                     gene_set, 
+                                     gene_id_type,
+                                     concept_type, 
+                                     concept_id, 
+                                     concept_name,
+                                     total_number_of_genes_in_universe,
+                                     direction)
+        
+        # Append the dictionary to the list
+        resulting_dictionary_list.append(out)
+    
+    result = pd.DataFrame(resulting_dictionary_list)
+    if sig_conceptID_cutoff_pvalue:
+        result = result[result["P-value"] <= sig_conceptID_cutoff_pvalue]
+    if order_by_p_value:
+        result = result.sort_values(by='P-value', ascending=True)
+    return result.reset_index(drop=True)
+
+def _preprocess_gene_universe(gene_universe, background_gene_set, gene_id_type, pvalue_col='PValue', logFC_col='logFC'):
+    """
+    Preprocess the gene universe by adding missing genes from a background set with 'NaN' values for p-value and log2FC.
+
+    Parameters:
+    - gene_universe: DataFrame containing information about the subset of genes.
+    - background_gene_set: DataFrame containing information about the background genes.
+    - gene_id_type: Name of the column containing gene IDs in gene_universe.
+    - pvalue_col: Name of the column containing p-values (default: 'PValue').
+    - logFC_col: Name of the column containing log2 fold changes (default: 'logFC').
+
+    Returns:
+    - DataFrame representing the preprocessed gene universe.
+    """
+
+    # Right merge gene_universe with background_gene_set, filling missing values with NaN
+    preprocessed_gene_universe = pd.merge(background_gene_set, gene_universe, on=gene_id_type, how='right', suffixes=('_background', '_universe'))
+
+    # Drop extra columns from the background_gene_set (if any)
+    preprocessed_gene_universe = preprocessed_gene_universe.drop(columns=[gene_id_type + '_background'])
+
+    return preprocessed_gene_universe
+
+def _get_sig_genes_set(gene_universe, method, gene_id_type, pval_cutoff, log2FC_cutoff):
+    # significant genes are defined by the pvalue cutoff choice and the log2FC choice. 
+
+    # Filter genes based on the specified method
+    if method == 'up':
+        sig_genes_set = set(gene_universe[gene_id_type][(gene_universe['PValue'] < pval_cutoff)
+                                                         & (gene_universe['logFC'] > log2FC_cutoff)])
+    elif method == 'down':
+        sig_genes_set = set(gene_universe[gene_id_type][(gene_universe['PValue'] < pval_cutoff)
+                                                         & (gene_universe['logFC'] < -log2FC_cutoff)])
+    elif method == 'both':
+        sig_genes_set = set(gene_universe[gene_id_type][(gene_universe['PValue'] < pval_cutoff)
+                                                        & (np.abs(gene_universe['logFC']) > log2FC_cutoff)])
+    else:
+        raise ValueError("Invalid method. Supported methods are 'up', 'down', or 'both'.")
+    
+    return sig_genes_set
+
+def _get_pathway_ids_and_names(database, org):
+    if database == 'KEGG Pathway':
+        org_pathway_list_dict = {
+            'dre' : KEGG.zebrafish_pathways_path,
+            'dreM': KEGG.mapped_zebrafish_pathways_path,
+            'hsa' : KEGG.human_pathways_path
+        }
+        path = org_pathway_list_dict[org]
+        all_ids = pd.read_csv(path, sep='\t')
+        id_column_name = 'Pathway ID'
+        name_column_name = 'Pathway Description'
+    elif database == 'KEGG Disease':
+        path = KEGG.valid_disease_ids_path
+        all_ids = pd.read_csv(path, sep='\t')
+        id_column_name = 'Disease ID'
+        name_column_name = 'Disease Description'
+    elif database == 'GO':
+        path = GO.GO_IDS_PATH
+        all_ids = pd.read_csv(path, sep='\t')
+        id_column_name = 'GO ID'
+        name_column_name = 'GO Name'
+    elif database == 'GO BP':
+        path = GO.GO_IDS_PATH
+        all_ids = pd.read_csv(path, sep='\t')
+        org_col_name = 'exists_dre' if org == 'dre' else 'exists_hsa'
+        all_ids = all_ids[(all_ids['Ontology'] == 'P') 
+                          & (all_ids[org_col_name] == True)]
+        id_column_name = 'GO ID'
+        name_column_name = 'GO Name'
+    elif database == 'GO CC':
+        path = GO.GO_IDS_PATH
+        all_ids = pd.read_csv(path, sep='\t')
+        org_col_name = 'exists_dre' if org == 'dre' else 'exists_hsa'
+        all_ids = all_ids[(all_ids['Ontology'] == 'C') 
+                          & (all_ids[org_col_name] == True)]
+        id_column_name = 'GO ID'
+        name_column_name = 'GO Name'
+    elif database == 'GO MF':
+        path = GO.GO_IDS_PATH
+        all_ids = pd.read_csv(path, sep='\t')
+        org_col_name = 'exists_dre' if org == 'dre' else 'exists_hsa'
+        all_ids = all_ids[(all_ids['Ontology'] == 'F') 
+                          & (all_ids[org_col_name] == True)]
+        id_column_name = 'GO ID'
+        name_column_name = 'GO Name'
+    
+    pathway_list = all_ids[[id_column_name, name_column_name]].copy()
+    return pathway_list, id_column_name, name_column_name
+
 def enrich_KEGG(gene_universe: str, 
                 gene_id_type = NCBI_ID,
                 database =  'pathway', 
@@ -301,21 +611,28 @@ def enrich_KEGG(gene_universe: str,
     #  and the second column is the p-value
     # - support different zebrafish Gene ID inputs
     
-    # only include genes in the gene set that are in 
-    # our gene universe (full gene de)
+    # QUALITY CONTROL :
+    # Provided gene universe must be a dataframe
     if type(gene_universe) != pd.DataFrame:
         gene_universe = pd.DataFrame(gene_universe)
-    
-    # quality control TODO:
-    _check_gene_universe(gene_universe, gene_id_type)
-    _check_valid_org(org)
+    gene_id_type = utils.normalize_gene_id_type(gene_id_type)
 
-    if gene_id_type != NCBI_ID:
-        # I would map here
-        gene_id_to = HUMAN_ID if org == 'hsa' else NCBI_ID
-        gene_universe = mapping.add_mapped_column(gene_universe, gene_id_type, gene_id_to,
-                                                  keep_old_ids=False, drop_na=True)
-        gene_id_type = gene_id_to
+    org = utils.normalize_organism_name(org)
+    utils.check_valid_organism(org)
+
+    if org == 'dre' or org == 'dreM':
+        utils.check_valid_zebrafish_gene_id_type(gene_id_type)
+        _check_gene_universe(gene_universe, gene_id_type)
+    elif org == 'hsa':
+        utils.check_valid_human_gene_id_type(gene_id_type)
+        _check_gene_universe(gene_universe, gene_id_type)
+
+    # if gene_id_type != NCBI_ID:
+    #     # I would map here
+    #     gene_id_to = HUMAN_ID if org == 'hsa' else NCBI_ID
+    #     gene_universe = mapping.add_mapped_column(gene_universe, gene_id_type, gene_id_to,
+    #                                               keep_old_ids=False, drop_na=True)
+    #     gene_id_type = gene_id_to
 
     # -------------------------
     # DEAL WITH DATABASE CHOICE
@@ -400,13 +717,19 @@ def enrich_KEGG(gene_universe: str,
     result = result.reset_index(drop=True)
     return result
 
-def enrich_GO(gene_universe: str, gene_id_type = ZFIN_ID, 
-              database = None, concept_ids = None, 
-              org = 'dre', method = 'logistic',
+def enrich_GO(gene_universe: str, 
+              gene_id_type = ZFIN_ID, 
+              database = None, 
+              concept_ids = None, 
+              org = 'dre', 
+              method = 'logistic',
               sig_gene_cutoff_pvalue = 0.05,
               sig_conceptID_cutoff_pvalue = None,
               sig_conceptID_cutoff_FDR = None,
-              order_by_p_value = True):
+              order_by_p_value = True,
+              gene_id_col_name = ZFIN_ID,
+              pval_col_name = 'PValue',
+              log2fc_col_name = 'log2FC'):
     """
     Perform gene enrichment analysis using Gene Ontology (GO) databases.
 
@@ -444,8 +767,9 @@ def enrich_GO(gene_universe: str, gene_id_type = ZFIN_ID,
     if type(gene_universe) != pd.DataFrame:
         gene_universe = pd.DataFrame(gene_universe)
     
-    # quality control TODO:
-    _check_gene_universe(gene_universe, gene_id_type)
+    # quality control:
+    gene_id_type = utils
+    gene_universe = _check_gene_universe(gene_universe, gene_id_type)
     _check_valid_org(org)
 
     if gene_id_type != ZFIN_ID:
@@ -546,10 +870,35 @@ def enrich_GO(gene_universe: str, gene_id_type = ZFIN_ID,
     result = result.reset_index(drop=True)
     return result
 
-def _check_gene_universe(gene_universe, gene_id_type):
-    if (gene_id_type not in gene_universe.columns 
-        and 'PValue' not in gene_universe.columns):
-        raise ValueError('Required columns do not exist.')  
+def _check_gene_universe(gene_universe, specified_gene_id_type, org):
+
+    if org == 'dre' or org == 'dreM':
+        required_columns = ['NCBI Gene ID', 'PValue', 'log2FC']
+    elif org == 'hsa':
+        required_columns = ['Human NCBI Gene ID', 'PValue', 'log2FC']
+
+    existing_columns = gene_universe.columns
+
+    gene_id_type_from_data = existing_columns[0]
+    if specified_gene_id_type != gene_id_type_from_data:
+        gene_universe = gene_universe.rename(columns={gene_id_type_from_data: specified_gene_id_type})
+    
+    if specified_gene_id_type != required_columns[0]:
+        gene_universe = mapping.add_mapped_column(gene_universe, specified_gene_id_type, required_columns[0], keep_old_ids=False)
+
+    missing_columns = [col for col in required_columns if col not in existing_columns]
+    
+    # If any required columns are missing, rename existing columns to required names
+    # THIS ASSUMES THE FIRST COLUMN IS GENE ID, SECOND COLUMN PVAL, THIRD COLUMN LOG2FC
+    if missing_columns:
+        # Create a dictionary to map existing column names to the required names
+        column_mapping = {col: required_columns[i] for i, col in enumerate(existing_columns)}
+
+        # Rename the columns based on the mapping
+        gene_universe = gene_universe.rename(columns=column_mapping)
+    
+    return gene_universe
+    
 def _check_concept_ids_KEGG(concept_ids, org, database) -> list:
     if type(concept_ids) == pd.DataFrame:
         if concept_ids.shape[1] != 1:
@@ -669,10 +1018,10 @@ def _is_numeric(value):
         return value.isnumeric()
     else:
         return isinstance(value, (int, float))
-def _check_valid_org(org):
-    valid_orgs = ['dre', 'hsa', 'dreM']
-    if org not in valid_orgs:
-        raise ValueError('Invalid organism chosen. Options are: [\'dre\', \'hsa\', \'dreM\']')
+# def _check_valid_org(org):
+#     valid_orgs = ['dre', 'hsa', 'dreM']
+#     if org not in valid_orgs:
+#         raise ValueError('Invalid organism chosen. Options are: [\'dre\', \'hsa\', \'dreM\']')
 
 # def test_KEGG_enrich(option1  = False, option2 = False, option3 = False):
 #     # option 1: all pathways

@@ -55,8 +55,9 @@ human_disease_path = KEGG_DATA_DIR / Path('disease_ids_V'+ str(VERSION_NUM) + '.
 human_disease_genes_path = KEGG_DATA_DIR / Path('disease_ids_and_genes_V'+ str(VERSION_NUM) + '.txt')
 dre_disease_genes_path = KEGG_DATA_DIR / Path('disease_ids_dreM_and_genes_V'+ str(VERSION_NUM) + '.txt')
 empty_disease_ids_path = KEGG_DATA_DIR / Path('empty_disease_ids_V'+ str(VERSION_NUM) + '.txt')
+valid_disease_ids_path = KEGG_DATA_DIR / Path('disease_ids_valid_V'+ str(VERSION_NUM) + '.txt')
 
-def get_genes_in_pathway(pathway_id: str, org=None):
+def get_genes_in_pathway(pathway_id: str, org=None, do_check = True):
     """
     Retrieve genes associated with a specific pathway from KEGG.
 
@@ -79,19 +80,27 @@ def get_genes_in_pathway(pathway_id: str, org=None):
         - Organism options include 'dre' (Danio rerio), 'hsa' (Human), or 'dreM' (Mapped Danio rerio from Human).
     """
     try:
-        if org:
-            org = utils.normalize_organism_name(org)
-        org, pathway_id = _check_for_organism(pathway_id, org)
-        _check_if_pathway_id_exists(pathway_id, org)
-
-        file_name = KEGG_DATA_DIR / Path(org) / Path(pathway_id + '.txt')
-        df = pd.read_csv(file_name, sep='\t')
-        return df
+        if do_check:
+            if org:
+                org = utils.normalize_organism_name(org)
+            org, pathway_id = _check_for_organism(pathway_id, org)
+            result = _check_if_pathway_id_exists(pathway_id, org)
+            if result:
+                file_name = KEGG_DATA_DIR / Path(org) / Path(pathway_id + '.txt')
+                df = pd.read_csv(file_name, sep='\t')
+                return df
+            else:
+                raise ValueError
+        else:                 
+            file_name = KEGG_DATA_DIR / Path(org) / Path(pathway_id + '.txt')
+            df = pd.read_csv(file_name, sep='\t')
+            return df
     except ValueError:
         pass
 
 def get_genes_in_disease(disease_id: str, 
                          org: str, 
+                         do_check = True,
                          API: bool = False
                          ) -> pd.DataFrame:
     """
@@ -122,6 +131,7 @@ def get_genes_in_disease(disease_id: str,
         if org == 'hsa':
             if type(genes) != pd.DataFrame:
                 genes = genes.to_frame()
+                genes[HUMAN_ID] = genes[HUMAN_ID].values.astype(np.int64)
             return genes
         elif org == 'dre' or org == 'dreM':
             genes = mapping.convert_to_zebrafish(genes, NCBI_ID)
@@ -130,7 +140,8 @@ def get_genes_in_disease(disease_id: str,
                 genes[NCBI_ID] = genes[NCBI_ID].values.astype(np.int64)
             return genes
     else:
-        org = utils.normalize_organism_name(org)
+        if do_check:
+            org = utils.normalize_organism_name(org)
 
         file_dict_by_org = {
             'hsa': human_disease_genes_path,
@@ -141,7 +152,7 @@ def get_genes_in_disease(disease_id: str,
         id_type_by_org = {
             'hsa': HUMAN_ID,
             'dre': NCBI_ID,
-            'dreM':NCBI_ID
+            'dreM': NCBI_ID
         }
 
         genes_and_disease_df = pd.read_csv(file_dict_by_org[org], sep = '\t')
@@ -150,7 +161,9 @@ def get_genes_in_disease(disease_id: str,
         genes = filtered_df[id_type_by_org[org]]
         if type(genes) != pd.DataFrame:
             genes = genes.to_frame()
-        return genes
+            genes[id_type_by_org[org]] = genes[id_type_by_org[org]].values.astype(np.int64)
+
+        return genes.reset_index(drop=True)
 
     
 def _check_for_organism(pathway_id: str, 
@@ -226,7 +239,7 @@ def _check_if_pathway_id_exists(pathway_id: str,
         result = True if pathway_id in df['Pathway ID'].values else False
     if not result:
         print('The Pathway ID you gave does not exist for the organism you specified.')
-        print('A Pathway ID is identified by the combination of a 2-4 letter prefix')
+        print('A Pathway ID is identified by the combination of a 3-4 letter prefix')
         print('code and a 5 digit number.\n')
         print('Prefix options include: dre, dreM, or hsa\n')
         print('reminder - python does not support integers that start with a 0;')
@@ -396,7 +409,7 @@ def _download_human_disease_genes(disease_ids_path):
         - The resulting DataFrame is saved to a file named 'human_disease_genes.txt'.
         - This function is intended for use in building or updating a database of human disease genes.
     """
-    # there is an API issue for the number of requests made..... right now you have to run this funciton
+    # there is an API issue for the number of requests made..... right now you have to run this function
     # multiple times to actually get all the data. it needs to be modified 
     try:
         disease_data = pd.read_csv(disease_ids_path, sep='\t')
@@ -488,10 +501,3 @@ def _build_dre_mapped_disease(human_disease_genes_path: str,
     zebrafish_genes = mapping.add_mapped_ortholog_column(human_disease_genes_df, HUMAN_ID, NCBI_ID, keep_old_ids=False, drop_na=True)
     zebrafish_genes.to_csv(dre_disease_genes_path, index=False, sep = '\t')
 
-
-# def testing():
-#     _download_human_disease_genes(human_disease_path)
-#     _build_dre_mapped_disease(human_disease_genes_path, dre_disease_genes_path)
-#     pass
-# if __name__ == '__main__':
-#     testing()

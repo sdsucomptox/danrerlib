@@ -1,6 +1,6 @@
 ## Danio rerio Library, danRerLib
 
-danRerLib, short for Danio rerio library, is a comprehensive toolkit designed in Python specifically for zebrafish researchers, focusing on genomics and transcriptomics. 
+danRerLib, short for Danio rerio library, is a comprehensive toolkit designed in Python specifically for zebrafish researchers, focusing on genomics and transcriptomics. The documentation for the library is currently being hosted on 
 
 ```
 danRerLib/
@@ -18,6 +18,3 @@ danRerLib/
 │   └───tutorials
 
 ```
-
-cp -a sphinx/_build/html/. docs/
-make sure .nojekyll is in docs/
