@@ -1,0 +1,9 @@
+{"Concept Type": "KEGG Pathway",
+ "Concept ID": "dre04340",
+ "Concept Name": "WNT Signaling Pathway",
+ "# Genes in Concept in Universe": 15,
+ "# Sig Genes Belong to Concept": 4,
+ "Proportion of Sig Genes in Set": 0.26666666666666666,
+ "Odds Ratio": 1.2253143515092955,
+ "P-value": 0.2459333581333777,
+ "Direction": "enriched"}

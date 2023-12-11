@@ -1,0 +1,4 @@
+Concept Type	Concept ID	Concept Name	# Genes in Concept in Universe	# Sig Genes Belong to Concept	Proportion of Sig Genes in Set	Odds Ratio	P-value	Direction
+GO MF	GO:0000166	nucleotide binding	1474	338	0.22930800542740842	1.106789087415276	1.1068639753972364e-05	enriched
+GO MF	GO:0046872	metal ion binding	2726	571	0.2094644167278063	1.046701542950279	0.01725898539587008	enriched
+GO MF	GO:0003779	actin binding	293	69	0.2354948805460751	1.109261655288918	0.031069541793089805	enriched
