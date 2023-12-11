@@ -52,7 +52,7 @@ from scipy.stats import chi2, fisher_exact
 
 def enrich(gene_universe: pd.DataFrame, 
             gene_id_type: str,
-            databases: list[str], 
+            database: list[str], 
             org = 'dre',
             method = 'logistic',
             direction = 'both',
@@ -116,7 +116,7 @@ def enrich(gene_universe: pd.DataFrame,
         gene_universe = _check_gene_universe(gene_universe, gene_id_type, org)
     
     # quality control database choice
-    databases = _process_database_options(databases)
+    database = _process_database_options(database)
 
     kegg_options = ['KEGG Pathway', 'KEGG Disease']
     go_options = ['GO', 'GO BP', 'GO CC', 'GO MF']
@@ -128,12 +128,13 @@ def enrich(gene_universe: pd.DataFrame,
     # -------------------------
     # DEAL WITH DATABASES CHOICE
     # -------------------------
-    if concept_ids == None:
+    if concept_ids is None:
         original_concept_ids = concept_ids
     else:
         original_concept_ids = concept_ids.copy()  # Create a copy of the original concept_ids
     resulting_dataframe_list = []  # List to store results for each database
-    for database in databases:
+    
+    for db in database:
         # identify concept function to use
         concept_dict = {
             'KEGG Pathway': KEGG.get_genes_in_pathway,
@@ -144,19 +145,19 @@ def enrich(gene_universe: pd.DataFrame,
             'GO MF': GO.get_genes_in_GO_concept,
         }
 
-        get_genes_function = concept_dict[database]
-        concept_type = database
-        all_ids, id_column_name, name_column_name = _get_pathway_ids_and_names(database, org)
+        get_genes_function = concept_dict[db]
+        concept_type = db
+        all_ids, id_column_name, name_column_name = _get_pathway_ids_and_names(db, org)
         gene_id_type, gene_universe = _map_to_master_geneid(gene_universe, gene_id_type, org, 
-                                                            database, kegg_options, go_options)
+                                                            db, kegg_options, go_options)
 
         # DEAL WITH CONCEPT_IDS CHOICE
         if original_concept_ids is None:
             current_concept_ids = all_ids[id_column_name]
         else:
-            if database in kegg_options:
-                current_concept_ids = _check_concept_ids_KEGG(original_concept_ids, org, database, all_ids, id_column_name)
-            elif database in go_options:
+            if db in kegg_options:
+                current_concept_ids = _check_concept_ids_KEGG(original_concept_ids, org, db, all_ids, id_column_name)
+            elif db in go_options:
                 current_concept_ids = _check_concept_ids_GO(original_concept_ids, org, all_ids, id_column_name)
 
         # -------------------------

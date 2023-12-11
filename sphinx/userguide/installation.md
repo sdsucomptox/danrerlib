@@ -5,6 +5,7 @@
 - python >=3.9,<3.13
 - numpy 1.26.0
 - pandas 2.1.1
+- matplotlib 3.8.2
 
 Please see respective package information if dependencies are not already installed.
 
