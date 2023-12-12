@@ -86,6 +86,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#conduct-logistic-regression-for-enrichment-analysis">Conduct Logistic Regression for Enrichment Analysis</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-enrichment-via-orthology">Functional Enrichment via Orthology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Conduct Logistic Regression for Enrichment Analysis</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a><ul>
@@ -1659,6 +1663,192 @@
 </div>
 </div>
 <p>If you were to compare these results with those of Fisher’s Exact Test above, you would notice many of the significant pathways show up in both methods.</p>
+</section>
+</section>
+<section id="functional-enrichment-via-orthology">
+<h3>Functional Enrichment via Orthology<a class="headerlink" href="#functional-enrichment-via-orthology" title="Permalink to this heading"></a></h3>
+<p><em>Purpose: Conduct functional enrichment analysis via orthology to identify overrepresented pathways in zebrafish associated with a set of genes that have been originally annotated for human.</em></p>
+<p>This method is ideal for scenarios where you want to leverage existing knowledge from the well-annotated species, humans, and apply it to the less-studied organism, zebrafish. Orthology-based functional enrichment allows you to transfer annotations and pathway information from humamns, where extensive functional genomics studies have been conducted, to the target species of zebrafish. In the context of zebrafish, which may have fewer experimentally validated annotations, leveraging orthologous relationships helps bridge the gap in functional understanding.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code>, the organism <code class="docutils literal notranslate"><span class="pre">dreM</span></code> stands for <em>Danio rerio</em> mapped, meaning the zebrafish genome has been mapped to human via orthology. Therefore, we can conduct the same steps as shown above but choose the <code class="docutils literal notranslate"><span class="pre">dreM</span></code> organism to conduct functional enrichment via orthology.</p>
+<section id="id1">
+<h4>Conduct Logistic Regression for Enrichment Analysis<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h4>
+<p><strong>Step 1:</strong> Loading Data. Data should be loaded into a Pandas Dataframe with the structure as describes above. This is defined as your <code class="docutils literal notranslate"><span class="pre">gene_universe_tpp</span></code> as is contains all genes detected in your study.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gene_universe_tpp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/test_data/TPP_DE.txt&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 2:</strong> Define necessary parameters and choices. To run the enrichment function, there are some key parameters you have the option of using (see above).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the gene id type you have in your gene universe. </span>
+<span class="c1"># In this case, we have NCBI Gene IDs. </span>
+<span class="n">ncbi_id</span> <span class="o">=</span> <span class="s1">&#39;NCBI Gene ID&#39;</span>
+
+<span class="c1"># the database you wish to test enrichment for </span>
+<span class="n">database_choice</span> <span class="o">=</span> <span class="s1">&#39;KEGG Pathway&#39;</span>
+
+<span class="c1"># the method you wish to use to test for enrichment. </span>
+<span class="c1"># In this case, we are using Logistic Regression</span>
+<span class="n">enrich_method</span> <span class="o">=</span> <span class="s1">&#39;logistic&#39;</span>
+
+<span class="c1"># organism - for orthology we want to choose &#39;dreM&#39;</span>
+<span class="n">organism_for_orthology</span> <span class="o">=</span> <span class="s1">&#39;dreM&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 3:</strong> Run enrichment function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">enrich</span><span class="p">(</span><span class="n">gene_universe</span> <span class="o">=</span> <span class="n">gene_universe_tpp</span><span class="p">,</span> 
+                <span class="n">gene_id_type</span> <span class="o">=</span> <span class="n">ncbi_id</span><span class="p">,</span>
+                <span class="n">database</span> <span class="o">=</span> <span class="n">database_choice</span><span class="p">,</span> 
+                <span class="n">method</span> <span class="o">=</span> <span class="n">enrich_method</span><span class="p">,</span>
+                <span class="n">org</span> <span class="o">=</span> <span class="n">organism_for_orthology</span> 
+                <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 4:</strong> Visualize results. In this case, we assessed whether or not a KEGG Pathway was enriched or depleted. This means was there significant up and/or down regulation of a pathway.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># count the number of significantly altered pathways</span>
+<span class="n">num_altered</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">num_enriched</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Direction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;enriched&#39;</span><span class="p">])</span>
+<span class="n">num_depleted</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Direction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;depleted&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The total number of altered pathways is </span><span class="si">{</span><span class="n">num_altered</span><span class="si">}</span><span class="s1">, the number enriched is </span><span class="si">{</span><span class="n">num_enriched</span><span class="si">}</span><span class="s1">, and the number depleted is </span><span class="si">{</span><span class="n">num_depleted</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The total number of altered pathways is 122, the number enriched is 118, and the number depleted is 4.
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see based on the analysis done above with the default organism of <code class="docutils literal notranslate"><span class="pre">dre</span></code>, we have detected more significanly altered pathways via orthology. This is because the number of KEGG Pathways that are annotated for human greatly out numbers those of zebrafish.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fun</span> <span class="o">=</span> <span class="n">KEGG</span><span class="o">.</span><span class="n">_get_total_number_kegg</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total Number dre: </span><span class="si">{</span><span class="n">fun</span><span class="p">(</span><span class="s2">&quot;dre&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pathway&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total Number dreM: </span><span class="si">{</span><span class="n">fun</span><span class="p">(</span><span class="s2">&quot;dreM&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pathway&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total Number hsa: </span><span class="si">{</span><span class="n">fun</span><span class="p">(</span><span class="s2">&quot;hsa&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pathway&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total Number dre: 177
+Total Number dreM: 355
+Total Number hsa: 355
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see, <em>Danio rerio</em> (<code class="docutils literal notranslate"><span class="pre">dre</span></code>) only has 177 annotated pathways while human (<code class="docutils literal notranslate"><span class="pre">hsa</span></code>) has 355; therefore, mapped zebrafish via orthology (<code class="docutils literal notranslate"><span class="pre">dreM</span></code>) has 355 annotated pathways as well.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
+<span class="c1"># visualize the top 5 most significantly altered KEGG pathways</span>
+<span class="c1"># Markdown(result.head(5).to_markdown())</span>
+<span class="n">result</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p></p></th>
+<th class="head text-left"><p>Concept Type</p></th>
+<th class="head text-left"><p>Concept ID</p></th>
+<th class="head text-left"><p>Concept Name</p></th>
+<th class="head text-right"><p># Genes in Concept in Universe</p></th>
+<th class="head text-right"><p># Sig Genes Belong to Concept</p></th>
+<th class="head text-right"><p>Proportion of Sig Genes in Set</p></th>
+<th class="head text-right"><p>Odds Ratio</p></th>
+<th class="head text-right"><p>P-value</p></th>
+<th class="head text-left"><p>Direction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>0</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dreM04550</p></td>
+<td class="text-left"><p>Signaling pathways regulating pluripotency of stem cells</p></td>
+<td class="text-right"><p>155</p></td>
+<td class="text-right"><p>47</p></td>
+<td class="text-right"><p>0.303226</p></td>
+<td class="text-right"><p>1.29054</p></td>
+<td class="text-right"><p>4.96145e-07</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>1</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dreM05225</p></td>
+<td class="text-left"><p>Hepatocellular carcinoma</p></td>
+<td class="text-right"><p>173</p></td>
+<td class="text-right"><p>56</p></td>
+<td class="text-right"><p>0.323699</p></td>
+<td class="text-right"><p>1.26629</p></td>
+<td class="text-right"><p>2.40385e-06</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>2</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dreM04961</p></td>
+<td class="text-left"><p>Endocrine and other factor-regulated calcium reabsorption</p></td>
+<td class="text-right"><p>64</p></td>
+<td class="text-right"><p>18</p></td>
+<td class="text-right"><p>0.28125</p></td>
+<td class="text-right"><p>1.36921</p></td>
+<td class="text-right"><p>2.83617e-06</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>3</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dreM00030</p></td>
+<td class="text-left"><p>Pentose phosphate pathway</p></td>
+<td class="text-right"><p>28</p></td>
+<td class="text-right"><p>14</p></td>
+<td class="text-right"><p>0.5</p></td>
+<td class="text-right"><p>1.46091</p></td>
+<td class="text-right"><p>5.7182e-06</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>4</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dreM04659</p></td>
+<td class="text-left"><p>Th17 cell differentiation</p></td>
+<td class="text-right"><p>93</p></td>
+<td class="text-right"><p>29</p></td>
+<td class="text-right"><p>0.311828</p></td>
+<td class="text-right"><p>1.3167</p></td>
+<td class="text-right"><p>8.00381e-06</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+</tbody>
+</table>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a bar chart to visualize the enriched results</span>
+<span class="n">enriched_results</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Direction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;enriched&#39;</span><span class="p">]</span>
+
+<span class="n">enrichplots</span><span class="o">.</span><span class="n">bar_chart</span><span class="p">(</span><span class="n">enriched_results</span><span class="p">,</span> 
+                      <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Top 20 Enriched KEGG Pathways&#39;</span><span class="p">,</span> 
+                      <span class="n">xlab</span> <span class="o">=</span> <span class="s1">&#39;KEGG Pathway&#39;</span><span class="p">,</span>
+                      <span class="n">max_num_pathways</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/499c0853aefee884508b524b735349c73514ef890c9916e512ead41a6ad26939.png" src="../_images/499c0853aefee884508b524b735349c73514ef890c9916e512ead41a6ad26939.png" />
+</div>
+</div>
 </section>
 </section>
 </section>
