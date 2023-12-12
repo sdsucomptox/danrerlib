@@ -76,12 +76,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#enrichment-module-overview">Enrichment Module Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#functional-enrichment-with-fisher-s-exact-test">Functional Enrichment with Fisher’s Exact Test</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#overview-of-fisher-s-exact-test-for-overrepresentation">Overview of Fisher’s Exact Test for Overrepresentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conduct-fishers-exact-test-for-enrichment-analysis">Conduct Fishers Exact Test for Enrichment Analysis</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#testing-for-up-regulated-pathways">Testing for Up-Regulated Pathways</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#testing-for-down-regulated-pathways">Testing for Down-Regulated Pathways</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#functional-enrichment-with-logistic-regression">Functional Enrichment with Logistic Regression</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#overview-of-logistic-regression-for-enrichment-analysis">Overview of Logistic Regression for Enrichment Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conduct-logistic-regression-for-enrichment-analysis">Conduct Logistic Regression for Enrichment Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -921,22 +923,25 @@
 <li><p><span class="math notranslate nohighlight">\(d\)</span> is the number of genes neither in the pathway nor significantly expressed.</p></li>
 </ul>
 <p><strong>Statistical Formulas:</strong></p>
-<ol class="arabic simple">
-<li><p><strong>Odds Ratio:</strong>
-$<span class="math notranslate nohighlight">\(
-\text{Odds Ratio} = \frac{ad}{bc}
-\)</span>$</p></li>
-<li><p><strong>Fisher’s Exact Test:</strong>
-$<span class="math notranslate nohighlight">\(
-P(X \leq a) = \frac{\binom{a+b}{a} \binom{c+d}{c}}{\binom{N}{a+c}}
-\)</span><span class="math notranslate nohighlight">\(
-where \)</span>N = a+b+c+d$ is the total number of genes.</p></li>
-<li><p><strong>P-value Calculation:</strong>
-$<span class="math notranslate nohighlight">\(
-P(\text{Observed or More Extreme}) = \sum_{I=0}^{a} \frac{\binom{a+b}{i} \binom{c+d}{a-i}}{\binom{N}{a+c}}
-\)</span>$</p></li>
-</ol>
+<ol class="arabic">
+<li><p><strong>Odds Ratio:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{Odds Ratio} = \frac{ad}{bc}\]</div>
+</li>
+<li><p><strong>Fisher’s Exact Test:</strong></p>
+<div class="math notranslate nohighlight">
+\[P(X \leq a) = \frac{\binom{a+b}{a} \binom{c+d}{c}}{\binom{N}{a+c}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(N = a+b+c+d\)</span> is the total number of genes.</p>
+</li>
+<li><p><strong>P-value Calculation:</strong></p>
+<div class="math notranslate nohighlight">
+\[P(\text{Observed or More Extreme}) = \sum_{I=0}^{a} \frac{\binom{a+b}{i} \binom{c+d}{a-i}}{\binom{N}{a+c}}\]</div>
 <p>A low p-value suggests that the observed distribution is unlikely to occur by random chance, indicating potential enrichment or depletion.</p>
+</li>
+</ol>
+</section>
+<section id="conduct-fishers-exact-test-for-enrichment-analysis">
+<h4>Conduct Fishers Exact Test for Enrichment Analysis<a class="headerlink" href="#conduct-fishers-exact-test-for-enrichment-analysis" title="Permalink to this heading"></a></h4>
 <p><strong>Step 1:</strong> Loading Data. Data should be loaded into a Pandas Dataframe with the structure as describes above. This is defined as your <code class="docutils literal notranslate"><span class="pre">gene_universe_tpp</span></code> as is contains all genes detected in your study.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1393,10 +1398,11 @@ P(\text{Observed or More Extreme}) = \sum_{I=0}^{a} \frac{\binom{a+b}{i} \binom{
 <p>The logistic regression method for gene set enrichment analysis involves modeling the log-odds of a gene belonging to a specific category (gene set) as a linear function of the statistical significance (measured by -log(P-values)).</p>
 <p><strong>Statistical Formulas:</strong></p>
 <p>Here’s a breakdown of the key components mentioned in the explanation:</p>
-<ol class="arabic simple">
-<li><p><strong>Logistic Regression Model:</strong>
-<span class="math notranslate nohighlight">\(\ln\left(\frac{p}{1-p}\right) = \alpha + \beta \cdot x\)</span>
-where:</p>
+<ol class="arabic">
+<li><p><strong>Logistic Regression Model:</strong></p>
+<div class="math notranslate nohighlight">
+\[\ln\left(\frac{p}{1-p}\right) = \alpha + \beta \cdot x\]</div>
+<p>where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\ln\)</span> is the natural logarithm.</p></li>
 <li><p><span class="math notranslate nohighlight">\(p\)</span> is the probability of a gene belonging to the specific category.</p></li>
@@ -1405,9 +1411,10 @@ where:</p>
 <li><p><span class="math notranslate nohighlight">\(x\)</span> is the -log(P-value) used as the explanatory variable.</p></li>
 </ul>
 </li>
-<li><p><strong>Odds Ratio:</strong>
-<span class="math notranslate nohighlight">\( \text{Odds Ratio} = \exp(\beta) \)</span>
-The odds ratio indicates the change in the odds of a gene belonging to the specific category for a unit increase in the -log(P-value) or a 10-fold decrease in P-value.</p></li>
+<li><p><strong>Odds Ratio:</strong> The odds ratio indicates the change in the odds of a gene belonging to the specific category for a unit increase in the -log(P-value) or a 10-fold decrease in P-value.</p>
+<div class="math notranslate nohighlight">
+\[ \text{Odds Ratio} = \exp(\beta) \]</div>
+</li>
 <li><p><strong>Wald Test:</strong></p>
 <ul class="simple">
 <li><p>The Wald test is used to assess the evidence in the data that <span class="math notranslate nohighlight">\( \beta \)</span> is different from zero.</p></li>
@@ -1429,6 +1436,9 @@ The odds ratio indicates the change in the odds of a gene belonging to the speci
 </li>
 </ol>
 <p>This method aims to identify enriched or depleted gene sets based on the statistical significance of their association with differential expression. The odds ratio and P-value provide insights into the strength and significance of this association.</p>
+</section>
+<section id="conduct-logistic-regression-for-enrichment-analysis">
+<h4>Conduct Logistic Regression for Enrichment Analysis<a class="headerlink" href="#conduct-logistic-regression-for-enrichment-analysis" title="Permalink to this heading"></a></h4>
 <p><strong>Step 1:</strong> Loading Data. Data should be loaded into a Pandas Dataframe with the structure as describes above. This is defined as your <code class="docutils literal notranslate"><span class="pre">gene_universe_tpp</span></code> as is contains all genes detected in your study.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
