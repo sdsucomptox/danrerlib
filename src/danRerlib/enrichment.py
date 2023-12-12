@@ -433,7 +433,7 @@ def _map_to_master_geneid(gene_universe, gene_id_type, org, database, kegg_optio
         - ``gene_id_type (str)``: The updated gene ID type after mapping to the master gene ID.
         - ``gene_universe (pd.DataFrame)``: The DataFrame with mapped gene identifiers.
     """
-    if org == 'dre':
+    if org == 'dre' or org == 'dreM':
         if database in kegg_options:
             master_gene_id = NCBI_ID
         elif database in go_options:
