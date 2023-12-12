@@ -165,6 +165,43 @@ def get_genes_in_disease(disease_id: str,
 
         return genes.reset_index(drop=True)
 
+def _get_total_number_kegg(org, db):
+    """
+    Retrieve the total number of KEGG pathways or KEGG diseases available for a specified organism.
+
+    Parameters:
+    - `org (str)`: The organism code ('dre' for zebrafish, 'dreM' for mapped zebrafish, 'hsa' for human).
+
+    Returns:
+    - `int`: The total number of KEGG pathways/diseases for the specified organism.
+
+    Raises:
+    - KeyError: If the provided organism code is not found in the known organism codes.
+
+    """
+
+    if db == 'pathway':
+        org_path_dict = {
+            'dre' : zebrafish_pathways_path,
+            'dreM' :mapped_zebrafish_pathways_path,
+            'hsa' : human_pathways_path
+        }
+    elif db == 'disease':
+        org_path_dict = {
+            'dre' : human_disease_genes_path,
+            'dreM' :human_disease_genes_path,
+            'hsa' : human_disease_genes_path
+        } 
+
+
+    path = org_path_dict[org]
+
+    if path is None:
+        raise KeyError(f"Invalid organism code: {org}")
+    
+    df = pd.read_csv(path, sep = '\t')
+    total_num_pathways = len(df)
+    return total_num_pathways
     
 def _check_for_organism(pathway_id: str, 
                         org: Optional[str]
@@ -500,4 +537,3 @@ def _build_dre_mapped_disease(human_disease_genes_path: str,
 
     zebrafish_genes = mapping.add_mapped_ortholog_column(human_disease_genes_df, HUMAN_ID, NCBI_ID, keep_old_ids=False, drop_na=True)
     zebrafish_genes.to_csv(dre_disease_genes_path, index=False, sep = '\t')
-
