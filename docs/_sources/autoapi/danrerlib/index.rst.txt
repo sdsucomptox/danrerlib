@@ -13,6 +13,7 @@ Submodules
    GO/index.rst
    KEGG/index.rst
    enrichment/index.rst
+   enrichplots/index.rst
    mapping/index.rst
 
 

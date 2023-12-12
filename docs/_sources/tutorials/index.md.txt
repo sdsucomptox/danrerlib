@@ -7,4 +7,5 @@
 
 perform_geneid_mapping.ipynb
 perform_orthology_mapping.ipynb
+functional_enrichment.ipynb
 ```

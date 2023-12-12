@@ -56,7 +56,7 @@ Functions
 
 
 
-.. py:function:: get_genes_in_GO_concept(concept_id: str, organism: str, gene_id_type: Optional[str] = None) -> pandas.Series
+.. py:function:: get_genes_in_GO_concept(concept_id: str, organism: str, gene_id_type: Optional[str] = None, out_data_type: Optional[type] = pd.DataFrame, do_check=True) -> pandas.Series
 
    Retrieve gene IDs associated with a Gene Ontology (GO) concept for a specified organism.
 

@@ -1,0 +1,22 @@
+:py:mod:`danrerlib.enrichplots`
+===============================
+
+.. py:module:: danrerlib.enrichplots
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   danrerlib.enrichplots.bar_chart
+
+
+
+.. py:function:: bar_chart(data, title, xlab, ylab='-log10(p-value)', label_font_size=16, max_num_pathways=None)
+
+

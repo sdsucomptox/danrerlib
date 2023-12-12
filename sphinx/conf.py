@@ -47,7 +47,27 @@ extensions = [
     "autoapi.extension",
     # "sphinx.ext.napoleon",
     # "sphinx.ext.viewcode",
+    "sphinx.ext.mathjax"
 ]
+
+# myst_enable_extensions = ["amsmath"] 
+# mathjax_path = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML'
+# myst_amsmath_enable = True
+
+# myst_admonition_enable = True
+# myst_amsmath_enable = True
+# myst_html_img_enable = True
+# myst_url_schemes = ("http", "https", "mailto")
+myst_enable_extensions = [
+    "amsmath",
+    "colon_fence",
+    "deflist",
+    "dollarmath",
+    "html_image",
+    "html_admonition",
+]
+myst_url_schemes = ("http", "https", "mailto")
+
 autoapi_dirs = "../src/danrerlib"
 autoapi_template_dir = "_templates/autoapi"
 stylesheet = "_static/css/parsing.css"
@@ -61,6 +81,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The theme to use for HTML and HTML Help pages. 
 html_theme = "renku"
+# html_theme = "sphinx_book_theme"
+
 html_static_path = ['_static']
 html_css_files = ["css/custom.css"]
 html_show_sphinx = False

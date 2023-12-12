@@ -23,10 +23,12 @@
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Changelog" href="../devguide/changelog.html" />
+    <link rel="next" title="Functional Enrichment Analysis" href="functional_enrichment.html" />
     <link rel="prev" title="Gene ID Mapping" href="perform_geneid_mapping.html" /> 
 </head>
 
@@ -85,6 +87,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="functional_enrichment.html">Functional Enrichment Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer's Guide</span></p>
 <ul>
@@ -118,7 +121,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="orthology-mapping">
+  <section class="tex2jax_ignore mathjax_ignore" id="orthology-mapping">
 <h1>Orthology Mapping<a class="headerlink" href="#orthology-mapping" title="Permalink to this heading"></a></h1>
 <p>Author: Ashley Schwartz</p>
 <p>Date: September 2023</p>
@@ -801,7 +804,7 @@ Name: NCBI Gene ID, dtype: object
 </section>
 <section id="get-orthologs-for-a-column-of-a-larger-dataset">
 <h3>Get Orthologs for a Column of a Larger Dataset<a class="headerlink" href="#get-orthologs-for-a-column-of-a-larger-dataset" title="Permalink to this heading"></a></h3>
-<p><em>Purpose: you have a dataset with columns x, y, z. Column x has Gene IDs in from organism $\alpha$ in type A. You would like to get orthologs for these Gene IDs to organism $\beta$ in type B while maintaining the information of columns y, z.</em></p>
+<p><em>Purpose: you have a dataset with columns x, y, z. Column x has Gene IDs in from organism <span class="math notranslate nohighlight">\(\alpha\)</span> in type A. You would like to get orthologs for these Gene IDs to organism <span class="math notranslate nohighlight">\(\beta\)</span> in type B while maintaining the information of columns y, z.</em></p>
 <p>In this scenario, you might have some data that looks like:</p>
 <table class="docutils align-default">
 <thead>
@@ -1023,7 +1026,7 @@ Name: NCBI Gene ID, dtype: object
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="perform_geneid_mapping.html" class="btn btn-neutral float-left" title="Gene ID Mapping" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../devguide/changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="functional_enrichment.html" class="btn btn-neutral float-right" title="Functional Enrichment Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

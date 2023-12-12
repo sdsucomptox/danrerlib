@@ -27,6 +27,7 @@ Learn by doing with our hands-on tutorials:
 
 - [Gene ID Mapping](tutorials/perform_geneid_mapping.ipynb): A how-to guide for gene ID mapping.
 - [Orthology Mapping](tutorials/perform_orthology_mapping.ipynb): A how-to guide for orthology mapping.
+- [Enrichment Testing](tutorials/functional_enrichment.ipynb): A how-to guide for orthology mapping.
 
 ## Developer Guide
 
@@ -56,6 +57,7 @@ autoapi/index
 
 tutorials/perform_geneid_mapping.ipynb
 tutorials/perform_orthology_mapping.ipynb
+tutorials/functional_enrichment.ipynb
 ``````
 
 ```{toctree}

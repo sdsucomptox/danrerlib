@@ -2,16 +2,16 @@
 
 ## Workflow
 
-To import and begin using `danRerLib` in your Python project, import `danRerLib` as:
+To import and begin using `danRerLib` in your Python project, import `danrerlib` as:
 
 ```
-import danRerLib as drl
+import danrerlib as drl
 ```
 
 To import a specific module, for example the mapping module, you can import as:
 
 ```
-from danRerLib import mapping
+from danrerlib import mapping
 ```
 
 A typical workflow of `danRerLib` depends on the feature you wish to use (see [Introduction](introduction.md)). Please the {ref}`tutorial page <tutorials>` for some typical workflows.

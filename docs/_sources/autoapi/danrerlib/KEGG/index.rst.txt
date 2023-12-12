@@ -56,7 +56,7 @@ Functions
 
 
 
-.. py:function:: get_genes_in_pathway(pathway_id: str, org=None)
+.. py:function:: get_genes_in_pathway(pathway_id: str, org=None, do_check=True)
 
    Retrieve genes associated with a specific pathway from KEGG.
 
@@ -79,7 +79,7 @@ Functions
        - Organism options include 'dre' (Danio rerio), 'hsa' (Human), or 'dreM' (Mapped Danio rerio from Human).
 
 
-.. py:function:: get_genes_in_disease(disease_id: str, org: str, API: bool = False) -> pandas.DataFrame
+.. py:function:: get_genes_in_disease(disease_id: str, org: str, do_check=True, API: bool = False) -> pandas.DataFrame
 
    Retrieve genes associated with a disease for a specified organism.
 

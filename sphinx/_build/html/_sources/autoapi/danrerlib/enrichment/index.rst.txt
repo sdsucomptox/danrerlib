@@ -11,8 +11,15 @@
    The Enrichment module offers a collection of functions to perform gene enrichment analyses. These analyses allow you to identify overrepresented gene sets or concepts in a given set of genes compared to a background or universe of genes. The module supports various enrichment databases, methods, and organisms, making it a versatile tool for uncovering biological insights.
 
    Functions:
-       - ``enrich_GO``: Perform Gene Ontology (GO) enrichment analysis.
-       - ``enrich_KEGG``: Conduct enrichment analysis using the Kyoto Encyclopedia of Genes and Genomes (KEGG) database.
+       - ``enrich``: Perform gene enrichment analysis using logistic regression or Fisher's exact test for any of the supported annotation databases.
+
+                   - `KEGG Pathway`
+                   - `KEGG Disease`
+                   - `GO BP`: Gene Ontology Biological Processes
+                   - `GO CC`: Gene Ontology Cellular Components
+                   - `GO MF`: Gene Ontology Molecular Function
+                   - `GO`: Gene Ontology Biological Processes, Cellular Components, and Molecular Function
+
        - ``logistic``: Perform gene enrichment using logistic regression.
        - ``fishers``: Perform gene enrichment using Fisher's exact test.
 
@@ -30,11 +37,11 @@
        - The module includes statistical methods such as logistic regression and Fisher's exact test for enrichment analysis.
 
    Example:
-       To perform GO enrichment analysis for a set of zebrafish genes:
+       To perform gene enrichment analysis for a set of zebrafish genes:
        
-       ``results = enrich_GO(gene_universe, gene_id_type=ZFIN_ID, database='BP', concept_ids=['GO:0007582'], org='dre')``
+       ``results = enrich(gene_universe, gene_id_type=ZFIN_ID, database='KEGG Pathway', method = 'fishers', org='dre')``
 
-       This example retrieves genes associated with the specified GO concept ID ('GO:0007582') for zebrafish genes (org='dre').
+       This example performs gene enrichment analysis using Fisher's exact test on the specified gene set for zebrafish genes (org='dre').
 
    For comprehensive details on each function and usage examples, please consult the documentation. You can also find tutorials demonstrating the full functionality of the Enrichment module.
 
@@ -49,122 +56,105 @@ Functions
 
 .. autoapisummary::
 
+   danrerlib.enrichment.enrich
    danrerlib.enrichment.logistic
    danrerlib.enrichment.fishers
-   danrerlib.enrichment.enrich_KEGG
-   danrerlib.enrichment.enrich_GO
 
 
 
-.. py:function:: logistic(gene_universe: danrerlib.settings.pd.DataFrame, gene_set: danrerlib.settings.pd.DataFrame, gene_id_type: str, concept_type: str, concept_id: str, concept_name: str, sig_cutoff=0.05) -> danrerlib.settings.pd.DataFrame
+.. py:function:: enrich(gene_universe: danrerlib.settings.pd.DataFrame, gene_id_type: str, database: list[str], org='dre', method='logistic', direction='both', sig_gene_cutoff_pvalue=0.05, log2FC_cutoff_value=0, concept_ids=None, background_gene_set=None, sig_conceptID_cutoff_pvalue=0.05, order_by_p_value=True, min_num_genes_in_concept=10, include_all=False) -> danrerlib.settings.pd.DataFrame
 
-   Perform gene enrichment analysis using the logistic regression method.
+   Perform gene enrichment analysis.
 
    Parameters:
-       - ``gene_universe (pd.DataFrame)``: A DataFrame representing the universe of genes.
+       - ``gene_universe (pd.DataFrame)``: A DataFrame containing gene information, including gene IDs, p-values, and log2FC.
+       - ``gene_id_type (str)``: The type of gene ID in the gene universe. The recommended gene id type is NCBI Gene ID (NCBI_ID). Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or for human: Human NCBI Gene ID.
+       - ``database (str or list[str])``: A list of functional annotation databases to test. Options include:
+
+               - `KEGG Pathway`
+               - `KEGG Disease`
+               - `GO BP`: Gene Ontology Biological Processes
+               - `GO CC`: Gene Ontology Cellular Components
+               - `GO MF`: Gene Ontology Molecular Function
+               - `GO`: Gene Ontology Biological Processes, Cellular Components, and Molecular Function
+               - `all`: all databases shown above
+               - a list of any combination of the databases shown above. eg. databases = [KEGG Pathway, KEGG Disease]
+
+       - ``org (str)``: The organism code ('dre' for zebrafish, 'dreM' for mapped zebrafish, 'hsa' for human).
+       - ``method (str, optional)``: The enrichment analysis method ('logistic' or 'fishers'). Default is 'logistic'.
+       - ``direction (str, optional)``: The direction of statistical test for enrichment ('up', 'down', or 'both'). Default is 'both'.
+       - ``sig_gene_cutoff_pvalue (float, optional)``: The significance cutoff for gene inclusion based on p-values. Default is 0.05.
+       - ``log2FC_cutoff_value (float, optional)``: The log2 fold change cutoff value for gene inclusion. Default is 0.
+       - ``concept_ids (list, optional)``: A list of concept IDs (e.g., pathway IDs or disease IDs) to analyze. Default is None.
+       - ``background_gene_set (pd.DataFrame, optional)``: A DataFrame representing a background gene set. Default is None.
+       - ``sig_conceptID_cutoff_pvalue (float, optional)``: The significance cutoff for concept IDs based on p-values. Default is 0.05.
+       - ``order_by_p_value (bool, optional)``: Whether to order the results by p-value. Default is True.
+       - ``min_num_genes_in_concept (int, optional)``: The minimum number of genes in a concept for it to be considered. Default is 10.
+       - ``include_all (bool, optional)``: Include all results without filtering based on significance. Default is False.
+
+   Returns:
+       - ``result (pd.DataFrame)``: A DataFrame containing enrichment analysis results, including concept details, the number of genes in the concept in the universe, the number of significant genes belonging to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.
+
+   Note:
+       - If you are providing a list of concept ids, they must come from one database only.
+
+
+.. py:function:: logistic(gene_universe_in: danrerlib.settings.pd.DataFrame, sig_genes_set: danrerlib.settings.pd.DataFrame, gene_set: danrerlib.settings.pd.DataFrame, gene_id_type: str, concept_type: str, concept_id: str, concept_name: str, total_number_of_genes_in_universe: int, test_direction)
+
+   Perform functional enrichment analysis using logistic regression.
+
+   Parameters:
+       - ``gene_universe_in (pd.DataFrame)``: A DataFrame representing the universe of genes.
+       - ``sig_genes_set (pd.DataFrame)``: A DataFrame containing the significantly expressed genes.
        - ``gene_set (pd.DataFrame)``: A DataFrame containing the genes of interest.
        - ``gene_id_type (str)``: The type of gene identifier used in the DataFrames.
-       - ``concept_type (str)``: The type of concept (e.g., GO term) being analyzed.
+       - ``concept_type (str)``: The type of concept (e.g., pathway) being analyzed.
        - ``concept_id (str)``: The ID of the concept being analyzed.
        - ``concept_name (str)``: The name or description of the concept being analyzed.
-       - ``sig_cutoff (float, optional)``: The significance cutoff for gene inclusion. Default is 0.05.
-
+       - ``total_number_of_genes_in_universe (int)``: The total number of genes in the universe.
+       - ``test_direction (str)``: The directionality of the test ('greater', 'less', or 'two-sided').
+       
    Returns:
-       - ``df (pd.DataFrame)``: A DataFrame containing enrichment analysis results, including concept details,
-       the number of genes in the concept in the universe, the number of significant genes belonging
-       to the concept, the proportion of genes in the concept, the coefficient, p-value, false discovery
-       rate (FDR)-adjusted p-value, odds ratio, and enrichment status ('enriched' or 'depleted').
+       - ``data (dict)``: A dictionary containing enrichment analysis results, including concept details,
+         the number of genes in the concept in the universe, the number of significant genes belonging
+         to the concept, the proportion of genes in the concept, odds ratio, p-value, and enrichment direction.
 
    Notes:
-       - This function performs gene enrichment analysis using logistic regression.
-       - It calculates enrichment statistics for a specified concept (e.g., GO term) by comparing a gene set
+       - This function performs functional enrichment analysis using logistic regression.
+       - It calculates enrichment statistics for a specified concept (e.g., pathway) by comparing a gene set
          of interest to a larger gene universe.
        - The 'gene_id_type' parameter specifies the type of gene identifiers used in the DataFrames.
-       - The 'sig_cutoff' parameter sets the significance cutoff for gene inclusion based on p-values.
-       - Enrichment results include the coefficient (slope) of the logistic regression, p-value,
-         FDR-adjusted p-value, odds ratio, and enrichment status.
+       - The 'test_direction' parameter determines the directionality of the test ('greater', 'less', or 'two-sided').
+       - Enrichment results include the odds ratio, p-value, and enrichment direction.
 
 
-.. py:function:: fishers(gene_universe: danrerlib.settings.pd.DataFrame, gene_set: danrerlib.settings.pd.DataFrame, concept_type: str, concept_id: str, concept_name: str, sig_cutoff=0.05)
+.. py:function:: fishers(gene_universe: danrerlib.settings.pd.DataFrame, sig_genes_set: danrerlib.settings.pd.DataFrame, gene_set: danrerlib.settings.pd.DataFrame, gene_id_type: str, concept_type: str, concept_id: str, concept_name: str, total_number_of_genes_in_universe: int, test_direction)
 
-   Perform gene enrichment analysis using Fisher's exact test.
+   Perform functional enrichment analysis using Fisher's exact test.
 
    Parameters:
        - ``gene_universe (pd.DataFrame)``: A DataFrame representing the universe of genes.
+       - ``sig_genes_set (pd.DataFrame)``: A DataFrame containing the significantly expressed genes.
        - ``gene_set (pd.DataFrame)``: A DataFrame containing the genes of interest.
-       - ``concept_type (str)``: The type of concept (e.g., KEGG pathway, GO term) being analyzed.
-       - ``concept_id (str)``: The ID of the concept being analyzed (e.g., KEGG pathway ID).
+       - ``gene_id_type (str)``: The type of gene identifier used in the DataFrames.
+       - ``concept_type (str)``: The type of concept (e.g., pathway) being analyzed.
+       - ``concept_id (str)``: The ID of the concept being analyzed.
        - ``concept_name (str)``: The name or description of the concept being analyzed.
-       - ``sig_cutoff (float, optional)``: The significance cutoff for gene inclusion. Default is 0.05.
-
+       - ``total_number_of_genes_in_universe (int)``: The total number of genes in the universe.
+       - ``test_direction (str)``: The directionality of the test. 
+         Options: 'two-sided', 'greater', 'less'.
+       
    Returns:
-       - ``df (pd.DataFrame)``: A DataFrame containing enrichment analysis results, including concept details,
-       the number of genes in the concept in the universe, the number of significant genes belonging
-       to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.
+       - ``data (dict)``: A dictionary containing enrichment analysis results, including concept details,
+         the number of genes in the concept in the universe, the number of significant genes belonging
+         to the concept, the proportion of genes in the concept, odds ratio, p-value, and enrichment direction.
 
    Notes:
-       - This function performs gene enrichment analysis using Fisher's exact test.
-       - It calculates enrichment statistics for a specified concept (e.g., KEGG pathway) by comparing a gene set
+       - This function performs functional enrichment analysis using Fisher's exact test.
+       - It calculates enrichment statistics for a specified concept (e.g., pathway) by comparing a gene set
          of interest to a larger gene universe.
-       - The 'sig_cutoff' parameter sets the significance cutoff for gene inclusion based on p-values.
-       - Enrichment results include p-value, odds ratio, and enrichment direction ('enriched' or 'depleted').
-
-
-.. py:function:: enrich_KEGG(gene_universe: str, gene_id_type=NCBI_ID, database='pathway', concept_ids=None, org='dre', method='logistic', sig_gene_cutoff_pvalue=0.05, sig_conceptID_cutoff_pvalue=None, sig_conceptID_cutoff_FDR=None, order_by_p_value=True)
-
-   Perform gene enrichment analysis using KEGG pathway or disease databases.
-
-   Parameters:
-       - ``gene_universe (pd.DataFrame)``: A DataFrame containing gene information, including gene IDs, p-values, and log2FC.
-       - ``gene_id_type (str, optional)``: The type of gene ID in the gene universe. Default is NCBI Gene ID (NCBI_ID).
-       - ``database (str, optional)``: The KEGG database to use ('pathway' or 'disease'). Default is 'pathway'.
-       - ``concept_ids (list, optional)``: A list of concept IDs (e.g., pathway IDs or disease IDs) to analyze. Default is None.
-       - ``org (str, optional)``: The organism code ('dre' for zebrafish, 'dreM' for mapped zebrafish, 'hsa' for human). Default is 'dre'.
-       - ``method (str, optional):`` The enrichment analysis method ('logistic' or 'fishers'). Default is 'logistic'.
-       - ``sig_gene_cutoff_pvalue (float, optional)``: The significance cutoff for gene inclusion based on p-values. Default is 0.05.
-       - ``sig_conceptID_cutoff_pvalue (float, optional)``: The significance cutoff for concept IDs based on p-values. Default is None.
-       - ``sig_conceptID_cutoff_FDR (float, optional)``: The significance cutoff for concept IDs based on FDR (only for 'logistic' method). Default is None.
-       - ``order_by_p_value (bool, optional)``: Whether to order the results by p-value. Default is True.
-
-   Returns:
-       - ``result (pd.DataFrame)``: A DataFrame containing enrichment analysis results, including concept details, the number of genes in the concept in the universe,
-       the number of significant genes belonging to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.
-
-   Notes:
-       - This function performs gene enrichment analysis using the KEGG pathway or disease database.
-       - It supports two enrichment analysis methods: 'logistic' and 'fishers'.
-       - The 'sig_gene_cutoff_pvalue' parameter sets the significance cutoff for gene inclusion based on gene p-values.
-       - The 'sig_conceptID_cutoff_pvalue' parameter can be used to filter concept IDs based on their p-values.
-       - The 'sig_conceptID_cutoff_FDR' parameter is applicable when using the 'logistic' method and filters concept IDs based on FDR.
-       - The 'order_by_p_value' parameter determines whether to order the results by p-value.
-
-
-.. py:function:: enrich_GO(gene_universe: str, gene_id_type=ZFIN_ID, database=None, concept_ids=None, org='dre', method='logistic', sig_gene_cutoff_pvalue=0.05, sig_conceptID_cutoff_pvalue=None, sig_conceptID_cutoff_FDR=None, order_by_p_value=True)
-
-   Perform gene enrichment analysis using Gene Ontology (GO) databases.
-
-   Parameters:
-       - ``gene_universe (pd.DataFrame)``: A DataFrame containing gene information, including gene IDs, p-values, and log2FC.
-       - ``gene_id_type (str, optional)``: The type of gene ID in the gene universe. Default is ZFIN ID (ZFIN_ID).
-       - ``database (str, optional)``: The GO database to use ('BP' for Biological Processes, 'CC' for Cellular Component, 'MF' for Molecular Function). Default is None.
-       - ``concept_ids (list, optional)``: A list of GO concept IDs to analyze. Default is None.
-       - ``org (str, optional)``: The organism code ('dre' for zebrafish, 'hsa' for human). Default is 'dre'.
-       - ``method (str, optional)``: The enrichment analysis method ('logistic' or 'fishers'). Default is 'logistic'.
-       - ``sig_gene_cutoff_pvalue (float, optional)``: The significance cutoff for gene inclusion based on p-values. Default is 0.05.
-       - ``sig_conceptID_cutoff_pvalue (float, optional)``: The significance cutoff for concept IDs based on p-values. Default is None.
-       - ``sig_conceptID_cutoff_FDR (float, optional)``: The significance cutoff for concept IDs based on FDR (only for 'logistic' method). Default is None.
-       - ``order_by_p_value (bool, optional)``: Whether to order the results by p-value. Default is True.
-
-   Returns:
-       - ``result (pd.DataFrame)``: A DataFrame containing enrichment analysis results, including concept details, the number of genes in the concept in the universe,
-       the number of significant genes belonging to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.
-
-   Notes:
-       - This function performs gene enrichment analysis using the Gene Ontology (GO) databases.
-       - It supports two enrichment analysis methods: 'logistic' and 'fishers'.
-       - The 'sig_gene_cutoff_pvalue' parameter sets the significance cutoff for gene inclusion based on gene p-values.
-       - The 'sig_conceptID_cutoff_pvalue' parameter can be used to filter concept IDs based on their p-values.
-       - The 'sig_conceptID_cutoff_FDR' parameter is applicable when using the 'logistic' method and filters concept IDs based on FDR.
-       - The 'order_by_p_value' parameter determines whether to order the results by p-value.
+       - The 'gene_id_type' parameter specifies the type of gene identifiers used in the DataFrames.
+       - The 'test_direction' parameter determines the directionality of the test ('two-sided', 'greater', 'less').
+       - Enrichment results include the odds ratio, p-value, and enrichment direction.
 
 

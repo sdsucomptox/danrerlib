@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Functional Enrichment Analysis &mdash; danrerlib  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+    <link rel="canonical" href="https://sdsucomptox.github.io/danrerlib/tutorials/functional_enrichment.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Changelog" href="../devguide/changelog.html" />
+    <link rel="prev" title="Orthology Mapping" href="perform_orthology_mapping.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            danrerlib
+              <img src="../_static/danrerlib_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User's Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide/usage.html">Usage Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="perform_geneid_mapping.html">Gene ID Mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="perform_orthology_mapping.html">Orthology Mapping</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Functional Enrichment Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#purpose-and-background">Purpose and Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#download-gene-sets">Download Gene Sets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kegg-pathway">KEGG Pathway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kegg-disease">KEGG Disease</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gene-ontology">Gene Ontology</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#conduct-functional-enrichment-analysis">Conduct Functional Enrichment Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#enrichment-module-overview">Enrichment Module Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-enrichment-with-fisher-s-exact-test">Functional Enrichment with Fisher’s Exact Test</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview-of-fisher-s-exact-test-for-overrepresentation">Overview of Fisher’s Exact Test for Overrepresentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing-for-up-regulated-pathways">Testing for Up-Regulated Pathways</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing-for-down-regulated-pathways">Testing for Down-Regulated Pathways</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-enrichment-with-logistic-regression">Functional Enrichment with Logistic Regression</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview-of-logistic-regression-for-enrichment-analysis">Overview of Logistic Regression for Enrichment Analysis</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer's Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../devguide/changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devguide/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devguide/conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devguide/license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">danrerlib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Functional Enrichment Analysis</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/functional_enrichment.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="functional-enrichment-analysis">
+<h1>Functional Enrichment Analysis<a class="headerlink" href="#functional-enrichment-analysis" title="Permalink to this heading"></a></h1>
+<p>Author: Ashley Schwartz</p>
+<p>Date: October 2023</p>
+<section id="purpose-and-background">
+<h2>Purpose and Background<a class="headerlink" href="#purpose-and-background" title="Permalink to this heading"></a></h2>
+<p>This tutorial goes over how to retrieve the genes in a particular pathway from the Kyoto Encyclopedia of Genes and Genomes (KEGG), retrieve the genes in a particular function from Gene Ontology (GO), and perform gene enrichment analysis on these gene sets using a variety of different methods.</p>
+<p><strong>Databases Supported</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Database</p></th>
+<th class="head"><p>Abbreviation</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Link</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Kyoto Encyclopedia of Genes and Genomes Pathway Database</p></td>
+<td><p>KEGG Pathway</p></td>
+<td><p>Molecular pathways and interactions</p></td>
+<td><p><a class="reference external" href="https://www.genome.jp/kegg/pathway.html">link</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Kyoto Encyclopedia of Genes and Genomes Disease Database</p></td>
+<td><p>KEGG Disease</p></td>
+<td><p>Genes and pathways associated with diseases</p></td>
+<td><p><a class="reference external" href="https://www.genome.jp/kegg/disease/">link</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Gene Ontology Biological Process Database</p></td>
+<td><p>GO BP</p></td>
+<td><p>Molecular events in biological processes</p></td>
+<td><p><a class="reference external" href="http://geneontology.org/docs/ontology-documentation/#biological-process-ontology-bp">link</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Gene Ontology Cellular Component Database</p></td>
+<td><p>GO CC</p></td>
+<td><p>Cellular structures and locations</p></td>
+<td><p><a class="reference external" href="http://geneontology.org/docs/ontology-documentation/#cellular-component-ontology-cc">link</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Gene Ontology Molecular Function Database</p></td>
+<td><p>GO MF</p></td>
+<td><p>Specific activities or functions of gene products</p></td>
+<td><p><a class="reference external" href="http://geneontology.org/docs/ontology-documentation/#molecular-function-ontology-mf">link</a></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Database Naming Conventions</strong></p>
+<p>Each database follows naming conventions for their pathways and functions. For a quick overview of how each database names a particular pathway or function, we provide some examples here:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Database</p></th>
+<th class="head"><p>ID Format</p></th>
+<th class="head"><p>Example ID</p></th>
+<th class="head"><p>Pathway/Function Name</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KEGG Pathway</p></td>
+<td><p>Numeric with Prefix</p></td>
+<td><p>dre00120 (Zebrafish), hsa00120 (Human)</p></td>
+<td><p>Primary bile acid biosynthesis</p></td>
+<td><p>KEGG pathway IDs are species-specific.</p></td>
+</tr>
+<tr class="row-odd"><td><p>KEGG Disease</p></td>
+<td><p>Alphanumeric</p></td>
+<td><p>H00001 (Human)</p></td>
+<td><p>B-cell acute lymphoblastic leukemia</p></td>
+<td><p>KEGG disease IDs are identified for human and are not defined for zebrafish.</p></td>
+</tr>
+<tr class="row-even"><td><p>GO BP</p></td>
+<td><p>Alphanumeric</p></td>
+<td><p>GO:0007165</p></td>
+<td><p>Signal transduction</p></td>
+<td><p>GO BP IDs are unique to each species.</p></td>
+</tr>
+<tr class="row-odd"><td><p>GO CC</p></td>
+<td><p>Alphanumeric</p></td>
+<td><p>GO:0005634</p></td>
+<td><p>Nucleus</p></td>
+<td><p>GO CC IDs are unique to each species.</p></td>
+</tr>
+<tr class="row-even"><td><p>GO MF</p></td>
+<td><p>Alphanumeric</p></td>
+<td><p>GO:0003824</p></td>
+<td><p>Catalytic activity</p></td>
+<td><p>GO MF IDs are unique to each species.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Enrichment Methods Supported</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enrichment Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Fisher’s Exact Test</p></td>
+<td><p>A statistical method for assessing the significance of gene enrichment within predefined functional categories or pathways using categorical gene set data.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Logistic Regression</p></td>
+<td><p>A modeling technique for predicting gene enrichment in specific functional categories, offering flexibility to handle diverse data types within gene sets.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Organisms Supported</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> is built for zebrafish and supports three organism types:</p>
+<p>The table you’ve provided is clear and informative, but there appears to be a minor typographical error in the descriptions for “zebrafish” and “mapped zebrafish.” Here’s a corrected version:</p>
+<p><strong>Organisms Supported</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> is built for zebrafish and supports three organism types:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Organism</p></th>
+<th class="head"><p>Abbreviation</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Zebrafish</p></td>
+<td><p>‘dre’</p></td>
+<td><p>The zebrafish taxonomy</p></td>
+</tr>
+<tr class="row-odd"><td><p>Human</p></td>
+<td><p>‘hsa’</p></td>
+<td><p>The human taxonomy</p></td>
+</tr>
+<tr class="row-even"><td><p>Mapped Zebrafish</p></td>
+<td><p>‘dreM’</p></td>
+<td><p>An organism defined through orthology</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<p>In this tutorial we will be utilizing:</p>
+<ul class="simple">
+<li><p>the required python package</p>
+<ul>
+<li><p>see install notes if not currently installed.</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># IMPORT PYTHON PACKAGE</span>
+<span class="c1"># ---------------------</span>
+<span class="kn">from</span> <span class="nn">danrerlib</span> <span class="kn">import</span> <span class="n">KEGG</span><span class="p">,</span> <span class="n">utils</span><span class="p">,</span> <span class="n">GO</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="download-gene-sets">
+<h2>Download Gene Sets<a class="headerlink" href="#download-gene-sets" title="Permalink to this heading"></a></h2>
+<p>If you are interested in identifying the genes within a gene set, you can download genes for a given KEGG pathway id, KEGG disease id, or GO id (BP, CC, or MF). A key benefit and advantage to <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> is we can also generate the gene list for a pathway that might not exist for zebrafish, but does exist for human. We can then map the genes to zebrafish genes if desired.</p>
+<section id="kegg-pathway">
+<h3>KEGG Pathway<a class="headerlink" href="#kegg-pathway" title="Permalink to this heading"></a></h3>
+<p><em>Purpose: Given a KEGG pathway id, retrieve a list of all genes in said pathway.</em></p>
+<p>As a reminder, <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> supports three organism types (see background for more information): hsa, dre, and dreM. Of course, you are likely most interested in the zebrafish genes, but human genes are also provided for comparisons. Lets look at the KEGG pathway <code class="docutils literal notranslate"><span class="pre">00400</span></code> which is defined as phenylalanine, tyrosine and tryptophan biosynthesis. This pathway exists for human <code class="docutils literal notranslate"><span class="pre">hsa00400</span></code> and zebrafish <code class="docutils literal notranslate"><span class="pre">dre00400</span></code>. Here are a few examples of gathering the genes in this pathway for different organisms:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kegg_id</span> <span class="o">=</span> <span class="s1">&#39;00400&#39;</span>
+<span class="n">human_genes</span> <span class="o">=</span> <span class="n">KEGG</span><span class="o">.</span><span class="n">get_genes_in_pathway</span><span class="p">(</span><span class="n">kegg_id</span><span class="p">,</span> <span class="s1">&#39;hsa&#39;</span><span class="p">)</span>
+<span class="n">human_genes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Human NCBI Gene ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>137362</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>259307</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2805</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2806</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5053</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6898</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dre_genes</span> <span class="o">=</span> <span class="n">KEGG</span><span class="o">.</span><span class="n">get_genes_in_pathway</span><span class="p">(</span><span class="n">kegg_id</span><span class="p">,</span> <span class="s1">&#39;dre&#39;</span><span class="p">)</span>
+<span class="n">dre_genes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NCBI Gene ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>335974</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>337166</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>378962</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>406330</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>406688</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>561410</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>791730</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mapped_genes</span> <span class="o">=</span> <span class="n">KEGG</span><span class="o">.</span><span class="n">get_genes_in_pathway</span><span class="p">(</span><span class="n">kegg_id</span><span class="p">,</span> <span class="s1">&#39;dreM&#39;</span><span class="p">)</span>
+<span class="n">mapped_genes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NCBI Gene ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>561410</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>335974</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>337166</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>378962</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>406330</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>406688</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>791730</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>It is also possible to include the organism identifier in the KEGG id sent to the function and omit the organism identifier. As an example of this, see below where we only provide the full KEGG id desired.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">KEGG</span><span class="o">.</span><span class="n">get_genes_in_pathway</span><span class="p">(</span><span class="s1">&#39;hsa00400&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Human NCBI Gene ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>137362</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>259307</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2805</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2806</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5053</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6898</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="kegg-disease">
+<h3>KEGG Disease<a class="headerlink" href="#kegg-disease" title="Permalink to this heading"></a></h3>
+<p><em>Purpose: Given a KEGG disease id, retrieve a list of all genes in said disease.</em></p>
+<p>We can also get the list of genes for a particular disease listed in the KEGG database. This function takes the disease id and the organism. Not that the zebrafish organism in this case comes from mapped values as the disease gene lists are not annotated for zebrafish within the KEGG database.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># human organism</span>
+<span class="n">KEGG</span><span class="o">.</span><span class="n">get_genes_in_disease</span><span class="p">(</span><span class="s1">&#39;H00001&#39;</span><span class="p">,</span> <span class="s1">&#39;hsa&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Human NCBI Gene ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>25</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4297</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4299</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>6929</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5087</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>861</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>4609</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>64109</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>5079</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># zebrafish organism</span>
+<span class="n">KEGG</span><span class="o">.</span><span class="n">get_genes_in_disease</span><span class="p">(</span><span class="s1">&#39;H00001&#39;</span><span class="p">,</span> <span class="s1">&#39;dre&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NCBI Gene ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>100000720</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>557048</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>100537394</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>664768</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>30310</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>58138</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>570960</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>58126</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>393141</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>30686</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>100294510</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>60636</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>It is expected, as described in the mapping tutorial, that the number of genes in the human gene set may not always be equal to the number of genes in the zebrafish set. This is because there is not always a 1:1 mapping in orthology between human ans zebrafish taxonomy.</p>
+</section>
+<section id="gene-ontology">
+<h3>Gene Ontology<a class="headerlink" href="#gene-ontology" title="Permalink to this heading"></a></h3>
+<p><em>Purpose: Given a Go concept id, retrieve a list of all genes in said GO concept.</em></p>
+<p><code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> supports Gene Ontology Biological Processes (BP), Cellular Components (CC), and Molecular Functions (MF). There is one primary function for the GO module that will retrieve the genes in any given concept, regardless if it comes from BP, CC, or MF. This can be done for either organism (hsa, dre, or dreM). Retrieval of the GO id <code class="docutils literal notranslate"><span class="pre">GO:0033554</span></code>, cellular response to stress, is shown below for the zebrafish.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># zebrafish organism</span>
+<span class="n">GO</span><span class="o">.</span><span class="n">get_genes_in_GO_concept</span><span class="p">(</span><span class="s1">&#39;GO:0033554&#39;</span><span class="p">,</span> <span class="s1">&#39;dre&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ZFIN ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ZDB-GENE-030131-8638</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ZDB-GENE-091204-246</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ZDB-GENE-040718-255</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ZDB-GENE-050320-35</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>A0A2R8S050</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>ZDB-GENE-030131-6701</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ZDB-GENE-040825-4</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>ZDB-GENE-030131-1096</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>ZDB-GENE-030131-9531</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>ZDB-GENE-030826-18</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>ZDB-GENE-030827-3</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>ZDB-GENE-030326-2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="conduct-functional-enrichment-analysis">
+<h2>Conduct Functional Enrichment Analysis<a class="headerlink" href="#conduct-functional-enrichment-analysis" title="Permalink to this heading"></a></h2>
+<p>Functional enrichment analysis is a powerful method for uncovering biological insights from a set of genes. Whether you have a specific gene set of interest or an entire dataset, you are able to perform functional enrichment analysis on pathways from KEGG and Gene Ontology. In this section, we’ll explore different scenarios, from analyzing a small gene set to conducting enrichment analysis on a larger scale using the danRerLib package.</p>
+<section id="enrichment-module-overview">
+<h3>Enrichment Module Overview<a class="headerlink" href="#enrichment-module-overview" title="Permalink to this heading"></a></h3>
+<p><strong>Import Enrichment Module</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">danrerlib.enrichment</span> <span class="kn">import</span> <span class="n">enrich</span>
+
+<span class="c1"># can also import as:</span>
+<span class="c1"># from danrerlib import enrichment</span>
+
+<span class="c1"># import a module to help with plotting</span>
+<span class="kn">from</span> <span class="nn">danrerlib</span> <span class="kn">import</span> <span class="n">enrichplots</span>
+
+<span class="c1"># just a notebook display option</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Markdown</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Recommended Data Format:</strong> The functional enrichment package is designed to take in your differential expression results and output the pathways significantly altered. Therefore, your data should include every gene detected from your study, the associated p-value that defines significance of differential expression, and the log2fc (or another metric that defines up/down regulation of the gene). This minimizes the work from the user with regard to data filtering for directional tests and background gene sets. The <strong>required</strong> data format is:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Gene ID</p></th>
+<th class="head"><p>p-value</p></th>
+<th class="head"><p>log2FC</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>any supported gene id type: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol</p></td>
+<td><p>0 &lt; p-value &lt; 1</p></td>
+<td><p>positive or negative</p></td>
+</tr>
+</tbody>
+</table>
+<p><em>The data is required to have the gene id in the first column, the pvalue in the second, and the log2FC in the third. The column names can be defined by the user.</em></p>
+<p>The data I will be using in this tutorial is a publicly available differential expression dataset from the Gene Expression Omnibus (GSE:…). The study investigated the effects of the chemical TPP on the developing zebrafish and obtained whole-embryo RNA-sequencing.</p>
+<p><strong>Required Parameters</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter Name</p></th>
+<th class="head"><p>Parameter Type</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gene_universe</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></p></td>
+<td><p>A DataFrame containing gene information, including gene IDs, p-values, and log2FC.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gene_id_type</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>The type of gene ID in the gene universe. The recommended gene id type is NCBI Gene ID (NCBI_ID). Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or for human: Human NCBI Gene ID.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">database</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">list[str]</span></code></p></td>
+<td><p>The functional annotation database(s). Options include:’KEGG Pathway’, ‘KEGG Disease’, ‘GO BP’, ‘GO CC’, ‘GO MF’, ‘GO’ (all GO databases), ‘all’ ( all databases). Can also input a list of databases, as an example: [‘KEGG Pathway’, KEGG Disease’]</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Advanced, Optional Parameters</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter Name</p></th>
+<th class="head"><p>Parameter Type</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">org</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>The organism code (‘dre’ for zebrafish, ‘dreM’ for mapped zebrafish, ‘hsa’ for human). Choose <code class="docutils literal notranslate"><span class="pre">dreM</span></code> if you would like to preform enrichment via orthology. Default is <code class="docutils literal notranslate"><span class="pre">dre</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">method</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>The enrichment analysis method (‘logistic’ or ‘fishers’). Default is ‘logistic’.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">direction</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>The direction of statistical test for enrichment (‘up’, ‘down’, or ‘both’). If you choose <code class="docutils literal notranslate"><span class="pre">up</span></code> for example, you will be able to test if the gene set is significantly up-regulated. Default is ‘both’.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sig_gene_cutoff_pvalue</span> </code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>The significance cutoff for gene inclusion based on p-values. Default is 0.05.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">log2FC_cutoff_value</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>The log2 fold change cutoff value for gene inclusion. Default is 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">min_num_genes_in_concept</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>The minimum number of genes in a concept for it to be considered. Default is 10.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">concept_ids</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td><p>A list of concept IDs (e.g., pathway IDs or disease IDs) to analyze. Include this if you are interested in testing a specific amount of concept IDs. Default is None.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">background_gene_set</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></p></td>
+<td><p>A DataFrame representing a background gene set. Include if your gene universe does not contain all genes detected. Default is None.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sig_conceptID_cutoff_pvalue</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>The significance cutoff for concept IDs based on p-values that will be returned to you. Default is 0.05.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">include_all</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>Include all results without filtering based on significance. Default is False.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">order_by_p_value</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>Whether to order the results by p-value. Default is True.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functional-enrichment-with-fisher-s-exact-test">
+<h3>Functional Enrichment with Fisher’s Exact Test<a class="headerlink" href="#functional-enrichment-with-fisher-s-exact-test" title="Permalink to this heading"></a></h3>
+<p><em>Purpose: Conduct functional enrichment analysis using Fisher’s Exact Test to identify overrepresented pathways associated with a set of genes.</em></p>
+<p>This method is ideal for scenarios where you have a gene set of interest and want to explore the significant enrichment of pathways from databases like KEGG and Gene Ontology. The Fisher’s Exact Test helps reveal statistically significant relationships between the gene set and specific pathways.</p>
+<section id="overview-of-fisher-s-exact-test-for-overrepresentation">
+<h4>Overview of Fisher’s Exact Test for Overrepresentation<a class="headerlink" href="#overview-of-fisher-s-exact-test-for-overrepresentation" title="Permalink to this heading"></a></h4>
+<p><strong>Contingency Table:</strong></p>
+<p>Consider a scenario where we are assessing the enrichment of a specific KEGG Pathway (let’s call it “Pathway A”) in a set of differentially expressed genes. The contingency table could look like this:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{|c|c|c|}
+\hline
+ &amp; \text{In Pathway A} &amp; \text{Not In Pathway A} \\
+\hline
+\text{Significantly Expressed} &amp; a &amp; b \\
+\hline
+\text{Not Significantly Expressed} &amp; c &amp; d \\
+\hline
+\end{array}
+\end{split}\]</div>
+<p>In this table:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(a\)</span> is the number of genes both in the pathway and significantly expressed.</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span> is the number of genes not in the pathway but significantly expressed.</p></li>
+<li><p><span class="math notranslate nohighlight">\(c\)</span> is the number of genes in the pathway but not significantly expressed.</p></li>
+<li><p><span class="math notranslate nohighlight">\(d\)</span> is the number of genes neither in the pathway nor significantly expressed.</p></li>
+</ul>
+<p><strong>Statistical Formulas:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Odds Ratio:</strong>
+$<span class="math notranslate nohighlight">\(
+\text{Odds Ratio} = \frac{ad}{bc}
+\)</span>$</p></li>
+<li><p><strong>Fisher’s Exact Test:</strong>
+$<span class="math notranslate nohighlight">\(
+P(X \leq a) = \frac{\binom{a+b}{a} \binom{c+d}{c}}{\binom{N}{a+c}}
+\)</span><span class="math notranslate nohighlight">\(
+where \)</span>N = a+b+c+d$ is the total number of genes.</p></li>
+<li><p><strong>P-value Calculation:</strong>
+$<span class="math notranslate nohighlight">\(
+P(\text{Observed or More Extreme}) = \sum_{I=0}^{a} \frac{\binom{a+b}{i} \binom{c+d}{a-i}}{\binom{N}{a+c}}
+\)</span>$</p></li>
+</ol>
+<p>A low p-value suggests that the observed distribution is unlikely to occur by random chance, indicating potential enrichment or depletion.</p>
+<p><strong>Step 1:</strong> Loading Data. Data should be loaded into a Pandas Dataframe with the structure as describes above. This is defined as your <code class="docutils literal notranslate"><span class="pre">gene_universe_tpp</span></code> as is contains all genes detected in your study.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gene_universe_tpp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/test_data/TPP_DE.txt&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To get a sneak peak about what the data looks like, we can look at the first 5 elements:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gene_universe_tpp</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NCBI Gene ID</th>
+      <th>PValue</th>
+      <th>logFC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>100000006</td>
+      <td>0.792615</td>
+      <td>0.115009</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>100000009</td>
+      <td>0.607285</td>
+      <td>-0.144714</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>100000026</td>
+      <td>0.021338</td>
+      <td>0.603871</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>100000030</td>
+      <td>0.007880</td>
+      <td>-2.083141</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>100000044</td>
+      <td>0.015286</td>
+      <td>0.803879</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Step 2:</strong> Define necessary parameters and choices. To run the enrichment function, there are some key parameters you have the option of using (see above).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the gene id type you have in your gene universe. </span>
+<span class="c1"># In this case, we have NCBI Gene IDs. </span>
+<span class="n">ncbi_id</span> <span class="o">=</span> <span class="s1">&#39;NCBI Gene ID&#39;</span>
+
+<span class="c1"># the database you wish to test enrichment for </span>
+<span class="n">database_choice</span> <span class="o">=</span> <span class="s1">&#39;KEGG Pathway&#39;</span>
+
+<span class="c1"># the method you wish to use to test for enrichment. </span>
+<span class="c1"># In this case, we are using Fisher&#39;s Exact Test</span>
+<span class="n">enrich_method</span> <span class="o">=</span> <span class="s1">&#39;fishers&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 3:</strong> Run enrichment function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">enrich</span><span class="p">(</span><span class="n">gene_universe</span> <span class="o">=</span> <span class="n">gene_universe_tpp</span><span class="p">,</span> 
+                <span class="n">gene_id_type</span> <span class="o">=</span> <span class="n">ncbi_id</span><span class="p">,</span>
+                <span class="n">database</span> <span class="o">=</span> <span class="n">database_choice</span><span class="p">,</span> 
+                <span class="n">method</span> <span class="o">=</span> <span class="n">enrich_method</span>     
+                <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 4</strong> Visualize results. In this case, we assessed whether or not a KEGG Pathway was enriched or depleted. This means was there significant up and/or down regulation of a pathway.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># count the number of significantly altered pathways</span>
+<span class="n">num_altered</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">num_enriched</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Direction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;enriched&#39;</span><span class="p">])</span>
+<span class="n">num_depleted</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Direction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;depleted&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The total number of altered pathways is </span><span class="si">{</span><span class="n">num_altered</span><span class="si">}</span><span class="s1">, the number enriched is </span><span class="si">{</span><span class="n">num_enriched</span><span class="si">}</span><span class="s1">, and the number depleted is </span><span class="si">{</span><span class="n">num_depleted</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The total number of altered pathways is 28, the number enriched is 25, and the number depleted is 3.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
+<span class="c1"># visualize the top 5 most significantly altered KEGG pathways</span>
+<span class="c1"># Markdown(result.head(5).to_markdown())</span>
+<span class="n">result</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p></p></th>
+<th class="head text-left"><p>Concept Type</p></th>
+<th class="head text-left"><p>Concept ID</p></th>
+<th class="head text-left"><p>Concept Name</p></th>
+<th class="head text-right"><p># Genes in Concept in Universe</p></th>
+<th class="head text-right"><p># Sig Genes Belong to Concept</p></th>
+<th class="head text-right"><p>Proportion of Sig Genes in Set</p></th>
+<th class="head text-right"><p>Odds Ratio</p></th>
+<th class="head text-right"><p>P-value</p></th>
+<th class="head text-left"><p>Direction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>0</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre00030</p></td>
+<td class="text-left"><p>Pentose phosphate pathway</p></td>
+<td class="text-right"><p>29</p></td>
+<td class="text-right"><p>15</p></td>
+<td class="text-right"><p>0.517241</p></td>
+<td class="text-right"><p>4.87263</p></td>
+<td class="text-right"><p>4.13465e-05</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>1</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre04512</p></td>
+<td class="text-left"><p>ECM-receptor interaction</p></td>
+<td class="text-right"><p>101</p></td>
+<td class="text-right"><p>35</p></td>
+<td class="text-right"><p>0.346535</p></td>
+<td class="text-right"><p>2.41698</p></td>
+<td class="text-right"><p>7.11217e-05</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>2</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre04141</p></td>
+<td class="text-left"><p>Protein processing in endoplasmic reticulum</p></td>
+<td class="text-right"><p>190</p></td>
+<td class="text-right"><p>54</p></td>
+<td class="text-right"><p>0.284211</p></td>
+<td class="text-right"><p>1.81138</p></td>
+<td class="text-right"><p>0.000419319</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>3</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre04010</p></td>
+<td class="text-left"><p>MAPK signaling pathway</p></td>
+<td class="text-right"><p>377</p></td>
+<td class="text-right"><p>95</p></td>
+<td class="text-right"><p>0.251989</p></td>
+<td class="text-right"><p>1.54043</p></td>
+<td class="text-right"><p>0.000544843</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>4</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre04510</p></td>
+<td class="text-left"><p>Focal adhesion</p></td>
+<td class="text-right"><p>264</p></td>
+<td class="text-right"><p>69</p></td>
+<td class="text-right"><p>0.261364</p></td>
+<td class="text-right"><p>1.61511</p></td>
+<td class="text-right"><p>0.00121163</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+</tbody>
+</table>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a bar chart to visualize the enriched results</span>
+<span class="n">enriched_results</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Direction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;enriched&#39;</span><span class="p">]</span>
+
+<span class="n">enrichplots</span><span class="o">.</span><span class="n">bar_chart</span><span class="p">(</span><span class="n">enriched_results</span><span class="p">,</span> 
+                      <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Top 20 Enriched KEGG Pathways&#39;</span><span class="p">,</span> 
+                      <span class="n">xlab</span> <span class="o">=</span> <span class="s1">&#39;KEGG Pathway&#39;</span><span class="p">,</span>
+                      <span class="n">max_num_pathways</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a36ae2a2d6e0a9476263eaabf8a3b1e0141a705e68e460ebf208c08a8758a6c0.png" src="../_images/a36ae2a2d6e0a9476263eaabf8a3b1e0141a705e68e460ebf208c08a8758a6c0.png" />
+</div>
+</div>
+<p><strong>Step 5</strong> Interpretation. Interpret the results based on the direction of enrichment. Consider the biological context of the pathways and their relevance to your study.</p>
+<p>For example, the Pentose phosphate pathway is significantly enriched in the set of genes that are differentially expressed in zebrafish exposed to TPP. The odds ratio of 4.87 and a very low p-value (0.000041) suggest a strong association between the pathway and the significant genes. The term “enriched” indicates that there is an overrepresentation of significant genes in this pathway compared to what would be expected by chance.</p>
+</section>
+<section id="testing-for-up-regulated-pathways">
+<h4>Testing for Up-Regulated Pathways<a class="headerlink" href="#testing-for-up-regulated-pathways" title="Permalink to this heading"></a></h4>
+<p><strong>Contingency Table for Upregulated Genes:</strong></p>
+<p>Assume we are interested in assessing whether a KEGG Pathway (let’s call it “Pathway A”) is enriched with <em>upregulated genes</em>. The contingency table for this scenario would be:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{|c|c|c|}
+\hline
+ &amp; \text{In Pathway A} &amp; \text{Not In Pathway A} \\
+\hline
+\text{Upregulated} &amp; a &amp; b \\
+\hline
+\text{Not Upregulated} &amp; c &amp; d \\
+\hline
+\end{array}
+\end{split}\]</div>
+<p>Here:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(a\)</span> is the number of genes both in the pathway and upregulated.</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span> is the number of genes not in the pathway but upregulated.</p></li>
+<li><p><span class="math notranslate nohighlight">\(c\)</span> is the number of genes in the pathway but not upregulated.</p></li>
+<li><p><span class="math notranslate nohighlight">\(d\)</span> is the number of genes neither in the pathway nor upregulated.</p></li>
+</ul>
+<p><strong>Step 1:</strong> Load the data. We will use the same dataset as before.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gene_universe_tpp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/test_data/TPP_DE.txt&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 2:</strong> Define necessary parameters and choices. The key difference here is the test direction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># same as before</span>
+<span class="n">ncbi_id</span> <span class="o">=</span> <span class="s1">&#39;NCBI Gene ID&#39;</span>
+<span class="n">database_choice</span> <span class="o">=</span> <span class="s1">&#39;KEGG Pathway&#39;</span>
+<span class="n">enrich_method</span> <span class="o">=</span> <span class="s1">&#39;fishers&#39;</span>
+
+<span class="c1"># define the directional test</span>
+<span class="n">tes_direction</span> <span class="o">=</span> <span class="s1">&#39;up&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 3</strong> Run enrichment function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">enrich</span><span class="p">(</span><span class="n">gene_universe</span> <span class="o">=</span> <span class="n">gene_universe_tpp</span><span class="p">,</span> 
+                <span class="n">gene_id_type</span> <span class="o">=</span> <span class="n">ncbi_id</span><span class="p">,</span>
+                <span class="n">database</span> <span class="o">=</span> <span class="n">database_choice</span><span class="p">,</span> 
+                <span class="n">method</span> <span class="o">=</span> <span class="n">enrich_method</span><span class="p">,</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;up&#39;</span>     
+                <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 4</strong> Visualize results. In this case, we assessed whether or not a KEGG Pathway was upregulated.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># count the number of significantly altered pathways</span>
+<span class="n">num_altered</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">num_upregulated</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Direction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;up regulated&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The total number of altered pathways is </span><span class="si">{</span><span class="n">num_altered</span><span class="si">}</span><span class="s1"> and the number upregulated is </span><span class="si">{</span><span class="n">num_upregulated</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The total number of altered pathways is 13 and the number upregulated is 13.
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see, since we are doing a directional test, the only ones that are significant are those that are up-regulated.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
+<span class="c1"># visualize the top 5 most significantly altered KEGG pathways</span>
+<span class="c1"># Markdown(result.head(5).to_markdown())</span>
+<span class="n">result</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p></p></th>
+<th class="head text-left"><p>Concept Type</p></th>
+<th class="head text-left"><p>Concept ID</p></th>
+<th class="head text-left"><p>Concept Name</p></th>
+<th class="head text-right"><p># Genes in Concept in Universe</p></th>
+<th class="head text-right"><p># Sig Genes Belong to Concept</p></th>
+<th class="head text-right"><p>Proportion of Sig Genes in Set</p></th>
+<th class="head text-right"><p>Odds Ratio</p></th>
+<th class="head text-right"><p>P-value</p></th>
+<th class="head text-left"><p>Direction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>0</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre04010</p></td>
+<td class="text-left"><p>MAPK signaling pathway</p></td>
+<td class="text-right"><p>377</p></td>
+<td class="text-right"><p>64</p></td>
+<td class="text-right"><p>0.169761</p></td>
+<td class="text-right"><p>2.01456</p></td>
+<td class="text-right"><p>1.97328e-06</p></td>
+<td class="text-left"><p>up regulated</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>1</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre04144</p></td>
+<td class="text-left"><p>Endocytosis</p></td>
+<td class="text-right"><p>325</p></td>
+<td class="text-right"><p>47</p></td>
+<td class="text-right"><p>0.144615</p></td>
+<td class="text-right"><p>1.65448</p></td>
+<td class="text-right"><p>0.00175717</p></td>
+<td class="text-left"><p>up regulated</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>2</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre04140</p></td>
+<td class="text-left"><p>Autophagy - animal</p></td>
+<td class="text-right"><p>180</p></td>
+<td class="text-right"><p>28</p></td>
+<td class="text-right"><p>0.155556</p></td>
+<td class="text-right"><p>1.79722</p></td>
+<td class="text-right"><p>0.00509073</p></td>
+<td class="text-left"><p>up regulated</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>3</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre04012</p></td>
+<td class="text-left"><p>ErbB signaling pathway</p></td>
+<td class="text-right"><p>104</p></td>
+<td class="text-right"><p>18</p></td>
+<td class="text-right"><p>0.173077</p></td>
+<td class="text-right"><p>2.03876</p></td>
+<td class="text-right"><p>0.00756464</p></td>
+<td class="text-left"><p>up regulated</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>4</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre04070</p></td>
+<td class="text-left"><p>Phosphatidylinositol signaling system</p></td>
+<td class="text-right"><p>117</p></td>
+<td class="text-right"><p>19</p></td>
+<td class="text-right"><p>0.162393</p></td>
+<td class="text-right"><p>1.88829</p></td>
+<td class="text-right"><p>0.0121393</p></td>
+<td class="text-left"><p>up regulated</p></td>
+</tr>
+</tbody>
+</table>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a bar chart to visualize the enriched results</span>
+<span class="n">upregulated_results</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Direction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;up regulated&#39;</span><span class="p">]</span>
+
+<span class="n">enrichplots</span><span class="o">.</span><span class="n">bar_chart</span><span class="p">(</span><span class="n">upregulated_results</span><span class="p">,</span>
+                      <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Up Regulated KEGG Pathways&#39;</span><span class="p">,</span>
+                      <span class="n">xlab</span> <span class="o">=</span> <span class="s1">&#39;KEGG Pathways&#39;</span><span class="p">,</span>
+                      <span class="n">max_num_pathways</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ba789b32c8823e57dcee655b1654549df0a6b232b90d92aea6417811005c60ea.png" src="../_images/ba789b32c8823e57dcee655b1654549df0a6b232b90d92aea6417811005c60ea.png" />
+</div>
+</div>
+</section>
+<section id="testing-for-down-regulated-pathways">
+<h4>Testing for Down-Regulated Pathways<a class="headerlink" href="#testing-for-down-regulated-pathways" title="Permalink to this heading"></a></h4>
+<p><strong>Contingency Table for Upregulated Genes:</strong></p>
+<p>Assume we are interested in assessing whether a KEGG Pathway (let’s call it “Pathway A”) is enriched with <em>down regulated genes</em>. The contingency table for this scenario would be:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{|c|c|c|}
+\hline
+ &amp; \text{In Pathway A} &amp; \text{Not In Pathway A} \\
+\hline
+\text{Downregulated} &amp; a &amp; b \\
+\hline
+\text{Not Downregulated} &amp; c &amp; d \\
+\hline
+\end{array}
+\end{split}\]</div>
+<p>Here:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(a\)</span> is the number of genes both in the pathway and downregulated.</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span> is the number of genes not in the pathway but downregulated.</p></li>
+<li><p><span class="math notranslate nohighlight">\(c\)</span> is the number of genes in the pathway but not downregulated.</p></li>
+<li><p><span class="math notranslate nohighlight">\(d\)</span> is the number of genes neither in the pathway nor downregulated.</p></li>
+</ul>
+<p><strong>Steps 1-6:</strong> You can repeat the steps above to test for down-regulated genes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">enrich</span><span class="p">(</span><span class="n">gene_universe</span> <span class="o">=</span> <span class="n">gene_universe_tpp</span><span class="p">,</span> 
+                <span class="n">gene_id_type</span> <span class="o">=</span> <span class="n">ncbi_id</span><span class="p">,</span>
+                <span class="n">database</span> <span class="o">=</span> <span class="n">database_choice</span><span class="p">,</span> 
+                <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;fishers&#39;</span><span class="p">,</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;down&#39;</span><span class="p">)</span>                
+
+<span class="c1"># create a bar chart to visualize the enriched results</span>
+<span class="n">downregulated_results</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Direction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;down regulated&#39;</span><span class="p">]</span>
+
+<span class="n">enrichplots</span><span class="o">.</span><span class="n">bar_chart</span><span class="p">(</span><span class="n">downregulated_results</span><span class="p">,</span>
+                      <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Top 20 Down-Regulated KEGG Pathways&#39;</span><span class="p">,</span>
+                      <span class="n">xlab</span> <span class="o">=</span> <span class="s1">&#39;KEGG Pathways&#39;</span><span class="p">,</span> 
+                      <span class="n">max_num_pathways</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/77eb7914a4ecf9ffa459f8b34daee258dfb617372c55e1dc4fde7ae904ef4a79.png" src="../_images/77eb7914a4ecf9ffa459f8b34daee258dfb617372c55e1dc4fde7ae904ef4a79.png" />
+</div>
+</div>
+<p><em>Note: there are <strong>a lot</strong> more GO Biological Processes then there are KEGG Pathways, therefore, testing for those will take a bit longer.</em></p>
+</section>
+</section>
+<section id="functional-enrichment-with-logistic-regression">
+<h3>Functional Enrichment with Logistic Regression<a class="headerlink" href="#functional-enrichment-with-logistic-regression" title="Permalink to this heading"></a></h3>
+<p><em>Purpose: Conduct functional enrichment analysis using logistic regression to identify overrepresented pathways associated with a set of genes.</em></p>
+<p>This method is ideal for scenarios where you have a gene set of interest and want to explore the significant enrichment of pathways from databases like KEGG and Gene Ontology. Logistic Regression helps reveal statistically significant relationships between the gene set and specific pathways. The logistic regression method is known to have better statistical power than fishers exact test (<em>Sartor et. al., 2009.</em>)</p>
+<section id="overview-of-logistic-regression-for-enrichment-analysis">
+<h4>Overview of Logistic Regression for Enrichment Analysis<a class="headerlink" href="#overview-of-logistic-regression-for-enrichment-analysis" title="Permalink to this heading"></a></h4>
+<p><strong>Logistic Regression Model:</strong></p>
+<p>The logistic regression method for gene set enrichment analysis involves modeling the log-odds of a gene belonging to a specific category (gene set) as a linear function of the statistical significance (measured by -log(P-values)).</p>
+<p><strong>Statistical Formulas:</strong></p>
+<p>Here’s a breakdown of the key components mentioned in the explanation:</p>
+<ol class="arabic simple">
+<li><p><strong>Logistic Regression Model:</strong>
+<span class="math notranslate nohighlight">\(\ln\left(\frac{p}{1-p}\right) = \alpha + \beta \cdot x\)</span>
+where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\ln\)</span> is the natural logarithm.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> is the probability of a gene belonging to the specific category.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> is the intercept.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta\)</span> is the slope parameter.</p></li>
+<li><p><span class="math notranslate nohighlight">\(x\)</span> is the -log(P-value) used as the explanatory variable.</p></li>
+</ul>
+</li>
+<li><p><strong>Odds Ratio:</strong>
+<span class="math notranslate nohighlight">\( \text{Odds Ratio} = \exp(\beta) \)</span>
+The odds ratio indicates the change in the odds of a gene belonging to the specific category for a unit increase in the -log(P-value) or a 10-fold decrease in P-value.</p></li>
+<li><p><strong>Wald Test:</strong></p>
+<ul class="simple">
+<li><p>The Wald test is used to assess the evidence in the data that <span class="math notranslate nohighlight">\( \beta \)</span> is different from zero.</p></li>
+<li><p>The test statistic <span class="math notranslate nohighlight">\( W \)</span> follows a <span class="math notranslate nohighlight">\(\chi^2\)</span>-distribution with one degree of freedom.</p></li>
+<li><p>The P-value is calculated based on this null distribution.</p></li>
+<li><p>Multiple testing correction is applied (e.g., FDR or Bonferroni) to control for false positives.</p></li>
+</ul>
+</li>
+<li><p><strong>Estimation and Testing:</strong></p>
+<ul class="simple">
+<li><p>Maximum likelihood estimates <span class="math notranslate nohighlight">\( \hat{\beta} \)</span> and <span class="math notranslate nohighlight">\( \hat{\alpha} \)</span> are obtained using the iteratively weighted least squares (IWLS) algorithm.</p></li>
+<li><p>Testing involves assessing whether <span class="math notranslate nohighlight">\( \beta \)</span> is significantly different from zero.</p></li>
+</ul>
+</li>
+<li><p><strong>Ranking:</strong></p>
+<ul class="simple">
+<li><p>Gene sets are ranked based on P-values or odds ratios.</p></li>
+</ul>
+</li>
+</ol>
+<p>This method aims to identify enriched or depleted gene sets based on the statistical significance of their association with differential expression. The odds ratio and P-value provide insights into the strength and significance of this association.</p>
+<p><strong>Step 1:</strong> Loading Data. Data should be loaded into a Pandas Dataframe with the structure as describes above. This is defined as your <code class="docutils literal notranslate"><span class="pre">gene_universe_tpp</span></code> as is contains all genes detected in your study.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gene_universe_tpp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/test_data/TPP_DE.txt&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To get a sneak peak about what the data looks like, we can look at the first 5 elements:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gene_universe_tpp</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NCBI Gene ID</th>
+      <th>PValue</th>
+      <th>logFC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>100000006</td>
+      <td>0.792615</td>
+      <td>0.115009</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>100000009</td>
+      <td>0.607285</td>
+      <td>-0.144714</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>100000026</td>
+      <td>0.021338</td>
+      <td>0.603871</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>100000030</td>
+      <td>0.007880</td>
+      <td>-2.083141</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>100000044</td>
+      <td>0.015286</td>
+      <td>0.803879</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Step 2:</strong> Define necessary parameters and choices. To run the enrichment function, there are some key parameters you have the option of using (see above).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the gene id type you have in your gene universe. </span>
+<span class="c1"># In this case, we have NCBI Gene IDs. </span>
+<span class="n">ncbi_id</span> <span class="o">=</span> <span class="s1">&#39;NCBI Gene ID&#39;</span>
+
+<span class="c1"># the database you wish to test enrichment for </span>
+<span class="n">database_choice</span> <span class="o">=</span> <span class="s1">&#39;KEGG Pathway&#39;</span>
+
+<span class="c1"># the method you wish to use to test for enrichment. </span>
+<span class="c1"># In this case, we are using Logistic Regression</span>
+<span class="n">enrich_method</span> <span class="o">=</span> <span class="s1">&#39;logistic&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 3:</strong> Run enrichment function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">enrich</span><span class="p">(</span><span class="n">gene_universe</span> <span class="o">=</span> <span class="n">gene_universe_tpp</span><span class="p">,</span> 
+                <span class="n">gene_id_type</span> <span class="o">=</span> <span class="n">ncbi_id</span><span class="p">,</span>
+                <span class="n">database</span> <span class="o">=</span> <span class="n">database_choice</span><span class="p">,</span> 
+                <span class="n">method</span> <span class="o">=</span> <span class="n">enrich_method</span>     
+                <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Step 4:</strong> Visualize results. In this case, we assessed whether or not a KEGG Pathway was enriched or depleted. This means was there significant up and/or down regulation of a pathway.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># count the number of significantly altered pathways</span>
+<span class="n">num_altered</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">num_enriched</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Direction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;enriched&#39;</span><span class="p">])</span>
+<span class="n">num_depleted</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Direction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;depleted&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The total number of altered pathways is </span><span class="si">{</span><span class="n">num_altered</span><span class="si">}</span><span class="s1">, the number enriched is </span><span class="si">{</span><span class="n">num_enriched</span><span class="si">}</span><span class="s1">, and the number depleted is </span><span class="si">{</span><span class="n">num_depleted</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The total number of altered pathways is 39, the number enriched is 34, and the number depleted is 5.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
+<span class="c1"># visualize the top 5 most significantly altered KEGG pathways</span>
+<span class="c1"># Markdown(result.head(5).to_markdown())</span>
+<span class="n">result</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p></p></th>
+<th class="head text-left"><p>Concept Type</p></th>
+<th class="head text-left"><p>Concept ID</p></th>
+<th class="head text-left"><p>Concept Name</p></th>
+<th class="head text-right"><p># Genes in Concept in Universe</p></th>
+<th class="head text-right"><p># Sig Genes Belong to Concept</p></th>
+<th class="head text-right"><p>Proportion of Sig Genes in Set</p></th>
+<th class="head text-right"><p>Odds Ratio</p></th>
+<th class="head text-right"><p>P-value</p></th>
+<th class="head text-left"><p>Direction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>0</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre00030</p></td>
+<td class="text-left"><p>Pentose phosphate pathway</p></td>
+<td class="text-right"><p>29</p></td>
+<td class="text-right"><p>15</p></td>
+<td class="text-right"><p>0.517241</p></td>
+<td class="text-right"><p>1.46137</p></td>
+<td class="text-right"><p>3.93196e-06</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>1</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre04510</p></td>
+<td class="text-left"><p>Focal adhesion</p></td>
+<td class="text-right"><p>264</p></td>
+<td class="text-right"><p>69</p></td>
+<td class="text-right"><p>0.261364</p></td>
+<td class="text-right"><p>1.2104</p></td>
+<td class="text-right"><p>2.00369e-05</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>2</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre04512</p></td>
+<td class="text-left"><p>ECM-receptor interaction</p></td>
+<td class="text-right"><p>101</p></td>
+<td class="text-right"><p>35</p></td>
+<td class="text-right"><p>0.346535</p></td>
+<td class="text-right"><p>1.29626</p></td>
+<td class="text-right"><p>2.32985e-05</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>3</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre00860</p></td>
+<td class="text-left"><p>Porphyrin metabolism</p></td>
+<td class="text-right"><p>39</p></td>
+<td class="text-right"><p>10</p></td>
+<td class="text-right"><p>0.25641</p></td>
+<td class="text-right"><p>1.3912</p></td>
+<td class="text-right"><p>4.70928e-05</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>4</p></td>
+<td class="text-left"><p>KEGG Pathway</p></td>
+<td class="text-left"><p>dre04010</p></td>
+<td class="text-left"><p>MAPK signaling pathway</p></td>
+<td class="text-right"><p>377</p></td>
+<td class="text-right"><p>95</p></td>
+<td class="text-right"><p>0.251989</p></td>
+<td class="text-right"><p>1.16901</p></td>
+<td class="text-right"><p>0.000106494</p></td>
+<td class="text-left"><p>enriched</p></td>
+</tr>
+</tbody>
+</table>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a bar chart to visualize the enriched results</span>
+<span class="n">enriched_results</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Direction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;enriched&#39;</span><span class="p">]</span>
+
+<span class="n">enrichplots</span><span class="o">.</span><span class="n">bar_chart</span><span class="p">(</span><span class="n">enriched_results</span><span class="p">,</span> 
+                      <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Top 20 Enriched KEGG Pathways&#39;</span><span class="p">,</span> 
+                      <span class="n">xlab</span> <span class="o">=</span> <span class="s1">&#39;KEGG Pathway&#39;</span><span class="p">,</span>
+                      <span class="n">max_num_pathways</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d8b5dc8825fb8dd72550cd921506a05f004a5f9c934bf90b9c5e51eb0e37a4fa.png" src="../_images/d8b5dc8825fb8dd72550cd921506a05f004a5f9c934bf90b9c5e51eb0e37a4fa.png" />
+</div>
+</div>
+<p>If you were to compare these results with those of Fisher’s Exact Test above, you would notice many of the significant pathways show up in both methods.</p>
+</section>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<p>This concludes the functional enrichment tutorial! In summary, the key functions in this library for enrichment are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>function</p></th>
+<th class="head"><p>purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enrich</p></td>
+<td><p>conduct functional enrichment using the ‘fishers’ method or the ‘logistic’ method</p></td>
+</tr>
+</tbody>
+</table>
+<p>For more information about the full functionality of each function, please refer to the API Reference.</p>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Sartor, M. A., Leikauf, G. D., &amp; Medvedovic, M. (2009). LRpath: a logistic regression approach for identifying enriched biological groups in gene expression data. Bioinformatics (Oxford, England), 25(2), 211–217.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="perform_orthology_mapping.html" class="btn btn-neutral float-left" title="Orthology Mapping" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../devguide/changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ashley Schwartz.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

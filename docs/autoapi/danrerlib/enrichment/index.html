@@ -26,7 +26,7 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="danrerlib.mapping" href="../mapping/index.html" />
+    <link rel="next" title="danrerlib.enrichplots" href="../enrichplots/index.html" />
     <link rel="prev" title="danrerlib.KEGG" href="../KEGG/index.html" /> 
 </head>
 
@@ -61,6 +61,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../GO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.GO</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.KEGG</span></code></a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.enrichment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../enrichplots/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.enrichplots</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../mapping/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.mapping</span></code></a></li>
 </ul>
 </li>
@@ -73,6 +74,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/perform_geneid_mapping.html">Gene ID Mapping</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/perform_orthology_mapping.html">Orthology Mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/functional_enrichment.html">Functional Enrichment Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer's Guide</span></p>
 <ul>
@@ -113,9 +115,19 @@
 <section id="enrichment-module">
 <p>The Enrichment module offers a collection of functions to perform gene enrichment analyses. These analyses allow you to identify overrepresented gene sets or concepts in a given set of genes compared to a background or universe of genes. The module supports various enrichment databases, methods, and organisms, making it a versatile tool for uncovering biological insights.</p>
 <dl>
-<dt>Functions:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">enrich_GO</span></code>: Perform Gene Ontology (GO) enrichment analysis.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">enrich_KEGG</span></code>: Conduct enrichment analysis using the Kyoto Encyclopedia of Genes and Genomes (KEGG) database.</p></li>
+<dt>Functions:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">enrich</span></code>: Perform gene enrichment analysis using logistic regression or Fisher’s exact test for any of the supported annotation databases.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>KEGG Pathway</cite></p></li>
+<li><p><cite>KEGG Disease</cite></p></li>
+<li><p><cite>GO BP</cite>: Gene Ontology Biological Processes</p></li>
+<li><p><cite>GO CC</cite>: Gene Ontology Cellular Components</p></li>
+<li><p><cite>GO MF</cite>: Gene Ontology Molecular Function</p></li>
+<li><p><cite>GO</cite>: Gene Ontology Biological Processes, Cellular Components, and Molecular Function</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">logistic</span></code>: Perform gene enrichment using logistic regression.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">fishers</span></code>: Perform gene enrichment using Fisher’s exact test.</p></li>
 </ul>
@@ -135,9 +147,9 @@
 <li><p>The module includes statistical methods such as logistic regression and Fisher’s exact test for enrichment analysis.</p></li>
 </ul>
 </dd>
-<dt>Example:</dt><dd><p>To perform GO enrichment analysis for a set of zebrafish genes:</p>
-<p><code class="docutils literal notranslate"><span class="pre">results</span> <span class="pre">=</span> <span class="pre">enrich_GO(gene_universe,</span> <span class="pre">gene_id_type=ZFIN_ID,</span> <span class="pre">database='BP',</span> <span class="pre">concept_ids=['GO:0007582'],</span> <span class="pre">org='dre')</span></code></p>
-<p>This example retrieves genes associated with the specified GO concept ID (’<a class="reference external" href="GO:0007582">GO:0007582</a>’) for zebrafish genes (org=’dre’).</p>
+<dt>Example:</dt><dd><p>To perform gene enrichment analysis for a set of zebrafish genes:</p>
+<p><code class="docutils literal notranslate"><span class="pre">results</span> <span class="pre">=</span> <span class="pre">enrich(gene_universe,</span> <span class="pre">gene_id_type=ZFIN_ID,</span> <span class="pre">database='KEGG</span> <span class="pre">Pathway',</span> <span class="pre">method</span> <span class="pre">=</span> <span class="pre">'fishers',</span> <span class="pre">org='dre')</span></code></p>
+<p>This example performs gene enrichment analysis using Fisher’s exact test on the specified gene set for zebrafish genes (org=’dre’).</p>
 </dd>
 </dl>
 <p>For comprehensive details on each function and usage examples, please consult the documentation. You can also find tutorials demonstrating the full functionality of the Enrichment module.</p>
@@ -148,50 +160,93 @@
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.enrichment.logistic" title="danrerlib.enrichment.logistic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logistic</span></code></a>(→ danrerlib.settings.pd.DataFrame)</p></td>
-<td><p>Perform gene enrichment analysis using the logistic regression method.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.enrichment.enrich" title="danrerlib.enrichment.enrich"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enrich</span></code></a>(→ danrerlib.settings.pd.DataFrame)</p></td>
+<td><p>Perform gene enrichment analysis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.enrichment.fishers" title="danrerlib.enrichment.fishers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fishers</span></code></a>(gene_universe, gene_set, concept_type, ...[, ...])</p></td>
-<td><p>Perform gene enrichment analysis using Fisher's exact test.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.enrichment.logistic" title="danrerlib.enrichment.logistic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logistic</span></code></a>(gene_universe_in, sig_genes_set, gene_set, ...)</p></td>
+<td><p>Perform functional enrichment analysis using logistic regression.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.enrichment.enrich_KEGG" title="danrerlib.enrichment.enrich_KEGG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enrich_KEGG</span></code></a>(gene_universe[, gene_id_type, database, ...])</p></td>
-<td><p>Perform gene enrichment analysis using KEGG pathway or disease databases.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.enrichment.enrich_GO" title="danrerlib.enrichment.enrich_GO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enrich_GO</span></code></a>(gene_universe[, gene_id_type, database, ...])</p></td>
-<td><p>Perform gene enrichment analysis using Gene Ontology (GO) databases.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.enrichment.fishers" title="danrerlib.enrichment.fishers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fishers</span></code></a>(gene_universe, sig_genes_set, gene_set, ...)</p></td>
+<td><p>Perform functional enrichment analysis using Fisher's exact test.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py function">
-<dt class="sig sig-object py" id="danrerlib.enrichment.logistic">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichment.</span></span><span class="sig-name descname"><span class="pre">logistic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></span><a class="headerlink" href="#danrerlib.enrichment.logistic" title="Permalink to this definition"></a></dt>
-<dd><p>Perform gene enrichment analysis using the logistic regression method.</p>
+<dt class="sig sig-object py" id="danrerlib.enrichment.enrich">
+<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichment.</span></span><span class="sig-name descname"><span class="pre">enrich</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dre'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'logistic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_gene_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log2FC_cutoff_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_gene_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_by_p_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_num_genes_in_concept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></span><a class="headerlink" href="#danrerlib.enrichment.enrich" title="Permalink to this definition"></a></dt>
+<dd><p>Perform gene enrichment analysis.</p>
 <dl>
-<dt>Parameters:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">gene_universe</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame representing the universe of genes.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">gene_set</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing the genes of interest.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">gene_id_type</span> <span class="pre">(str)</span></code>: The type of gene identifier used in the DataFrames.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">concept_type</span> <span class="pre">(str)</span></code>: The type of concept (e.g., GO term) being analyzed.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">concept_id</span> <span class="pre">(str)</span></code>: The ID of the concept being analyzed.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">concept_name</span> <span class="pre">(str)</span></code>: The name or description of the concept being analyzed.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sig_cutoff</span> <span class="pre">(float,</span> <span class="pre">optional)</span></code>: The significance cutoff for gene inclusion. Default is 0.05.</p></li>
+<dt>Parameters:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_universe</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing gene information, including gene IDs, p-values, and log2FC.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_id_type</span> <span class="pre">(str)</span></code>: The type of gene ID in the gene universe. The recommended gene id type is NCBI Gene ID (NCBI_ID). Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or for human: Human NCBI Gene ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">database</span> <span class="pre">(str</span> <span class="pre">or</span> <span class="pre">list[str])</span></code>: A list of functional annotation databases to test. Options include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>KEGG Pathway</cite></p></li>
+<li><p><cite>KEGG Disease</cite></p></li>
+<li><p><cite>GO BP</cite>: Gene Ontology Biological Processes</p></li>
+<li><p><cite>GO CC</cite>: Gene Ontology Cellular Components</p></li>
+<li><p><cite>GO MF</cite>: Gene Ontology Molecular Function</p></li>
+<li><p><cite>GO</cite>: Gene Ontology Biological Processes, Cellular Components, and Molecular Function</p></li>
+<li><p><cite>all</cite>: all databases shown above</p></li>
+<li><p>a list of any combination of the databases shown above. eg. databases = [KEGG Pathway, KEGG Disease]</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">org</span> <span class="pre">(str)</span></code>: The organism code (‘dre’ for zebrafish, ‘dreM’ for mapped zebrafish, ‘hsa’ for human).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: The enrichment analysis method (‘logistic’ or ‘fishers’). Default is ‘logistic’.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">direction</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: The direction of statistical test for enrichment (‘up’, ‘down’, or ‘both’). Default is ‘both’.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sig_gene_cutoff_pvalue</span> <span class="pre">(float,</span> <span class="pre">optional)</span></code>: The significance cutoff for gene inclusion based on p-values. Default is 0.05.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log2FC_cutoff_value</span> <span class="pre">(float,</span> <span class="pre">optional)</span></code>: The log2 fold change cutoff value for gene inclusion. Default is 0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">concept_ids</span> <span class="pre">(list,</span> <span class="pre">optional)</span></code>: A list of concept IDs (e.g., pathway IDs or disease IDs) to analyze. Default is None.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">background_gene_set</span> <span class="pre">(pd.DataFrame,</span> <span class="pre">optional)</span></code>: A DataFrame representing a background gene set. Default is None.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sig_conceptID_cutoff_pvalue</span> <span class="pre">(float,</span> <span class="pre">optional)</span></code>: The significance cutoff for concept IDs based on p-values. Default is 0.05.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">order_by_p_value</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Whether to order the results by p-value. Default is True.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_num_genes_in_concept</span> <span class="pre">(int,</span> <span class="pre">optional)</span></code>: The minimum number of genes in a concept for it to be considered. Default is 10.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">include_all</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Include all results without filtering based on significance. Default is False.</p></li>
 </ul>
 </dd>
 <dt>Returns:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">df</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing enrichment analysis results, including concept details,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing enrichment analysis results, including concept details, the number of genes in the concept in the universe, the number of significant genes belonging to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.</p></li>
 </ul>
-<p>the number of genes in the concept in the universe, the number of significant genes belonging
-to the concept, the proportion of genes in the concept, the coefficient, p-value, false discovery
-rate (FDR)-adjusted p-value, odds ratio, and enrichment status (‘enriched’ or ‘depleted’).</p>
+</dd>
+<dt>Note:</dt><dd><ul class="simple">
+<li><p>If you are providing a list of concept ids, they must come from one database only.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danrerlib.enrichment.logistic">
+<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichment.</span></span><span class="sig-name descname"><span class="pre">logistic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_genes_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_number_of_genes_in_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_direction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.enrichment.logistic" title="Permalink to this definition"></a></dt>
+<dd><p>Perform functional enrichment analysis using logistic regression.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_universe_in</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame representing the universe of genes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sig_genes_set</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing the significantly expressed genes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_set</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing the genes of interest.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_id_type</span> <span class="pre">(str)</span></code>: The type of gene identifier used in the DataFrames.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">concept_type</span> <span class="pre">(str)</span></code>: The type of concept (e.g., pathway) being analyzed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">concept_id</span> <span class="pre">(str)</span></code>: The ID of the concept being analyzed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">concept_name</span> <span class="pre">(str)</span></code>: The name or description of the concept being analyzed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">total_number_of_genes_in_universe</span> <span class="pre">(int)</span></code>: The total number of genes in the universe.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test_direction</span> <span class="pre">(str)</span></code>: The directionality of the test (‘greater’, ‘less’, or ‘two-sided’).</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">(dict)</span></code>: A dictionary containing enrichment analysis results, including concept details,
+the number of genes in the concept in the universe, the number of significant genes belonging
+to the concept, the proportion of genes in the concept, odds ratio, p-value, and enrichment direction.</p></li>
+</ul>
 </dd>
 <dt>Notes:</dt><dd><ul class="simple">
-<li><p>This function performs gene enrichment analysis using logistic regression.</p></li>
-<li><p>It calculates enrichment statistics for a specified concept (e.g., GO term) by comparing a gene set
+<li><p>This function performs functional enrichment analysis using logistic regression.</p></li>
+<li><p>It calculates enrichment statistics for a specified concept (e.g., pathway) by comparing a gene set
 of interest to a larger gene universe.</p></li>
 <li><p>The ‘gene_id_type’ parameter specifies the type of gene identifiers used in the DataFrames.</p></li>
-<li><p>The ‘sig_cutoff’ parameter sets the significance cutoff for gene inclusion based on p-values.</p></li>
-<li><p>Enrichment results include the coefficient (slope) of the logistic regression, p-value,
-FDR-adjusted p-value, odds ratio, and enrichment status.</p></li>
+<li><p>The ‘test_direction’ parameter determines the directionality of the test (‘greater’, ‘less’, or ‘two-sided’).</p></li>
+<li><p>Enrichment results include the odds ratio, p-value, and enrichment direction.</p></li>
 </ul>
 </dd>
 </dl>
@@ -199,100 +254,35 @@ FDR-adjusted p-value, odds ratio, and enrichment status.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danrerlib.enrichment.fishers">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichment.</span></span><span class="sig-name descname"><span class="pre">fishers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.enrichment.fishers" title="Permalink to this definition"></a></dt>
-<dd><p>Perform gene enrichment analysis using Fisher’s exact test.</p>
-<dl>
+<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichment.</span></span><span class="sig-name descname"><span class="pre">fishers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_genes_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">danrerlib.settings.pd.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_number_of_genes_in_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_direction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.enrichment.fishers" title="Permalink to this definition"></a></dt>
+<dd><p>Perform functional enrichment analysis using Fisher’s exact test.</p>
+<dl class="simple">
 <dt>Parameters:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">gene_universe</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame representing the universe of genes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sig_genes_set</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing the significantly expressed genes.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gene_set</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing the genes of interest.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">concept_type</span> <span class="pre">(str)</span></code>: The type of concept (e.g., KEGG pathway, GO term) being analyzed.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">concept_id</span> <span class="pre">(str)</span></code>: The ID of the concept being analyzed (e.g., KEGG pathway ID).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_id_type</span> <span class="pre">(str)</span></code>: The type of gene identifier used in the DataFrames.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">concept_type</span> <span class="pre">(str)</span></code>: The type of concept (e.g., pathway) being analyzed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">concept_id</span> <span class="pre">(str)</span></code>: The ID of the concept being analyzed.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">concept_name</span> <span class="pre">(str)</span></code>: The name or description of the concept being analyzed.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sig_cutoff</span> <span class="pre">(float,</span> <span class="pre">optional)</span></code>: The significance cutoff for gene inclusion. Default is 0.05.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">total_number_of_genes_in_universe</span> <span class="pre">(int)</span></code>: The total number of genes in the universe.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test_direction</span> <span class="pre">(str)</span></code>: The directionality of the test.
+Options: ‘two-sided’, ‘greater’, ‘less’.</p></li>
 </ul>
 </dd>
 <dt>Returns:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">df</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing enrichment analysis results, including concept details,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">(dict)</span></code>: A dictionary containing enrichment analysis results, including concept details,
+the number of genes in the concept in the universe, the number of significant genes belonging
+to the concept, the proportion of genes in the concept, odds ratio, p-value, and enrichment direction.</p></li>
 </ul>
-<p>the number of genes in the concept in the universe, the number of significant genes belonging
-to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.</p>
 </dd>
 <dt>Notes:</dt><dd><ul class="simple">
-<li><p>This function performs gene enrichment analysis using Fisher’s exact test.</p></li>
-<li><p>It calculates enrichment statistics for a specified concept (e.g., KEGG pathway) by comparing a gene set
+<li><p>This function performs functional enrichment analysis using Fisher’s exact test.</p></li>
+<li><p>It calculates enrichment statistics for a specified concept (e.g., pathway) by comparing a gene set
 of interest to a larger gene universe.</p></li>
-<li><p>The ‘sig_cutoff’ parameter sets the significance cutoff for gene inclusion based on p-values.</p></li>
-<li><p>Enrichment results include p-value, odds ratio, and enrichment direction (‘enriched’ or ‘depleted’).</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="danrerlib.enrichment.enrich_KEGG">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichment.</span></span><span class="sig-name descname"><span class="pre">enrich_KEGG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NCBI_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pathway'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dre'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'logistic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_gene_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_FDR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_by_p_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.enrichment.enrich_KEGG" title="Permalink to this definition"></a></dt>
-<dd><p>Perform gene enrichment analysis using KEGG pathway or disease databases.</p>
-<dl>
-<dt>Parameters:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">gene_universe</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing gene information, including gene IDs, p-values, and log2FC.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">gene_id_type</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: The type of gene ID in the gene universe. Default is NCBI Gene ID (NCBI_ID).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">database</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: The KEGG database to use (‘pathway’ or ‘disease’). Default is ‘pathway’.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">concept_ids</span> <span class="pre">(list,</span> <span class="pre">optional)</span></code>: A list of concept IDs (e.g., pathway IDs or disease IDs) to analyze. Default is None.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">org</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: The organism code (‘dre’ for zebrafish, ‘dreM’ for mapped zebrafish, ‘hsa’ for human). Default is ‘dre’.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">method</span> <span class="pre">(str,</span> <span class="pre">optional):</span></code> The enrichment analysis method (‘logistic’ or ‘fishers’). Default is ‘logistic’.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sig_gene_cutoff_pvalue</span> <span class="pre">(float,</span> <span class="pre">optional)</span></code>: The significance cutoff for gene inclusion based on p-values. Default is 0.05.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sig_conceptID_cutoff_pvalue</span> <span class="pre">(float,</span> <span class="pre">optional)</span></code>: The significance cutoff for concept IDs based on p-values. Default is None.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sig_conceptID_cutoff_FDR</span> <span class="pre">(float,</span> <span class="pre">optional)</span></code>: The significance cutoff for concept IDs based on FDR (only for ‘logistic’ method). Default is None.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">order_by_p_value</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Whether to order the results by p-value. Default is True.</p></li>
-</ul>
-</dd>
-<dt>Returns:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing enrichment analysis results, including concept details, the number of genes in the concept in the universe,</p></li>
-</ul>
-<p>the number of significant genes belonging to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.</p>
-</dd>
-<dt>Notes:</dt><dd><ul class="simple">
-<li><p>This function performs gene enrichment analysis using the KEGG pathway or disease database.</p></li>
-<li><p>It supports two enrichment analysis methods: ‘logistic’ and ‘fishers’.</p></li>
-<li><p>The ‘sig_gene_cutoff_pvalue’ parameter sets the significance cutoff for gene inclusion based on gene p-values.</p></li>
-<li><p>The ‘sig_conceptID_cutoff_pvalue’ parameter can be used to filter concept IDs based on their p-values.</p></li>
-<li><p>The ‘sig_conceptID_cutoff_FDR’ parameter is applicable when using the ‘logistic’ method and filters concept IDs based on FDR.</p></li>
-<li><p>The ‘order_by_p_value’ parameter determines whether to order the results by p-value.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="danrerlib.enrichment.enrich_GO">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichment.</span></span><span class="sig-name descname"><span class="pre">enrich_GO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gene_universe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gene_id_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ZFIN_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dre'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'logistic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_gene_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_pvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_conceptID_cutoff_FDR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_by_p_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.enrichment.enrich_GO" title="Permalink to this definition"></a></dt>
-<dd><p>Perform gene enrichment analysis using Gene Ontology (GO) databases.</p>
-<dl>
-<dt>Parameters:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">gene_universe</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing gene information, including gene IDs, p-values, and log2FC.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">gene_id_type</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: The type of gene ID in the gene universe. Default is ZFIN ID (ZFIN_ID).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">database</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: The GO database to use (‘BP’ for Biological Processes, ‘CC’ for Cellular Component, ‘MF’ for Molecular Function). Default is None.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">concept_ids</span> <span class="pre">(list,</span> <span class="pre">optional)</span></code>: A list of GO concept IDs to analyze. Default is None.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">org</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: The organism code (‘dre’ for zebrafish, ‘hsa’ for human). Default is ‘dre’.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">method</span> <span class="pre">(str,</span> <span class="pre">optional)</span></code>: The enrichment analysis method (‘logistic’ or ‘fishers’). Default is ‘logistic’.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sig_gene_cutoff_pvalue</span> <span class="pre">(float,</span> <span class="pre">optional)</span></code>: The significance cutoff for gene inclusion based on p-values. Default is 0.05.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sig_conceptID_cutoff_pvalue</span> <span class="pre">(float,</span> <span class="pre">optional)</span></code>: The significance cutoff for concept IDs based on p-values. Default is None.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sig_conceptID_cutoff_FDR</span> <span class="pre">(float,</span> <span class="pre">optional)</span></code>: The significance cutoff for concept IDs based on FDR (only for ‘logistic’ method). Default is None.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">order_by_p_value</span> <span class="pre">(bool,</span> <span class="pre">optional)</span></code>: Whether to order the results by p-value. Default is True.</p></li>
-</ul>
-</dd>
-<dt>Returns:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">(pd.DataFrame)</span></code>: A DataFrame containing enrichment analysis results, including concept details, the number of genes in the concept in the universe,</p></li>
-</ul>
-<p>the number of significant genes belonging to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.</p>
-</dd>
-<dt>Notes:</dt><dd><ul class="simple">
-<li><p>This function performs gene enrichment analysis using the Gene Ontology (GO) databases.</p></li>
-<li><p>It supports two enrichment analysis methods: ‘logistic’ and ‘fishers’.</p></li>
-<li><p>The ‘sig_gene_cutoff_pvalue’ parameter sets the significance cutoff for gene inclusion based on gene p-values.</p></li>
-<li><p>The ‘sig_conceptID_cutoff_pvalue’ parameter can be used to filter concept IDs based on their p-values.</p></li>
-<li><p>The ‘sig_conceptID_cutoff_FDR’ parameter is applicable when using the ‘logistic’ method and filters concept IDs based on FDR.</p></li>
-<li><p>The ‘order_by_p_value’ parameter determines whether to order the results by p-value.</p></li>
+<li><p>The ‘gene_id_type’ parameter specifies the type of gene identifiers used in the DataFrames.</p></li>
+<li><p>The ‘test_direction’ parameter determines the directionality of the test (‘two-sided’, ‘greater’, ‘less’).</p></li>
+<li><p>Enrichment results include the odds ratio, p-value, and enrichment direction.</p></li>
 </ul>
 </dd>
 </dl>
@@ -307,7 +297,7 @@ of interest to a larger gene universe.</p></li>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../KEGG/index.html" class="btn btn-neutral float-left" title="danrerlib.KEGG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../mapping/index.html" class="btn btn-neutral float-right" title="danrerlib.mapping" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../enrichplots/index.html" class="btn btn-neutral float-right" title="danrerlib.enrichplots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
