@@ -19,10 +19,10 @@ gene_universe_full = pd.read_csv('tests/data/in_data/01_TPP.txt', sep = '\t')
 
 def test_fishers():
     gene_set = pd.read_csv('tests/data/in_data/enrich/dre04340.txt', sep = '\t')
-    sig_genes_df = enrichment._get_sig_genes_df(gene_universe_sample, 'NCBI Gene ID', 0.05, 0.0)
+    sig_genes_set = enrichment._get_sig_genes_set(gene_universe_sample, 'non-directional', 'NCBI Gene ID', 0.05, 0.0)
     gene_set = gene_set[gene_set[NCBI_ID].isin(gene_universe_sample[NCBI_ID])]
     out = enrichment._fishers(gene_universe_sample, 
-                             sig_genes_df,
+                             sig_genes_set,
                              gene_set, 
                         'NCBI Gene ID', 
                         'KEGG Pathway', 
@@ -37,10 +37,10 @@ def test_fishers():
 
 def test_logistic():
     gene_set = pd.read_csv('tests/data/in_data/enrich/dre04340.txt', sep = '\t')
-    sig_genes_df = enrichment._get_sig_genes_df(gene_universe_sample, 'NCBI Gene ID', 0.05, 0.0)
+    sig_genes_set = None
     gene_set = gene_set[gene_set[NCBI_ID].isin(gene_universe_sample[NCBI_ID])]
     out = enrichment._logistic(gene_universe_sample, 
-                             sig_genes_df,
+                             sig_genes_set,
                              gene_set, 
                         'NCBI Gene ID', 
                         'KEGG Pathway', 
@@ -91,7 +91,7 @@ def test_get_sig_genes_set_down():
     assert sig_genes_set == {'Gene5'}
 
 def test_get_sig_genes_set_both():
-    sig_genes_set = enrichment._get_sig_genes_set(gene_universe_synthetic, 'both', 'GeneID', 0.05, 0.0)
+    sig_genes_set = enrichment._get_sig_genes_set(gene_universe_synthetic, 'non-directional', 'GeneID', 0.05, 0.0)
     assert sig_genes_set == {'Gene1', 'Gene3', 'Gene5'}
 
 kegg_options = ['KEGG Pathway', 'KEGG Disease']

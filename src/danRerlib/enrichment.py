@@ -65,7 +65,7 @@ def enrich_fishers(gene_universe: pd.DataFrame,
             database: list[str], 
             gene_id_type: str,
             org = 'dre',
-            direction = 'both',
+            direction = 'non-directional',
             sig_gene_cutoff_pvalue = 0.05,
             log2FC_cutoff_value = 0,
             concept_ids = None, 
@@ -92,7 +92,7 @@ def enrich_fishers(gene_universe: pd.DataFrame,
 
         - ``gene_id_type (str)``: The type of gene ID in the gene universe. The recommended gene id type is NCBI Gene ID (NCBI_ID). Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or for human: Human NCBI Gene ID.
         - ``org (str)``: The organism code ('dre' for zebrafish, 'dreM' for mapped zebrafish, 'hsa' for human).
-        - ``directional_test (str, optional)``: 'up' to test for up-regulation, 'down' to test for down-regulation, 'both' for enrichment/depletion. Default is 'both'
+        - ``directional_test (str, optional)``: 'up' to test for up-regulation, 'down' to test for down-regulation, 'non-directional' for enrichment/depletion. Default is 'non-directional'
         - ``sig_gene_cutoff_pvalue (float, optional)``: The significance cutoff for gene inclusion based on p-values. Default is 0.05.
         - ``log2FC_cutoff_value (float, optional)``: The log2 fold change cutoff value for gene inclusion. Default is 0.
         - ``concept_ids (list, optional)``: A list of concept IDs (e.g., pathway IDs or disease IDs) to analyze. Default is None.
@@ -110,7 +110,7 @@ def enrich_fishers(gene_universe: pd.DataFrame,
         - Fisher's Exact test is cutoff dependent. 
     """    
 
-    direction_options = ['both', 'up', 'down']
+    direction_options = ['non-directional', 'up', 'down']
     if direction not in direction_options:
         raise ValueError('Invalid Direction Choice.')
     
@@ -121,8 +121,8 @@ def enrich_fishers(gene_universe: pd.DataFrame,
     return out
 
 def enrich_logistic(gene_universe: pd.DataFrame, 
-            gene_id_type: str,
             database: list[str], 
+            gene_id_type: str,
             org = 'dre',
             directional_test = True,
             sig_gene_cutoff_pvalue = 0.05,
@@ -187,7 +187,7 @@ def _enrich(gene_universe: pd.DataFrame,
             gene_id_type: str,
             org = 'dre',
             method = 'logistic',
-            direction = 'both',
+            direction = 'non-directional',
             sig_gene_cutoff_pvalue = 0.05,
             log2FC_cutoff_value = 0,
             concept_ids = None, 
@@ -215,7 +215,7 @@ def _enrich(gene_universe: pd.DataFrame,
         - ``gene_id_type (str)``: The type of gene ID in the gene universe. The recommended gene id type is NCBI Gene ID (NCBI_ID). Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or for human: Human NCBI Gene ID.
         - ``org (str)``: The organism code ('dre' for zebrafish, 'dreM' for mapped zebrafish, 'hsa' for human).
         - ``method (str, optional)``: The enrichment analysis method ('logistic' or 'fishers'). Default is 'logistic'.
-        - ``direction (str, optional)``: The direction of statistical test for enrichment (Fishers options: 'up', 'down', or 'both', Logistic options: 'directional', 'non-directional'). .
+        - ``direction (str, optional)``: The direction of statistical test for enrichment (Fishers options: 'up', 'down', or 'non-directional', Logistic options: 'directional', 'non-directional'). .
         - ``sig_gene_cutoff_pvalue (float, optional)``: The significance cutoff for gene inclusion based on p-values. Default is 0.05.
         - ``log2FC_cutoff_value (float, optional)``: The log2 fold change cutoff value for gene inclusion. Default is 0.
         - ``concept_ids (list, optional)``: A list of concept IDs (e.g., pathway IDs or disease IDs) to analyze. Default is None.
@@ -253,7 +253,7 @@ def _enrich(gene_universe: pd.DataFrame,
     kegg_options = ['KEGG Pathway', 'KEGG Disease']
     go_options = ['GO', 'GO BP', 'GO CC', 'GO MF']
 
-    fishers_direction_options = ['up', 'down', 'both']
+    fishers_direction_options = ['up', 'down', 'non-directional']
     logistic_direction_options = ['directional', 'non-directional']
     if method == 'fishers' and direction not in fishers_direction_options:
         raise ValueError('Invalid direction for Fisher\'s Method')
@@ -308,20 +308,25 @@ def _enrich(gene_universe: pd.DataFrame,
             # another option would be to use all genes in the genome. 
         total_number_of_genes_in_universe = len(gene_universe) 
         
-        sig_genes_df = _get_sig_genes_df(gene_universe, gene_id_type, sig_gene_cutoff_pvalue, log2FC_cutoff_value)
         
         # to test for overrepresentation, you would want only the over expressed genes
         # to test for either enrichment or depletion you would want both
-        # to test down regulated genes you would do down 
-        if direction == 'up':
-            test_direction = 'greater'
-        elif direction == 'down':
-            test_direction = 'less'
-        elif direction == 'both':
-            test_direction = 'two-sided'
-        elif direction == 'directional' or direction == 'non-directional':
-            test_direction = direction
+        # to test downregulated genes you would do down 
+        if method == 'fishers':
+            if direction == 'up':
+                test_direction = 'greater'
+            elif direction == 'down':
+                test_direction = 'less'
+            elif direction == 'non-directional':
+                test_direction = 'two-sided'
+        if method == 'logistic':
+            if direction == 'directional' or direction == 'non-directional':
+                test_direction = direction
         
+        if method == 'fishers':
+            sig_genes_set = _get_sig_genes_set(gene_universe, direction, gene_id_type, sig_gene_cutoff_pvalue, log2FC_cutoff_value)
+        else:
+            sig_genes_set = None
         # -------------------------
         # LAUNCH ENRICHMENT
         # -------------------------
@@ -333,7 +338,7 @@ def _enrich(gene_universe: pd.DataFrame,
             if num_genes > min_num_genes_in_concept:
                 concept_name = all_ids.loc[all_ids[id_column_name] == concept_id, name_column_name].values[0]
                 out = enrich_method_function(gene_universe, 
-                                            sig_genes_df,
+                                            sig_genes_set,
                                             gene_set, 
                                             gene_id_type,
                                             concept_type, 
@@ -354,9 +359,9 @@ def _enrich(gene_universe: pd.DataFrame,
             result = result.sort_values(by='P-value', ascending=True)
         if method == 'fishers':
             if direction == 'up':
-                result = result[result['Direction'] == 'up regulated']
+                result = result[result['Direction'] == 'upregulated']
             elif direction == 'down':
-                result = result[result['Direction'] == 'down regulated']
+                result = result[result['Direction'] == 'downregulated']
         # Append the result DataFrame to the list
         resulting_dataframe_list.append(result)
 
@@ -369,7 +374,7 @@ def _enrich(gene_universe: pd.DataFrame,
 
 
 def _logistic(gene_universe_in: pd.DataFrame,
-             sig_genes_df: pd.DataFrame,
+             sig_genes_set: None,
              gene_set: pd.DataFrame, 
              gene_id_type: str, 
              concept_type: str, 
@@ -384,7 +389,7 @@ def _logistic(gene_universe_in: pd.DataFrame,
 
     Parameters:
         - ``gene_universe_in (pd.DataFrame)``: A DataFrame representing the universe of genes.
-        - ``sig_genes_df (pd.DataFrame)``: A DataFrame containing the significantly expressed genes.
+        - ``sig_genes_set (None)``: Placeholder.
         - ``gene_set (pd.DataFrame)``: A DataFrame containing the genes of interest.
         - ``gene_id_type (str)``: The type of gene identifier used in the DataFrames.
         - ``concept_type (str)``: The type of concept (e.g., pathway) being analyzed.
@@ -433,17 +438,17 @@ def _logistic(gene_universe_in: pd.DataFrame,
 
     # Determine enrichment direction based on the test direction
     if test_direction == 'directional':
-        direction = 'up regulated' if beta > 0 else 'down regulated'
+        direction = 'upregulated' if beta > 0 else 'downregulated'
     else:
         # For two-sided or invalid test directions, use the sign of the coefficient
         direction = 'enriched' if beta > 0 else 'depleted' if beta < 0 else 'neutral'
 
-    if direction == 'up regulated':
+    if direction == 'upregulated':
         sig_genes_set = _get_sig_genes_set(gene_universe, 'up', gene_id_type, pval_cutoff, log2FC_cutoff)
-    elif direction == 'down regulated':
+    elif direction == 'downregulated':
         sig_genes_set = _get_sig_genes_set(gene_universe, 'down', gene_id_type, pval_cutoff, log2FC_cutoff)
     else:
-        sig_genes_set = _get_sig_genes_set(gene_universe, 'both', gene_id_type, pval_cutoff, log2FC_cutoff)
+        sig_genes_set = _get_sig_genes_set(gene_universe,'non-directional', gene_id_type, pval_cutoff, log2FC_cutoff)
 
     gene_set_set = set(gene_set[gene_id_type])
     # Number of genes that are both in the gene set and significantly expressed
@@ -472,7 +477,7 @@ def _logistic(gene_universe_in: pd.DataFrame,
     return data
 
 def _fishers(gene_universe: pd.DataFrame,
-            sig_genes_df: pd.DataFrame,
+            sig_genes_set: pd.DataFrame,
            gene_set: pd.DataFrame,
            gene_id_type: str, 
            concept_type: str, 
@@ -487,7 +492,7 @@ def _fishers(gene_universe: pd.DataFrame,
 
     Parameters:
         - ``gene_universe (pd.DataFrame)``: A DataFrame representing the universe of genes.
-        - ``sig_genes_df (pd.DataFrame)``: A DataFrame containing the significantly expressed genes.
+        - ``sig_genes_set (set)``: A set containing the significantly expressed genes.
         - ``gene_set (pd.DataFrame)``: A DataFrame containing the genes of interest.
         - ``gene_id_type (str)``: The type of gene identifier used in the DataFrames.
         - ``concept_type (str)``: The type of concept (e.g., pathway) being analyzed.
@@ -510,7 +515,6 @@ def _fishers(gene_universe: pd.DataFrame,
         - The 'test_direction' parameter determines the directionality of the test ('two-sided', 'greater', 'less').
         - Enrichment results include the odds ratio, p-value, and enrichment direction.
     """
-    sig_genes_set = set(sig_genes_df[gene_id_type])
 
     # Filter genes in the gene set that are in our gene universe
     # gene_set = gene_set[gene_set[gene_id_type].isin(gene_universe[gene_id_type])]
@@ -540,9 +544,9 @@ def _fishers(gene_universe: pd.DataFrame,
     if test_direction == 'two-sided':
         direction = 'enriched' if odds_ratio > 1 else 'depleted'
     elif test_direction == 'greater':
-        direction = 'up regulated' if odds_ratio > 1 else 'neutral'
+        direction = 'upregulated' if odds_ratio > 1 else 'neutral'
     elif test_direction == 'less':
-        direction = 'down regulated' if odds_ratio > 1 else 'neutral'
+        direction = 'downregulated' if odds_ratio > 1 else 'neutral'
 
 
     # Calculate the proportion of significant genes in the set (avoid division by zero)
@@ -753,17 +757,13 @@ def _get_sig_genes_set(gene_universe, method, gene_id_type, pval_cutoff, log2FC_
     elif method == 'down':
         sig_genes_set = set(gene_universe[gene_id_type][(gene_universe['PValue'] < pval_cutoff)
                                                          & (gene_universe['log2FC'] < -log2FC_cutoff)])
-    elif method == 'both':
+    elif method == 'non-directional':
         sig_genes_set = set(gene_universe[gene_id_type][(gene_universe['PValue'] < pval_cutoff)
                                                         & (np.abs(gene_universe['log2FC']) > log2FC_cutoff)])
     else:
-        raise ValueError("Invalid method. Supported methods are 'up', 'down', or 'both'.")
+        raise ValueError("Invalid method. Supported methods are 'up', 'down', or 'non-directional'.")
     
     return sig_genes_set
-
-def _get_sig_genes_df(gene_universe, gene_id_type, pval_cutoff, log2FC_cutoff):
-    filtered_genes = gene_universe[(gene_universe['PValue'] < pval_cutoff) & (abs(gene_universe['log2FC']) > log2FC_cutoff)]
-    return filtered_genes[[gene_id_type, 'log2FC']]
 
 def _get_pathway_ids_and_names(database, org):
     if database == 'KEGG Pathway':
