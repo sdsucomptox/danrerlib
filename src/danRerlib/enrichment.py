@@ -5,17 +5,29 @@ Enrichment Module
 The Enrichment module offers a collection of functions to perform gene enrichment analyses. These analyses allow you to identify overrepresented gene sets or concepts in a given set of genes compared to a background or universe of genes. The module supports various enrichment databases, methods, and organisms, making it a versatile tool for uncovering biological insights.
 
 Functions:
-    - ``enrich``: Perform gene enrichment analysis using logistic regression or Fisher's exact test for any of the supported annotation databases.
+    - ``enrich_logistic``: Perform functional enrichment analysis using logistic regression for any of the supported annotation databases:
+                
+                - 'KEGG Pathway': Kyoto Encyclopedia of Genes and Genomes Pathways
+                - 'KEGG Disease': Kyoto Encyclopedia of Genes and Genomes Diseases
+                - 'GO BP': Gene Ontology Biological Processes
+                - 'GO CC': Gene Ontology Cellular Components
+                - 'GO MF': Gene Ontology Molecular Function
+                - 'GO': Gene Ontology Biological Processes, Cellular Components, and Molecular Function
+    
+    - ``enrich_fishers``: Perform functional enrichment analysis using Fisher's exact test for any of the supported annotation databases:
 
-                - `KEGG Pathway`
-                - `KEGG Disease`
-                - `GO BP`: Gene Ontology Biological Processes
-                - `GO CC`: Gene Ontology Cellular Components
-                - `GO MF`: Gene Ontology Molecular Function
-                - `GO`: Gene Ontology Biological Processes, Cellular Components, and Molecular Function
+                - 'KEGG Pathway': Kyoto Encyclopedia of Genes and Genomes Pathways
+                - 'KEGG Disease': Kyoto Encyclopedia of Genes and Genomes Diseases
+                - 'GO BP': Gene Ontology Biological Processes
+                - 'GO CC': Gene Ontology Cellular Components
+                - 'GO MF': Gene Ontology Molecular Function
+                - 'GO': Gene Ontology Biological Processes, Cellular Components, and Molecular Function
+    
+Private Functions:
 
-    - ``logistic``: Perform gene enrichment using logistic regression.
-    - ``fishers``: Perform gene enrichment using Fisher's exact test.
+    - ``_enrich``: Launch enrichment and perform quality control.
+    - ``_logistic``: Perform statistical test using logistic regression.
+    - ``_fishers``: Perform statistical test using Fisher's exact test.
 
 Constants:
     - ``NCBI_ID``: Identifier for NCBI Gene ID.
@@ -25,7 +37,7 @@ Constants:
     - ``HUMAN_ID``: Identifier for Human NCBI Gene ID.
 
 Notes:
-    - The Enrichment module is designed for conducting gene enrichment analyses using various databases and methods.
+    - The Enrichment module is designed for conducting functional enrichment analyses using various databases and methods.
     - It provides functions to analyze gene sets in the context of Gene Ontology (GO) and Kyoto Encyclopedia of Genes and Genomes (KEGG) concepts.
     - Users can choose from different gene ID types and organisms for analysis, enhancing flexibility.
     - The module includes statistical methods such as logistic regression and Fisher's exact test for enrichment analysis.
@@ -33,9 +45,9 @@ Notes:
 Example:
     To perform gene enrichment analysis for a set of zebrafish genes:
     
-    ``results = enrich(gene_universe, gene_id_type=ZFIN_ID, database='KEGG Pathway', method = 'fishers', org='dre')``
+    ``results = enrich_logistic(gene_universe, gene_id_type=ZFIN_ID, database='KEGG Pathway', org='dre')``
 
-    This example performs gene enrichment analysis using Fisher's exact test on the specified gene set for zebrafish genes (org='dre').
+    This example performs functional enrichment analysis using logistic regression on the specified gene set for zebrafish genes (org='dre').
 
 For comprehensive details on each function and usage examples, please consult the documentation. You can also find tutorials demonstrating the full functionality of the Enrichment module.
 """
@@ -47,12 +59,132 @@ from danrerlib import mapping, KEGG, GO, utils
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import statsmodels.stats.multitest as smm
-import scipy.stats
 from scipy.stats import chi2, fisher_exact
 
-def enrich(gene_universe: pd.DataFrame, 
+def enrich_fishers(gene_universe: pd.DataFrame, 
+            database: list[str], 
+            gene_id_type: str,
+            org = 'dre',
+            direction = 'both',
+            sig_gene_cutoff_pvalue = 0.05,
+            log2FC_cutoff_value = 0,
+            concept_ids = None, 
+            background_gene_set = None,
+            sig_conceptID_cutoff_pvalue = 0.05,
+            order_by_p_value = True,
+            min_num_genes_in_concept = 10,
+            include_all = False) -> pd.DataFrame:
+    """
+    Perform functional enrichment analysis using the logistic method, a cut-off free method.
+
+    Parameters:
+        - ``gene_universe (pd.DataFrame)``: A DataFrame containing gene information, including gene IDs, p-values, and log2FC.
+        - ``database (str or list[str])``: A list of functional annotation databases to test. Options include:
+
+                - 'KEGG Pathway': Kyoto Encyclopedia of Genes and Genomes Pathways
+                - 'KEGG Disease': Kyoto Encyclopedia of Genes and Genomes Diseases
+                - 'GO BP': Gene Ontology Biological Processes
+                - 'GO CC': Gene Ontology Cellular Components
+                - 'GO MF': Gene Ontology Molecular Function
+                - 'GO': Gene Ontology Biological Processes, Cellular Components, and Molecular Function
+                - 'all': all databases shown above
+                - a list of any combination of the databases shown above. eg. databases = [KEGG Pathway, KEGG Disease]
+
+        - ``gene_id_type (str)``: The type of gene ID in the gene universe. The recommended gene id type is NCBI Gene ID (NCBI_ID). Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or for human: Human NCBI Gene ID.
+        - ``org (str)``: The organism code ('dre' for zebrafish, 'dreM' for mapped zebrafish, 'hsa' for human).
+        - ``directional_test (str, optional)``: 'up' to test for up-regulation, 'down' to test for down-regulation, 'both' for enrichment/depletion. Default is 'both'
+        - ``sig_gene_cutoff_pvalue (float, optional)``: The significance cutoff for gene inclusion based on p-values. Default is 0.05.
+        - ``log2FC_cutoff_value (float, optional)``: The log2 fold change cutoff value for gene inclusion. Default is 0.
+        - ``concept_ids (list, optional)``: A list of concept IDs (e.g., pathway IDs or disease IDs) to analyze. Default is None.
+        - ``background_gene_set (pd.DataFrame, optional)``: A DataFrame representing a background gene set. Default is None.
+        - ``sig_conceptID_cutoff_pvalue (float, optional)``: The significance cutoff for concept IDs based on p-values. Default is 0.05.
+        - ``order_by_p_value (bool, optional)``: Whether to order the results by p-value. Default is True.
+        - ``min_num_genes_in_concept (int, optional)``: The minimum number of genes in a concept for it to be considered. Default is 10.
+        - ``include_all (bool, optional)``: Include all results without filtering based on significance. Default is False.
+
+    Returns:
+        - ``result (pd.DataFrame)``: A DataFrame containing enrichment analysis results, including concept details, the number of genes in the concept in the universe, the number of significant genes belonging to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.
+
+    Note:
+        - If you are providing a list of concept ids, they must come from one database only.
+        - Fisher's Exact test is cutoff dependent. 
+    """    
+
+    direction_options = ['both', 'up', 'down']
+    if direction not in direction_options:
+        raise ValueError('Invalid Direction Choice.')
+    
+    out = _enrich(gene_universe, database, gene_id_type, org, 'fishers', direction, 
+                 sig_gene_cutoff_pvalue, log2FC_cutoff_value, concept_ids, 
+                 background_gene_set, sig_conceptID_cutoff_pvalue, order_by_p_value, 
+                 min_num_genes_in_concept, include_all)
+    return out
+
+def enrich_logistic(gene_universe: pd.DataFrame, 
             gene_id_type: str,
             database: list[str], 
+            org = 'dre',
+            directional_test = True,
+            sig_gene_cutoff_pvalue = 0.05,
+            log2FC_cutoff_value = 0,
+            concept_ids = None, 
+            background_gene_set = None,
+            sig_conceptID_cutoff_pvalue = 0.05,
+            order_by_p_value = True,
+            min_num_genes_in_concept = 10,
+            include_all = False) -> pd.DataFrame:
+    """
+    Perform functional enrichment analysis using the logistic method, a cut-off free method.
+
+    Parameters:
+        - ``gene_universe (pd.DataFrame)``: A DataFrame containing gene information, including gene IDs, p-values, and log2FC.
+        - ``database (str or list[str])``: A list of functional annotation databases to test. Options include:
+
+                - `KEGG Pathway`
+                - `KEGG Disease`
+                - `GO BP`: Gene Ontology Biological Processes
+                - `GO CC`: Gene Ontology Cellular Components
+                - `GO MF`: Gene Ontology Molecular Function
+                - `GO`: Gene Ontology Biological Processes, Cellular Components, and Molecular Function
+                - `all`: all databases shown above
+                - a list of any combination of the databases shown above. eg. databases = [KEGG Pathway, KEGG Disease]
+
+        - ``gene_id_type (str)``: The type of gene ID in the gene universe. The recommended gene id type is NCBI Gene ID (NCBI_ID). Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or for human: Human NCBI Gene ID.
+        - ``org (str)``: The organism code ('dre' for zebrafish, 'dreM' for mapped zebrafish, 'hsa' for human).
+        - ``directional_test (bool, optional)``: True for directional test (up/down regulation), False for non-directional (enrichment/depletion).
+        - ``sig_gene_cutoff_pvalue (float, optional)``: The significance cutoff for gene inclusion based on p-values. Default is 0.05.
+        - ``log2FC_cutoff_value (float, optional)``: The log2 fold change cutoff value for gene inclusion. Default is 0.
+        - ``concept_ids (list, optional)``: A list of concept IDs (e.g., pathway IDs or disease IDs) to analyze. Default is None.
+        - ``background_gene_set (pd.DataFrame, optional)``: A DataFrame representing a background gene set. Default is None.
+        - ``sig_conceptID_cutoff_pvalue (float, optional)``: The significance cutoff for concept IDs based on p-values. Default is 0.05.
+        - ``order_by_p_value (bool, optional)``: Whether to order the results by p-value. Default is True.
+        - ``min_num_genes_in_concept (int, optional)``: The minimum number of genes in a concept for it to be considered. Default is 10.
+        - ``include_all (bool, optional)``: Include all results without filtering based on significance. Default is False.
+
+    Returns:
+        - ``result (pd.DataFrame)``: A DataFrame containing enrichment analysis results, including concept details, the number of genes in the concept in the universe, the number of significant genes belonging to the concept, the proportion of genes in the concept, p-value, odds ratio, and enrichment direction.
+
+    Note:
+        - If you are providing a list of concept ids, they must come from one database only.
+        - The logistic regression method does not depend on the the pvalue cutoff for significance. 
+    """      
+    if not isinstance(directional_test, bool):
+        raise ValueError("directional_test must be a boolean.")
+    
+    if directional_test:
+        direction = 'directional'
+    else:
+        direction = 'non-directional'
+
+    out = _enrich(gene_universe, database, gene_id_type, org, 'logistic', direction, 
+                 sig_gene_cutoff_pvalue, log2FC_cutoff_value, concept_ids, 
+                 background_gene_set, sig_conceptID_cutoff_pvalue, order_by_p_value, 
+                 min_num_genes_in_concept, include_all)
+    return out
+
+def _enrich(gene_universe: pd.DataFrame, 
+            database: list[str], 
+            gene_id_type: str,
             org = 'dre',
             method = 'logistic',
             direction = 'both',
@@ -69,7 +201,6 @@ def enrich(gene_universe: pd.DataFrame,
 
     Parameters:
         - ``gene_universe (pd.DataFrame)``: A DataFrame containing gene information, including gene IDs, p-values, and log2FC.
-        - ``gene_id_type (str)``: The type of gene ID in the gene universe. The recommended gene id type is NCBI Gene ID (NCBI_ID). Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or for human: Human NCBI Gene ID.
         - ``database (str or list[str])``: A list of functional annotation databases to test. Options include:
 
                 - `KEGG Pathway`
@@ -81,9 +212,10 @@ def enrich(gene_universe: pd.DataFrame,
                 - `all`: all databases shown above
                 - a list of any combination of the databases shown above. eg. databases = [KEGG Pathway, KEGG Disease]
 
+        - ``gene_id_type (str)``: The type of gene ID in the gene universe. The recommended gene id type is NCBI Gene ID (NCBI_ID). Must be one of: NCBI Gene ID, ZFIN ID, Ensembl ID, Symbol, or for human: Human NCBI Gene ID.
         - ``org (str)``: The organism code ('dre' for zebrafish, 'dreM' for mapped zebrafish, 'hsa' for human).
         - ``method (str, optional)``: The enrichment analysis method ('logistic' or 'fishers'). Default is 'logistic'.
-        - ``direction (str, optional)``: The direction of statistical test for enrichment ('up', 'down', or 'both'). Default is 'both'.
+        - ``direction (str, optional)``: The direction of statistical test for enrichment (Fishers options: 'up', 'down', or 'both', Logistic options: 'directional', 'non-directional'). .
         - ``sig_gene_cutoff_pvalue (float, optional)``: The significance cutoff for gene inclusion based on p-values. Default is 0.05.
         - ``log2FC_cutoff_value (float, optional)``: The log2 fold change cutoff value for gene inclusion. Default is 0.
         - ``concept_ids (list, optional)``: A list of concept IDs (e.g., pathway IDs or disease IDs) to analyze. Default is None.
@@ -120,6 +252,13 @@ def enrich(gene_universe: pd.DataFrame,
 
     kegg_options = ['KEGG Pathway', 'KEGG Disease']
     go_options = ['GO', 'GO BP', 'GO CC', 'GO MF']
+
+    fishers_direction_options = ['up', 'down', 'both']
+    logistic_direction_options = ['directional', 'non-directional']
+    if method == 'fishers' and direction not in fishers_direction_options:
+        raise ValueError('Invalid direction for Fisher\'s Method')
+    elif method == 'logistic' and direction not in logistic_direction_options:
+        raise ValueError('Invalid direction for Logistic Method')
 
     # -------------------------
     # DEAL WITH METHODS CHOICE
@@ -169,11 +308,10 @@ def enrich(gene_universe: pd.DataFrame,
             # another option would be to use all genes in the genome. 
         total_number_of_genes_in_universe = len(gene_universe) 
         
-        sig_genes_set = _get_sig_genes_set(gene_universe, direction, gene_id_type, 
-                                        sig_gene_cutoff_pvalue, log2FC_cutoff_value)
+        sig_genes_df = _get_sig_genes_df(gene_universe, gene_id_type, sig_gene_cutoff_pvalue, log2FC_cutoff_value)
         
         # to test for overrepresentation, you would want only the over expressed genes
-        # tro test for either enrichment or depletion you would want both
+        # to test for either enrichment or depletion you would want both
         # to test down regulated genes you would do down 
         if direction == 'up':
             test_direction = 'greater'
@@ -181,6 +319,8 @@ def enrich(gene_universe: pd.DataFrame,
             test_direction = 'less'
         elif direction == 'both':
             test_direction = 'two-sided'
+        elif direction == 'directional' or direction == 'non-directional':
+            test_direction = direction
         
         # -------------------------
         # LAUNCH ENRICHMENT
@@ -193,14 +333,16 @@ def enrich(gene_universe: pd.DataFrame,
             if num_genes > min_num_genes_in_concept:
                 concept_name = all_ids.loc[all_ids[id_column_name] == concept_id, name_column_name].values[0]
                 out = enrich_method_function(gene_universe, 
-                                            sig_genes_set,
+                                            sig_genes_df,
                                             gene_set, 
                                             gene_id_type,
                                             concept_type, 
                                             concept_id, 
                                             concept_name,
                                             total_number_of_genes_in_universe,
-                                            test_direction)
+                                            test_direction,
+                                            sig_gene_cutoff_pvalue,
+                                            log2FC_cutoff_value)
                 
                 # Append the dictionary to the list
                 resulting_dictionary_list.append(out)
@@ -210,10 +352,11 @@ def enrich(gene_universe: pd.DataFrame,
             result = result[result["P-value"] <= sig_conceptID_cutoff_pvalue]
         if order_by_p_value:
             result = result.sort_values(by='P-value', ascending=True)
-        if direction == 'up':
-            result = result[result['Direction'] == 'up regulated']
-        elif direction == 'down':
-            result = result[result['Direction'] == 'down regulated']
+        if method == 'fishers':
+            if direction == 'up':
+                result = result[result['Direction'] == 'up regulated']
+            elif direction == 'down':
+                result = result[result['Direction'] == 'down regulated']
         # Append the result DataFrame to the list
         resulting_dataframe_list.append(result)
 
@@ -225,21 +368,23 @@ def enrich(gene_universe: pd.DataFrame,
     return final_result.reset_index(drop=True)
 
 
-def logistic(gene_universe_in: pd.DataFrame,
-             sig_genes_set: pd.DataFrame,
+def _logistic(gene_universe_in: pd.DataFrame,
+             sig_genes_df: pd.DataFrame,
              gene_set: pd.DataFrame, 
              gene_id_type: str, 
              concept_type: str, 
              concept_id: str, 
              concept_name: str,
              total_number_of_genes_in_universe: int,
-             test_direction):
+             test_direction,
+             pval_cutoff, 
+             log2FC_cutoff):
     """
     Perform functional enrichment analysis using logistic regression.
 
     Parameters:
         - ``gene_universe_in (pd.DataFrame)``: A DataFrame representing the universe of genes.
-        - ``sig_genes_set (pd.DataFrame)``: A DataFrame containing the significantly expressed genes.
+        - ``sig_genes_df (pd.DataFrame)``: A DataFrame containing the significantly expressed genes.
         - ``gene_set (pd.DataFrame)``: A DataFrame containing the genes of interest.
         - ``gene_id_type (str)``: The type of gene identifier used in the DataFrames.
         - ``concept_type (str)``: The type of concept (e.g., pathway) being analyzed.
@@ -266,32 +411,20 @@ def logistic(gene_universe_in: pd.DataFrame,
     # determine which genes are in the gene set
     gene_universe['InGeneSet'] = gene_universe[gene_id_type].isin(gene_set[gene_id_type]).astype(int)
 
-    gene_set_set = set(gene_set[gene_id_type])
-    
-    # Number of genes that are both in the gene set and significantly expressed
-    a = len(sig_genes_set.intersection(gene_set_set))
-
-    # Number of genes in the gene set but not significantly expressed
-    b = len(gene_set_set.difference(sig_genes_set))
-
-    # # Number of genes that are significantly expressed but not in the gene set
-    # c = len(sig_genes_set.difference(gene_set[gene_id_type]))
-
-    # gene_universe['Y'] = gene_universe['In Gene Set']
-    gene_universe['NegLogPValue'] = -np.log10(gene_universe['PValue'])
+    # test direction
+    if test_direction == 'directional':
+        gene_universe['direction'] = np.where(gene_universe['log2FC'] > 0, 1, -1)
+        gene_universe['NegLogPValue'] = -np.log10(gene_universe['PValue'])
+        gene_universe['NegLogPValue'] *= gene_universe['direction']
+    elif test_direction == 'non-directional':
+        gene_universe['NegLogPValue'] = -np.log10(gene_universe['PValue'])
+    else:
+        raise ValueError('Invalid Test Direction.')
 
     # perform logistic regression
     # ---------------------------   
 
-    # Calculate the odds ratio directly without creating additional columns
     formula = "InGeneSet ~ NegLogPValue"
-    
-    # # Add a term to the formula for one-sided tests
-    # if test_direction == 'greater':
-    #     formula += "-1"  # Add -1 to indicate a one-sided test for greater
-    # elif test_direction == 'less':
-    #     formula += "+1"  # Add +1 to indicate a one-sided test for less
-
 
     log_reg = smf.logit(formula, data=gene_universe).fit(disp=0)
     beta = log_reg.params['NegLogPValue']
@@ -299,13 +432,25 @@ def logistic(gene_universe_in: pd.DataFrame,
     odds_ratio = np.exp(beta)
 
     # Determine enrichment direction based on the test direction
-    if test_direction == 'greater':
-        direction = 'up regulated' if beta > 0 else 'neutral'
-    elif test_direction == 'less':
-        direction = 'down regulated' if beta > 0 else 'neutral'
+    if test_direction == 'directional':
+        direction = 'up regulated' if beta > 0 else 'down regulated'
     else:
         # For two-sided or invalid test directions, use the sign of the coefficient
         direction = 'enriched' if beta > 0 else 'depleted' if beta < 0 else 'neutral'
+
+    if direction == 'up regulated':
+        sig_genes_set = _get_sig_genes_set(gene_universe, 'up', gene_id_type, pval_cutoff, log2FC_cutoff)
+    elif direction == 'down regulated':
+        sig_genes_set = _get_sig_genes_set(gene_universe, 'down', gene_id_type, pval_cutoff, log2FC_cutoff)
+    else:
+        sig_genes_set = _get_sig_genes_set(gene_universe, 'both', gene_id_type, pval_cutoff, log2FC_cutoff)
+
+    gene_set_set = set(gene_set[gene_id_type])
+    # Number of genes that are both in the gene set and significantly expressed
+    a = len(sig_genes_set.intersection(gene_set_set))
+
+    # Number of genes in the gene set but not significantly expressed
+    b = len(gene_set_set.difference(sig_genes_set))
 
     # Calculate the proportion of significant genes in the set (avoid division by zero)
     proportion_sig_genes_in_set = a / (a + b) if (a + b) > 0 else 0
@@ -326,21 +471,23 @@ def logistic(gene_universe_in: pd.DataFrame,
 
     return data
 
-def fishers(gene_universe: pd.DataFrame,
-            sig_genes_set: pd.DataFrame,
+def _fishers(gene_universe: pd.DataFrame,
+            sig_genes_df: pd.DataFrame,
            gene_set: pd.DataFrame,
            gene_id_type: str, 
            concept_type: str, 
            concept_id: str, 
            concept_name: str,
            total_number_of_genes_in_universe: int,
-           test_direction):
+           test_direction,
+           pval_cutoff = None,
+           log2fc_cutoff = None):
     """
     Perform functional enrichment analysis using Fisher's exact test.
 
     Parameters:
         - ``gene_universe (pd.DataFrame)``: A DataFrame representing the universe of genes.
-        - ``sig_genes_set (pd.DataFrame)``: A DataFrame containing the significantly expressed genes.
+        - ``sig_genes_df (pd.DataFrame)``: A DataFrame containing the significantly expressed genes.
         - ``gene_set (pd.DataFrame)``: A DataFrame containing the genes of interest.
         - ``gene_id_type (str)``: The type of gene identifier used in the DataFrames.
         - ``concept_type (str)``: The type of concept (e.g., pathway) being analyzed.
@@ -363,6 +510,7 @@ def fishers(gene_universe: pd.DataFrame,
         - The 'test_direction' parameter determines the directionality of the test ('two-sided', 'greater', 'less').
         - Enrichment results include the odds ratio, p-value, and enrichment direction.
     """
+    sig_genes_set = set(sig_genes_df[gene_id_type])
 
     # Filter genes in the gene set that are in our gene universe
     # gene_set = gene_set[gene_set[gene_id_type].isin(gene_universe[gene_id_type])]
@@ -461,8 +609,8 @@ def _get_enrichment_method(method: str):
         - ValueError: If an invalid method is provided.
     """
     methods_dict = {
-        'logistic': logistic,
-        'fishers': fishers
+        'logistic': _logistic,
+        'fishers': _fishers
     }
 
     # Normalize method name to lowercase for case-insensitive matching
@@ -612,6 +760,10 @@ def _get_sig_genes_set(gene_universe, method, gene_id_type, pval_cutoff, log2FC_
         raise ValueError("Invalid method. Supported methods are 'up', 'down', or 'both'.")
     
     return sig_genes_set
+
+def _get_sig_genes_df(gene_universe, gene_id_type, pval_cutoff, log2FC_cutoff):
+    filtered_genes = gene_universe[(gene_universe['PValue'] < pval_cutoff) & (abs(gene_universe['log2FC']) > log2FC_cutoff)]
+    return filtered_genes[[gene_id_type, 'log2FC']]
 
 def _get_pathway_ids_and_names(database, org):
     if database == 'KEGG Pathway':

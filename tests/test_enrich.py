@@ -19,10 +19,10 @@ gene_universe_full = pd.read_csv('tests/data/in_data/01_TPP.txt', sep = '\t')
 
 def test_fishers():
     gene_set = pd.read_csv('tests/data/in_data/enrich/dre04340.txt', sep = '\t')
-    sig_genes_set = enrichment._get_sig_genes_set(gene_universe_sample, 'both', 'NCBI Gene ID', 0.05, 0.0)
+    sig_genes_df = enrichment._get_sig_genes_df(gene_universe_sample, 'NCBI Gene ID', 0.05, 0.0)
     gene_set = gene_set[gene_set[NCBI_ID].isin(gene_universe_sample[NCBI_ID])]
-    out = enrichment.fishers(gene_universe_sample, 
-                             sig_genes_set,
+    out = enrichment._fishers(gene_universe_sample, 
+                             sig_genes_df,
                              gene_set, 
                         'NCBI Gene ID', 
                         'KEGG Pathway', 
@@ -37,51 +37,47 @@ def test_fishers():
 
 def test_logistic():
     gene_set = pd.read_csv('tests/data/in_data/enrich/dre04340.txt', sep = '\t')
-    sig_genes_set = enrichment._get_sig_genes_set(gene_universe_sample, 'both', 'NCBI Gene ID', 0.05, 0.0)
+    sig_genes_df = enrichment._get_sig_genes_df(gene_universe_sample, 'NCBI Gene ID', 0.05, 0.0)
     gene_set = gene_set[gene_set[NCBI_ID].isin(gene_universe_sample[NCBI_ID])]
-    out = enrichment.logistic(gene_universe_sample, 
-                             sig_genes_set,
+    out = enrichment._logistic(gene_universe_sample, 
+                             sig_genes_df,
                              gene_set, 
                         'NCBI Gene ID', 
                         'KEGG Pathway', 
                         'dre04340',
                         'WNT Signaling Pathway', 
                         len(gene_universe_sample),
-                        'two-sided')
+                        'non-directional',
+                        0.05,
+                        0)
     file_path1 = 'tests/data/out_data/enrich/logistic1.txt'
     with open(file_path1, 'r') as file:
         true_dictionary = json.load(file)
     assert out == true_dictionary
 
 def test_basic_kegg_enrichment():
-    out = enrichment.enrich(gene_universe_full, 
-                  'NCBI Gene ID', 
-                  'KEGG Pathway', 
-                  'dre', 
-                  'logistic',
-                  'down')
+    out = enrichment.enrich_logistic(gene_universe_full, 
+                  gene_id_type='NCBI Gene ID', 
+                  database='KEGG Pathway')
     true = pd.read_csv('tests/data/out_data/enrich/KEGG_enrich.txt', sep = '\t')
     assert_frame_equal(out,true)
 
 def test_basic_kegg_enrichment_smaller():
-    out = enrichment.enrich(gene_universe_sample, 
-                  'NCBI Gene ID', 
-                  'KEGG Pathway', 
-                  'dre', 
-                  'logistic',
-                  'both')
+    out = enrichment.enrich_logistic(gene_universe_sample, 
+                  gene_id_type='NCBI Gene ID', 
+                  database='KEGG Pathway',
+                  directional_test=False)
     true = pd.read_csv('tests/data/out_data/enrich/KEGG_enrich_sub.txt', sep = '\t')
     assert_frame_equal(out,true)
 
 def test_go_enrichment_with_concept_ids():
     concept_ids_path = 'tests/data/in_data/enrich/list_of_go_ids.txt'
     concept_ids = pd.read_csv(concept_ids_path, sep = '\t')
-    out = enrichment.enrich(gene_universe_full, 
-                    'NCBI Gene ID', 
-                    'GO MF', 
-                    'dre', 
-                    'logistic',
-                    'both', concept_ids = concept_ids)
+    out = enrichment.enrich_logistic(gene_universe_full, 
+                    gene_id_type='NCBI Gene ID', 
+                    database='GO MF', 
+                    directional_test=False, 
+                    concept_ids = concept_ids)
     true = pd.read_csv('tests/data/out_data/enrich/GOMF_four_ids.txt', sep = '\t')
     assert_frame_equal(out,true)
 
@@ -173,17 +169,17 @@ def test_process_database_options_invalid_type():
 def test_get_enrichment_method_valid():
     method_name = 'logistic'
     result = enrichment._get_enrichment_method(method_name)
-    assert result == enrichment.logistic
+    assert result == enrichment._logistic
 
 def test_get_enrichment_method_valid_case_insensitive():
     method_name = 'LoGiStIc'
     result = enrichment._get_enrichment_method(method_name)
-    assert result == enrichment.logistic
+    assert result == enrichment._logistic
 
 def test_get_enrichment_method_valid_fishers():
     method_name = 'fishers'
     result = enrichment._get_enrichment_method(method_name)
-    assert result == enrichment.fishers
+    assert result == enrichment._fishers
 
 def test_get_enrichment_method_invalid():
     with pytest.raises(ValueError, match=r"Invalid method: invalid_method. Supported methods are logistic, fishers."):
