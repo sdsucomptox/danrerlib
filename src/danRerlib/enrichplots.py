@@ -30,18 +30,24 @@ def bar_chart(data, title, xlab,
     plt.tight_layout()
     plt.show()
 
-def volcanoplot_pathways(data, significance_threshold=0.05, top_n=5, output_filename=None):
+def volcano(data, significance_threshold = 0.05, top_n = 5, 
+            fig_height = 9, fig_width = 8, 
+            xmin = None, xmax = None, 
+            plot_all = True, 
+            legend_loc = None, 
+            output_filename = None):
+
+    plt.rcParams['font.family'] = 'sans-serif'  # Set the default font family
+    plt.rcParams['font.sans-serif'] = 'Arial, Helvetica, sans-serif'  # Specify a list of font families
+    plt.rcParams['font.size'] = 15  # Set the default font size
+
     # Extract data
     odds_ratio = data['Odds Ratio']
     p_value = data['P-value']
     pathway_names = data['Concept Name']
 
-    plt.rcParams['font.family'] = 'sans-serif'  # Set the default font family
-    plt.rcParams['font.sans-serif'] = 'Arial, Helvetica, sans-serif'  # Specify a list of font families
-    plt.rcParams['font.size'] = 12  # Set the default font size
-
     # Plotting
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(fig_width, fig_height))
 
     # Highlight significant points
     significant_upregulated = (odds_ratio > 1) & (p_value < significance_threshold)
@@ -52,34 +58,45 @@ def volcanoplot_pathways(data, significance_threshold=0.05, top_n=5, output_file
                 color='red', s=50, label='Upregulated')
     plt.scatter(odds_ratio[significant_downregulated], -np.log10(p_value[significant_downregulated]),
                 color='blue', s=50, label='Downregulated')
-    plt.scatter(odds_ratio[notsignificant], -np.log10(p_value[notsignificant]),
+    if plot_all:
+        plt.scatter(odds_ratio[notsignificant], -np.log10(p_value[notsignificant]),
                 color='black', alpha = 0.7, s=50, label='other')
 
     # Add labels for top N upregulated and downregulated pathways based on p-value
-    top_upregulated_indices = np.argsort(p_value[significant_upregulated])[:top_n]
-    top_downregulated_indices = np.argsort(p_value[significant_downregulated])[:top_n]
+    top_upregulated_indices = np.argsort(p_value[significant_upregulated])[:top_n].index
+    top_downregulated_indices = np.argsort(p_value[significant_downregulated])[:top_n].index
 
 
     for i in top_upregulated_indices:
-        plt.text(odds_ratio[i], -np.log10(p_value[i]), pathway_names[i], fontsize=8, ha='left', va='bottom')
+        plt.text(odds_ratio[i], -np.log10(p_value[i]), pathway_names[i], fontsize=12, ha='left', va='bottom')
 
     for i in top_downregulated_indices:
-        plt.text(odds_ratio[i], -np.log10(p_value[i]), pathway_names[i], fontsize=8, ha='right', va='bottom')
+        plt.text(odds_ratio[i], -np.log10(p_value[i]), pathway_names[i], fontsize=12,  ha='right',va='bottom')
 
     # Add labels and title
-    plt.title('Volcano Plot of Pathways')
+    # plt.title('Volcano Plot of Pathways')
     plt.xlabel('Odds Ratio')
     plt.ylabel('-log10(P-value)')
 
     # Set x-axis limits based on data
-    x_axis_limits = [min(odds_ratio.min(), 1.0) - 0.1, max(odds_ratio.max(), 1.0) + 0.1]
-    plt.xlim(x_axis_limits)
+    if xmin and xmax:
+        plt.xlim([xmin, xmax])
+    else:
+        abs_min = np.abs(1-odds_ratio.min())
+        abs_max = np.abs(1-odds_ratio.max())
 
+        max_lim = max(abs_min, abs_max)
+
+        x_axis_limits = [1.0-max_lim , 1.1+max_lim ]
+        plt.xlim(x_axis_limits)
+
+    if plot_all:
     # Add significance threshold line
-    plt.axhline(-np.log10(significance_threshold), color='gray', linestyle='--', linewidth=1, label='Significance Threshold')
+        plt.axhline(-np.log10(significance_threshold), color='gray', linestyle='--', linewidth=1, label='Significance Threshold')
 
     # Add legend
-    plt.legend()
+    if legend_loc:
+        plt.legend(loc = legend_loc)
 
     # Save or show the plot
     if output_filename:

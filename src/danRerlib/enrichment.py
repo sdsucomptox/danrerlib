@@ -372,6 +372,29 @@ def _enrich(gene_universe: pd.DataFrame,
     
     return final_result.reset_index(drop=True)
 
+def combine_results(dre_df, dreM_df, truth_base = 'dre'):
+
+    dreM_df = dreM_df.copy()
+    dre_df = dre_df.copy()
+
+    # match concept ids
+    dreM_df['Concept ID'] = dreM_df['Concept ID'].apply(lambda x: x.replace('dreM', 'dre'))
+
+    if truth_base == 'dre':
+        concept_ids_in_dre = set(dre_df['Concept ID'])
+
+        # Filter out rows from results_dreM where Concept ID is in results_dre
+        filtered_results_dreM = dreM_df[~dreM_df['Concept ID'].isin(concept_ids_in_dre)]
+
+        final_merged_df = pd.concat([dre_df, filtered_results_dreM], ignore_index=True)
+        
+    elif truth_base == 'dreM':
+
+        concept_ids_in_dreM = set(dreM_df['Concept ID'])
+        filtered_results_dre = dre_df[~dre_df['Concept ID'].isin(concept_ids_in_dreM)]
+        final_merged_df = pd.concat([dreM_df, filtered_results_dre], ignore_index=True)
+
+    return final_merged_df
 
 def _logistic(gene_universe_in: pd.DataFrame,
              sig_genes_set: None,
