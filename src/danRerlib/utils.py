@@ -158,6 +158,8 @@ def normalize_gene_id_type(gene_id_type: str) -> str:
     id_type_mappings = {
         'symbol': SYMBOL,
         'sym': SYMBOL,
+        'genesymbol': SYMBOL,
+        'gene symbol': SYMBOL,
         'ncbi gene id': NCBI_ID,
         'ncbi_gene_id': NCBI_ID,
         'ncbi': NCBI_ID,
