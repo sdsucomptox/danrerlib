@@ -174,9 +174,11 @@ def add_mapped_column(data: Union[pd.DataFrame, list],
 
         gene_list = data[id_from]
         if id_from == NCBI_ID:
+            gene_list = gene_list.astype(int)
             data[NCBI_ID] = gene_list.astype(str) if (id_from == NCBI_ID) and (gene_list.dtype == int) else gene_list
             data[NCBI_ID] = data[NCBI_ID].to_numpy()
             # data[NCBI_ID] = gene_list.replace('nan', np.nan) if (id_from == NCBI_ID) and (gene_list.dtype == int) else gene_list
+            gene_list = data[id_from]
         
         # convert the ids in the gene list
         converted_ids = convert_ids(gene_list, id_from, id_to, keep_mapping=True)
