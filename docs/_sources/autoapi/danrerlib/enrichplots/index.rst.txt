@@ -14,9 +14,17 @@ Functions
 .. autoapisummary::
 
    danrerlib.enrichplots.bar_chart
+   danrerlib.enrichplots.volcano
+   danrerlib.enrichplots.dotplot
 
 
 
 .. py:function:: bar_chart(data, title, xlab, ylab='-log10(p-value)', label_font_size=16, max_num_pathways=None)
+
+
+.. py:function:: volcano(data, significance_threshold=0.05, top_n=5, fig_height=9, fig_width=8, xmin=None, xmax=None, plot_all=True, legend_loc=None, output_filename=None)
+
+
+.. py:function:: dotplot(data_in, num_to_plot, direction, output_filename=None)
 
 

@@ -24,6 +24,7 @@ Functions
    danrerlib.utils.save_data
    danrerlib.utils.download_url
    danrerlib.utils.download_url_to_file
+   danrerlib.utils.load_data
 
 
 
@@ -127,5 +128,8 @@ Functions
 
 
 .. py:function:: download_url_to_file(url_to_download: str, output_file_path: str) -> None
+
+
+.. py:function:: load_data(data_file_name)
 
 

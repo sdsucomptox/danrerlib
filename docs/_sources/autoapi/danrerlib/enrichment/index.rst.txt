@@ -70,6 +70,7 @@ Functions
 
    danrerlib.enrichment.enrich_fishers
    danrerlib.enrichment.enrich_logistic
+   danrerlib.enrichment.combine_results
 
 
 
@@ -110,7 +111,7 @@ Functions
        - Fisher's Exact test is cutoff dependent. 
 
 
-.. py:function:: enrich_logistic(gene_universe: danrerlib.settings.pd.DataFrame, database: list[str], gene_id_type: str, org='dre', directional_test=True, sig_gene_cutoff_pvalue=0.05, log2FC_cutoff_value=0, concept_ids=None, background_gene_set=None, sig_conceptID_cutoff_pvalue=0.05, order_by_p_value=True, min_num_genes_in_concept=10, include_all=False) -> danrerlib.settings.pd.DataFrame
+.. py:function:: enrich_logistic(gene_universe: danrerlib.settings.pd.DataFrame, database: list[str], gene_id_type: str, org='dre', directional_test=True, sig_gene_cutoff_pvalue=0.05, log2FC_cutoff_value=0, concept_ids=None, background_gene_set=None, sig_conceptID_cutoff_pvalue=0.05, order_by_p_value=True, min_num_genes_in_concept=10, include_all=False, orthology_base='dre') -> danrerlib.settings.pd.DataFrame
 
    Perform functional enrichment analysis using the logistic method, a cut-off free method.
 
@@ -145,5 +146,8 @@ Functions
    Note:
        - If you are providing a list of concept ids, they must come from one database only.
        - The logistic regression method does not depend on the the pvalue cutoff for significance. 
+
+
+.. py:function:: combine_results(dre_df, dreM_df, truth_base='dre')
 
 
