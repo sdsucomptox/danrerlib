@@ -258,7 +258,7 @@ def load_data(data_file_name):
     file_dict = {
         'raw human gene info': RAW_DATA_DIR / Path('Homo_sapiens.gene_info'),
         'raw orthology': RAW_DATA_DIR/ Path('zfish_human_orthology_V1.txt'),
-        'master orthology': DATABASE_DIR /Path('master_ortho_mapping_file_V1.txt'),
-        'master mapping': DATABASE_DIR /Path('master_gene_mapping_file_V1.txt')
+        'master orthology': DATABASE_DIR / Path('master_ortho_mapping_file_V1.txt'),
+        'master mapping': DATABASE_DIR / Path('master_gene_mapping_file_V1.txt')
     }
     return pd.read_csv(file_dict[data_file_name], sep = '\t')

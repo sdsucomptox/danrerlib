@@ -59,7 +59,10 @@ from danrerlib import mapping, KEGG, GO, utils
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import statsmodels.stats.multitest as smm
+from statsmodels.tools.sm_exceptions import ConvergenceWarning, PerfectSeparationWarning
+
 from scipy.stats import chi2, fisher_exact
+import warnings
 
 def enrich_fishers(gene_universe: pd.DataFrame, 
             database: list[str], 
@@ -132,7 +135,8 @@ def enrich_logistic(gene_universe: pd.DataFrame,
             sig_conceptID_cutoff_pvalue = 0.05,
             order_by_p_value = True,
             min_num_genes_in_concept = 10,
-            include_all = False) -> pd.DataFrame:
+            include_all = False,
+            orthology_base = 'dre') -> pd.DataFrame:
     """
     Perform functional enrichment analysis using the logistic method, a cut-off free method.
 
@@ -176,11 +180,96 @@ def enrich_logistic(gene_universe: pd.DataFrame,
     else:
         direction = 'non-directional'
 
-    out = _enrich(gene_universe, database, gene_id_type, org, 'logistic', direction, 
-                 sig_gene_cutoff_pvalue, log2FC_cutoff_value, concept_ids, 
-                 background_gene_set, sig_conceptID_cutoff_pvalue, order_by_p_value, 
-                 min_num_genes_in_concept, include_all)
+    if org != 'variable':
+        out = _enrich(gene_universe, database, gene_id_type, org, 'logistic', direction, 
+                    sig_gene_cutoff_pvalue, log2FC_cutoff_value, concept_ids, 
+                    background_gene_set, sig_conceptID_cutoff_pvalue, order_by_p_value, 
+                    min_num_genes_in_concept, include_all)
+    else:
+        # quality control database choice
+        database = _process_database_options(database)
+        if concept_ids is None:
+            if orthology_base == 'dre':
+                # get all concept ids for dre given db
+                concept_id_dict = {}
+                for db in database:
+                    dre_concept_ids, dreM_concept_ids = _organize_concept_ids(db, 'dre', 'dreM')
+                    concept_id_dict[('dre', db)] = dre_concept_ids
+                    concept_id_dict[('dreM', db)] = dreM_concept_ids
+        else:
+            if len(database) > 1:
+                raise ValueError('Only one database allowed for provided concept ids.')
+            if orthology_base == 'dre':
+                # get all concept ids for dre given db
+                concept_id_dict = {}
+                dre_concept_ids, dreM_concept_ids = _organize_concept_ids(db, 'dre', 'dreM', concept_ids)
+                concept_id_dict[('dre', db)] = dre_concept_ids
+                concept_id_dict[('dreM', db)] = dreM_concept_ids
+        
+        out_dataframe_list = []
+        for key, value in concept_id_dict.items():   
+            org_inner = key[0]
+            db = key[1]
+            concept_ids = value
+            if len(concept_ids) == 0:
+                continue
+            out_inner = _enrich(gene_universe, db, gene_id_type, org_inner, 'logistic', direction, 
+                    sig_gene_cutoff_pvalue, log2FC_cutoff_value, concept_ids, 
+                    background_gene_set, sig_conceptID_cutoff_pvalue, order_by_p_value, 
+                    min_num_genes_in_concept, include_all)
+            out_dataframe_list.append(out_inner)
+        out = pd.concat(out_dataframe_list, ignore_index=True)
+        if order_by_p_value:
+            out = out.sort_values(by='P-value', ascending=True)
+
     return out
+
+def _organize_concept_ids(db, base_org, additional_org, given_ids = None):
+    if given_ids is None:
+        all_ids_base, id_col_name, id_desc_col_name = _get_pathway_ids_and_names(db, base_org)
+        concept_ids_base = all_ids_base[id_col_name]
+        all_ids_additional, id_col_name, id_desc_col_name = _get_pathway_ids_and_names(db, additional_org)
+        concept_ids_additional = all_ids_additional[id_col_name]
+
+        # Extract numeric portions and convert to integers for both series
+        numeric_additional = concept_ids_additional.str.extract('(\d+)')
+        numeric_base = concept_ids_base.str.extract('(\d+)')
+
+        # Extract numeric portions as sets
+        numeric_additional_set = set(numeric_additional.squeeze())
+        numeric_base_set = set(numeric_base.squeeze())
+
+        # Identify common numeric portions using sets
+        common_numeric_set = numeric_base_set.intersection(numeric_base_set)
+
+        # Remove common elements from numeric_hsa_set
+        filtered_numeric_additional_set = list(numeric_additional_set - common_numeric_set)
+
+        prefixed_list = [additional_org + entry for entry in filtered_numeric_additional_set]
+
+        base_list = concept_ids_base.squeeze().to_list()
+        additional_list = prefixed_list
+
+    else:
+        
+        func_dict = {
+            'KEGG Pathway': KEGG._check_if_pathway_id_exists,
+            'KEGG Disease': KEGG._check_if_pathway_id_exists,
+            'GO BP': GO.id_exists_given_organism,
+            'GO CC': GO.id_exists_given_organism,
+            'GO MF': GO.id_exists_given_organism
+        }
+        base_list = []
+        additional_list = []
+        for id in given_ids:
+            if func_dict(id, 'dre'):
+                base_list.append(id)
+            elif func_dict(id, 'dreM'):
+                additional_list.append(id)
+            else:
+                continue
+
+    return base_list, additional_list
 
 def _enrich(gene_universe: pd.DataFrame, 
             database: list[str], 
@@ -271,6 +360,8 @@ def _enrich(gene_universe: pd.DataFrame,
         original_concept_ids = concept_ids
     else:
         original_concept_ids = concept_ids.copy()  # Create a copy of the original concept_ids
+        if len(database) > 1: 
+            raise ValueError('Provided Concept IDs must come from one database only.')
     resulting_dataframe_list = []  # List to store results for each database
     
     for db in database:
@@ -297,7 +388,7 @@ def _enrich(gene_universe: pd.DataFrame,
             if db in kegg_options:
                 current_concept_ids = _check_concept_ids_KEGG(original_concept_ids, org, db, all_ids, id_column_name)
             elif db in go_options:
-                current_concept_ids = _check_concept_ids_GO(original_concept_ids, org, all_ids, id_column_name)
+                current_concept_ids = _check_concept_ids_GO(original_concept_ids, org, db, all_ids, id_column_name)
 
         # -------------------------
         # SIGNIFICANT GENE UNIVERSE
@@ -335,7 +426,7 @@ def _enrich(gene_universe: pd.DataFrame,
             gene_set =  get_genes_function(concept_id, org, do_check = False)
             gene_set = gene_set[gene_set[gene_id_type].isin(gene_universe[gene_id_type])]
             num_genes = len(gene_set)
-            if num_genes > min_num_genes_in_concept:
+            if num_genes >= min_num_genes_in_concept:
                 concept_name = all_ids.loc[all_ids[id_column_name] == concept_id, name_column_name].values[0]
                 out = enrich_method_function(gene_universe, 
                                             sig_genes_set,
@@ -348,9 +439,9 @@ def _enrich(gene_universe: pd.DataFrame,
                                             test_direction,
                                             sig_gene_cutoff_pvalue,
                                             log2FC_cutoff_value)
-                
-                # Append the dictionary to the list
-                resulting_dictionary_list.append(out)
+                if out:
+                    # Append the dictionary to the list
+                    resulting_dictionary_list.append(out)
     
         result = pd.DataFrame(resulting_dictionary_list)
         if sig_conceptID_cutoff_pvalue and not include_all:
@@ -448,56 +539,67 @@ def _logistic(gene_universe_in: pd.DataFrame,
         gene_universe['NegLogPValue'] = -np.log10(gene_universe['PValue'])
     else:
         raise ValueError('Invalid Test Direction.')
+    
+    try:
+        # perform logistic regression
+        # ---------------------------   
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=ConvergenceWarning)
+            warnings.filterwarnings("ignore", category=RuntimeWarning)
+            warnings.filterwarnings ("ignore", category = PerfectSeparationWarning)
+            formula = "InGeneSet ~ NegLogPValue"
 
-    # perform logistic regression
-    # ---------------------------   
+            log_reg = smf.logit(formula, data=gene_universe).fit(disp=0)
+            beta = log_reg.params['NegLogPValue']
+            p_value = log_reg.pvalues['NegLogPValue']
+            odds_ratio = np.exp(beta)
 
-    formula = "InGeneSet ~ NegLogPValue"
+        # Determine enrichment direction based on the test direction
+        if test_direction == 'directional':
+            direction = 'upregulated' if beta > 0 else 'downregulated'
+        else:
+            # For two-sided or invalid test directions, use the sign of the coefficient
+            direction = 'enriched' if beta > 0 else 'depleted' if beta < 0 else 'neutral'
 
-    log_reg = smf.logit(formula, data=gene_universe).fit(disp=0)
-    beta = log_reg.params['NegLogPValue']
-    p_value = log_reg.pvalues['NegLogPValue']
-    odds_ratio = np.exp(beta)
+        if direction == 'upregulated':
+            sig_genes_set = _get_sig_genes_set(gene_universe, 'up', gene_id_type, pval_cutoff, log2FC_cutoff)
+        elif direction == 'downregulated':
+            sig_genes_set = _get_sig_genes_set(gene_universe, 'down', gene_id_type, pval_cutoff, log2FC_cutoff)
+        else:
+            sig_genes_set = _get_sig_genes_set(gene_universe,'non-directional', gene_id_type, pval_cutoff, log2FC_cutoff)
 
-    # Determine enrichment direction based on the test direction
-    if test_direction == 'directional':
-        direction = 'upregulated' if beta > 0 else 'downregulated'
-    else:
-        # For two-sided or invalid test directions, use the sign of the coefficient
-        direction = 'enriched' if beta > 0 else 'depleted' if beta < 0 else 'neutral'
+        gene_set_set = set(gene_set[gene_id_type])
+        # Number of genes that are both in the gene set and significantly expressed
+        a = len(sig_genes_set.intersection(gene_set_set))
 
-    if direction == 'upregulated':
-        sig_genes_set = _get_sig_genes_set(gene_universe, 'up', gene_id_type, pval_cutoff, log2FC_cutoff)
-    elif direction == 'downregulated':
-        sig_genes_set = _get_sig_genes_set(gene_universe, 'down', gene_id_type, pval_cutoff, log2FC_cutoff)
-    else:
-        sig_genes_set = _get_sig_genes_set(gene_universe,'non-directional', gene_id_type, pval_cutoff, log2FC_cutoff)
+        # Number of genes in the gene set but not significantly expressed
+        b = len(gene_set_set.difference(sig_genes_set))
 
-    gene_set_set = set(gene_set[gene_id_type])
-    # Number of genes that are both in the gene set and significantly expressed
-    a = len(sig_genes_set.intersection(gene_set_set))
+        # Calculate the proportion of significant genes in the set (avoid division by zero)
+        proportion_sig_genes_in_set = a / (a + b) if (a + b) > 0 else 0
 
-    # Number of genes in the gene set but not significantly expressed
-    b = len(gene_set_set.difference(sig_genes_set))
+        # organize important stats
+        # ------------------------
+        if odds_ratio == np.inf:
+            data = None
+        else:
+            data = {
+                'Concept Type': concept_type,
+                'Concept ID': concept_id,
+                'Concept Name': concept_name,
+                '# Genes in Concept in Universe': a+b,
+                '# Sig Genes Belong to Concept': a,
+                'Proportion of Sig Genes in Set': proportion_sig_genes_in_set,
+                'Odds Ratio': odds_ratio,
+                'P-value': p_value,
+                'Direction': direction
+            }
 
-    # Calculate the proportion of significant genes in the set (avoid division by zero)
-    proportion_sig_genes_in_set = a / (a + b) if (a + b) > 0 else 0
-
-    # organize important stats
-    # ------------------------
-    data = {
-        'Concept Type': concept_type,
-        'Concept ID': concept_id,
-        'Concept Name': concept_name,
-        '# Genes in Concept in Universe': a+b,
-        '# Sig Genes Belong to Concept': a,
-        'Proportion of Sig Genes in Set': proportion_sig_genes_in_set,
-        'Odds Ratio': odds_ratio,
-        'P-value': p_value,
-        'Direction': direction
-    }
-
-    return data
+        return data
+    
+    except np.linalg.LinAlgError as e:
+        data = None
+        return data
 
 def _fishers(gene_universe: pd.DataFrame,
             sig_genes_set: pd.DataFrame,
@@ -807,6 +909,8 @@ def _get_pathway_ids_and_names(database, org):
     elif database == 'GO':
         path = GO.GO_IDS_PATH
         all_ids = pd.read_csv(path, sep='\t')
+        org_col_name = 'exists_dre' if org == 'dre' else 'exists_hsa'
+        all_ids = all_ids[(all_ids[org_col_name] == True)]
         id_column_name = 'GO ID'
         name_column_name = 'GO Name'
     elif database == 'GO BP':
@@ -833,7 +937,7 @@ def _get_pathway_ids_and_names(database, org):
                           & (all_ids[org_col_name] == True)]
         id_column_name = 'GO ID'
         name_column_name = 'GO Name'
-    
+
     pathway_list = all_ids[[id_column_name, name_column_name]].copy()
     return pathway_list, id_column_name, name_column_name
 
@@ -927,7 +1031,7 @@ def _check_concept_ids_KEGG(concept_ids, org, database, all_ids, id_column_name)
 
     return concept_ids
 
-def _check_concept_ids_GO(concept_ids, org, all_ids, id_column_name):
+def _check_concept_ids_GO(concept_ids, org, db, all_ids, id_column_name):
     if type(concept_ids) == pd.DataFrame:
         if concept_ids.shape[1] != 1:
             raise ValueError('Concept IDs given should be a 1 dimensional list.')
@@ -937,13 +1041,18 @@ def _check_concept_ids_GO(concept_ids, org, all_ids, id_column_name):
     df = pd.read_csv(GO.GO_IDS_PATH, sep = '\t')
     modified_list = []
     bad_ids = []
+    bad_ids_diff_db = []
     warning = False
+    warning_ont = False
     for id in concept_ids:
         new_id = _check_GO_id_format(id)
         if not _id_exists_given_organism(id, org, df):
             bad_ids.append(id)
             warning = True
             # raise ValueError(f'GO ID {id} does not exist for given organism.')
+        elif not _go_id_exists_given_db(id, db, df):
+            bad_ids_diff_db.append(id)
+            warning_ont = True
         else:
             modified_list.append(new_id)
     if warning:
@@ -954,9 +1063,20 @@ def _check_concept_ids_GO(concept_ids, org, all_ids, id_column_name):
             print(id, end=" ")
             if idx % 4 == 0:
                 print()  # Print a newline after every fourth ID
+        print()
+    if warning_ont:
+        print(f'WARNING: {len(bad_ids_diff_db)} given GO IDs do not exist for given database.')
+        print()
+        print('Omitted ids include:')
+        for idx, id in enumerate(bad_ids_diff_db, start = 1):
+            print(id, end=" ")
+            if idx % 4 == 0:
+                print()  # Print a newline after every fourth ID
+        print()
     concept_ids = modified_list
     if any(concept_id not in all_ids[id_column_name].to_list() for concept_id in concept_ids):
-        raise ValueError('Invalid ID')
+        invalid =  [concept_id for concept_id in concept_ids if concept_id not in all_ids[id_column_name].to_list()]
+        raise ValueError(f'Invalid ID(s): {invalid}')
     return concept_ids
 
 def _id_exists_given_organism(concept_id, organism, df):
@@ -973,6 +1093,20 @@ def _id_exists_given_organism(concept_id, organism, df):
         raise ValueError('Invalid Organism')
     
     return filtered_df[target_column].iloc[0] 
+
+def _go_id_exists_given_db(concept_id, db, df):
+    # check if ID exists for given db:
+    if db == 'GO BP':
+        target_column = 'P'
+    elif db == 'GO MF':
+        target_column = 'F'
+    elif db == 'GO CC':
+        target_column = 'C'
+    else:
+        raise ValueError('db')
+    filtered_df = df[(df['GO ID'] == concept_id) & (df['Ontology'] == target_column)]
+    return not filtered_df.empty
+
 def _check_GO_id_format(id):
     if _is_numeric(id):
         length_of_numeric = len(str(id))
