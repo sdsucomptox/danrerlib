@@ -2,8 +2,6 @@
 
 Welcome to the official documentation for `danRerLib`! `danRerLib` is a Python package specifically designed for zebrafish researchers interested in genomics and transcriptomics. It is designed to assist with gene ID mapping, ortholog mapping, and functional enrichment analysis using different pathway and functional annotation databases. 
 
-_This work has been developed by the (SDSU Computational Toxicology Laboratory)[https://sdsucomptox.github.io/] and was supported by a National Institute of Health (National Institute of Diabetes and Digestive and Kidney Diseases) award [1R21DK134931-01 to Uudak George and Karilyn Sant]._
-
 ## Key Features
 
 - **Gene ID Conversion**: Easily convert gene IDs between different types, such as NCBI Gene ID, ZFIN ID, Ensembl ID, or Symbol.
@@ -39,3 +37,6 @@ If you encounter any issues, have questions, or want to provide feedback, please
 `danRerLib` is released under the MIT License. Please review the License for details on how you can use and distribute this package. 
 
 
+## Funding
+
+This work was supported by a National Institute of Health (National Institute of Diabetes and Digestive and Kidney Diseases) award [1R21DK134931-01 to Uduak George and Karilyn Sant].

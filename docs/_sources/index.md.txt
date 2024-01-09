@@ -4,6 +4,10 @@
 
 Welcome to danRerLib's Documentation page! **danRerLib**, short for *Danio rerio* library, is a comprehensive toolkit designed specifically for zebrafish researchers, focusing on genomics and transcriptomics. 
 
+## Development and Funding
+
+`danRerLib` has been developed by the [SDSU Computational Toxicology Laboratory](https://sdsucomptox.github.io/) with primary contributions from [Ashley Schwartz](https://ashleyschwartz.com/) and was supported by a National Institute of Health (National Institute of Diabetes and Digestive and Kidney Diseases) award [1R21DK134931-01 to [Uduak George](https://georgelab.sdsu.edu/) and [Karilyn Sant](https://publichealth.sdsu.edu/people/karilyn-sant/)]. 
+
 ## Getting Started
 
 New to danRerLib? Start with our [Introduction](userguide/introduction.md) page to learn about the toolkit's features.

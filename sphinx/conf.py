@@ -3,7 +3,7 @@
 # -- Project information -----------------------------------------------------
 
 project = u"danrerlib"
-copyright = u"2024, SDSU Comp Tox Lab"
+copyright = u"2024, SDSU Computational Toxicology Laboratory"
 author = u"Ashley Schwartz"
 
 # -- General configuration ---------------------------------------------------
