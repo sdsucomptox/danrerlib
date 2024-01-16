@@ -85,8 +85,8 @@ def volcano(data: pd.DataFrame,
             fig_width: int = 8, 
             xmin: float = None, 
             xmax: float = None, 
-            plot_all: bool = True, 
-            legend_loc: str = None, 
+            plot_all: bool = False, 
+            legend_loc: str = 'best', 
             output_filename: str = None) -> None:
     """
     Generate a volcano plot from enrichment analysis results.
@@ -99,8 +99,8 @@ def volcano(data: pd.DataFrame,
       - `fig_width (int, optional)`: Width of the figure. Default is 8.
       - `xmin (float, optional)`: Minimum x-axis limit. Default is None (auto-calculated).
       - `xmax (float, optional)`: Maximum x-axis limit. Default is None (auto-calculated).
-      - `plot_all (bool, optional)`: Whether to plot all points (including non-significant). Default is True.
-      - `legend_loc (str, optional)`: Location of the legend. Default is None (no legend).
+      - `plot_all (bool, optional)`: Whether to plot all points (including non-significant). Default is False.
+      - `legend_loc (str, optional)`: Location of the legend. Default is 'best' (no legend).
       - `output_filename (str, optional)`: Filepath to save the plot. Default is None (show the plot).
 
     Returns:
@@ -148,7 +148,7 @@ def volcano(data: pd.DataFrame,
         plt.text(odds_ratio[i], -np.log10(p_value[i]), pathway_names[i], fontsize=12,  ha='right',va='bottom')
 
     # Add labels and title
-    # plt.title('Volcano Plot of Pathways')
+    plt.title('Volcano Plot of Pathways')
     plt.xlabel('Odds Ratio')
     plt.ylabel('-log10(P-value)')
 

@@ -10,7 +10,7 @@ The documentation for the library is currently being hosted on [San Diego State 
 
 ### Installation
 
-The package requires Python>3.7 and < 3.11; we recommend Python 3.9. Please see the documentation[installation guide](https://sdsucomptox.github.io/danrerlib/userguide/installation.html) for more information.
+The package requires Python>3.9 and < 3.13; we recommend Python 3.9. Please see the documentation[installation guide](https://sdsucomptox.github.io/danrerlib/userguide/installation.html) for more information.
 
 Via pip:
 ~~~~

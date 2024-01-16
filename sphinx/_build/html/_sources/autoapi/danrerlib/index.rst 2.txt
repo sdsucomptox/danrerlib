@@ -1,0 +1,19 @@
+:py:mod:`danrerlib`
+===================
+
+.. py:module:: danrerlib
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   GO/index.rst
+   KEGG/index.rst
+   enrichment/index.rst
+   enrichplots/index.rst
+   mapping/index.rst
+
+
