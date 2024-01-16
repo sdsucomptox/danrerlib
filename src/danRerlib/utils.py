@@ -257,8 +257,11 @@ def download_url_to_file(url_to_download: str, output_file_path: str) -> None:
 def load_data(data_file_name):
     file_dict = {
         'raw human gene info': RAW_DATA_DIR / Path('Homo_sapiens.gene_info'),
-        'raw orthology': RAW_DATA_DIR/ Path('zfish_human_orthology_V1.txt'),
-        'master orthology': DATABASE_DIR / Path('master_ortho_mapping_file_V1.txt'),
-        'master mapping': DATABASE_DIR / Path('master_gene_mapping_file_V1.txt')
+        'raw orthology': RAW_DATA_DIR/ Path(f'zfish_human_orthology_V{VERSION_NUM}.txt'),
+        'master orthology': DATABASE_DIR / Path(f'master_ortho_mapping_file_V{VERSION_NUM}.txt'),
+        'master mapping': DATABASE_DIR / Path(f'master_gene_mapping_file_V{VERSION_NUM}.txt'),
+        'GO dre': DATABASE_DIR / Path(f'GO/GO_dre_V{VERSION_NUM}.txt'),
+        'GO dreM': DATABASE_DIR / Path(f'GO/GO_dreM_V{VERSION_NUM}.txt'),
+        'GO hsa': DATABASE_DIR / Path(f'GO/GO_hsa_V{VERSION_NUM}.txt')
     }
     return pd.read_csv(file_dict[data_file_name], sep = '\t')

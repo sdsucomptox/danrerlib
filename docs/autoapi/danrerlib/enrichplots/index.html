@@ -112,37 +112,123 @@
              
   <section id="module-danrerlib.enrichplots">
 <span id="danrerlib-enrichplots"></span><h1><a class="reference internal" href="#module-danrerlib.enrichplots" title="danrerlib.enrichplots"><code class="xref py py-mod docutils literal notranslate"><span class="pre">danrerlib.enrichplots</span></code></a><a class="headerlink" href="#module-danrerlib.enrichplots" title="Permalink to this heading"></a></h1>
+<section id="enrichment-plots-module">
+<p>The Enrichment Plots module provides functions for visualizing results from gene enrichment analyses. These functions generate various types of plots, allowing users to gain insights into the enriched pathways or concepts.</p>
+<dl>
+<dt>Functions:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bar_chart</span></code>: Generate a bar chart to visualize enrichment analysis results. The chart displays pathway names on the x-axis and -log10(p-value) on the y-axis.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">volcano</span></code>: Create a volcano plot to visualize the relationship between odds ratio and -log10(p-value) for enriched pathways. The plot highlights significant upregulated and downregulated pathways.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dotplot</span></code>: Generate a dot plot to visualize odds ratio, proportion of significant genes, and p-values for enriched pathways. The size of each dot represents the proportion of significant genes, and color indicates the p-value.</p></li>
+</ul>
+</dd>
+<dt>Example:</dt><dd><p>To generate a bar chart for enrichment analysis results:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">bar_chart(data,</span> <span class="pre">title='Enrichment</span> <span class="pre">Analysis</span> <span class="pre">Results',</span> <span class="pre">xlab='Pathways')</span>
+<span class="pre">`</span></code></p>
+<p>This example creates a bar chart displaying pathway names on the x-axis and -log10(p-value) on the y-axis.</p>
+</dd>
+</dl>
+<p>For detailed information on each function’s parameters and usage examples, refer to the documentation. Tutorials demonstrating the use of Enrichment Plots functions are also available.</p>
+</section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.enrichplots.bar_chart" title="danrerlib.enrichplots.bar_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bar_chart</span></code></a>(data, title, xlab[, ylab, label_font_size, ...])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.enrichplots.bar_chart" title="danrerlib.enrichplots.bar_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bar_chart</span></code></a>(→ None)</p></td>
+<td><p>Generate a bar chart from enrichment analysis results.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.enrichplots.volcano" title="danrerlib.enrichplots.volcano"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volcano</span></code></a>(data[, significance_threshold, top_n, ...])</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#danrerlib.enrichplots.volcano" title="danrerlib.enrichplots.volcano"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volcano</span></code></a>(→ None)</p></td>
+<td><p>Generate a volcano plot from enrichment analysis results.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.enrichplots.dotplot" title="danrerlib.enrichplots.dotplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dotplot</span></code></a>(data_in, num_to_plot, direction[, output_filename])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#danrerlib.enrichplots.dotplot" title="danrerlib.enrichplots.dotplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dotplot</span></code></a>(→ None)</p></td>
+<td><p>Generate a dot plot for visualization of pathway enrichment results.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="danrerlib.enrichplots.bar_chart">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichplots.</span></span><span class="sig-name descname"><span class="pre">bar_chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-log10(p-value)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_pathways</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.enrichplots.bar_chart" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichplots.</span></span><span class="sig-name descname"><span class="pre">bar_chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlab</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylab</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'-log10(p-value)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_font_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_pathways</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#danrerlib.enrichplots.bar_chart" title="Permalink to this definition"></a></dt>
+<dd><p>Generate a bar chart from enrichment analysis results.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p><cite>data (pd.DataFrame)</cite>: DataFrame containing enrichment analysis results, including ‘Concept Name’ and ‘P-value’.</p></li>
+<li><p><cite>title (str)</cite>: Title of the bar chart.</p></li>
+<li><p><cite>xlab (str)</cite>: Label for the x-axis.</p></li>
+<li><p><cite>ylab (str, optional)</cite>: Label for the y-axis. Default is ‘-log10(p-value)’.</p></li>
+<li><p><cite>label_font_size (int, optional)</cite>: Font size for axis labels and title. Default is 16.</p></li>
+<li><p><cite>max_num_pathways (Optional[int], optional)</cite>: Maximum number of pathways to display. Default is None (display all).</p></li>
+</ul>
+</dd>
+<dt>Raises:</dt><dd><ul class="simple">
+<li><p><cite>ValueError</cite>: If required columns (‘Concept Name’, ‘P-value’) are missing in the input DataFrame.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>None: Displays the bar chart.</p></li>
+</ul>
+</dd>
+<dt>Note:</dt><dd><ul class="simple">
+<li><p>The function uses the ‘-log10(p-value)’ for the y-axis.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danrerlib.enrichplots.volcano">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichplots.</span></span><span class="sig-name descname"><span class="pre">volcano</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">significance_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.enrichplots.volcano" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichplots.</span></span><span class="sig-name descname"><span class="pre">volcano</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">significance_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_all</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_loc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#danrerlib.enrichplots.volcano" title="Permalink to this definition"></a></dt>
+<dd><p>Generate a volcano plot from enrichment analysis results.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p><cite>data (pd.DataFrame)</cite>: DataFrame containing enrichment analysis results, including ‘Odds Ratio’, ‘P-value’, and ‘Concept Name’.</p></li>
+<li><p><cite>significance_threshold (float, optional)</cite>: Threshold for considering a point as significant. Default is 0.05.</p></li>
+<li><p><cite>top_n (int, optional)</cite>: Number of top pathways to label based on p-value. Default is 5.</p></li>
+<li><p><cite>fig_height (int, optional)</cite>: Height of the figure. Default is 9.</p></li>
+<li><p><cite>fig_width (int, optional)</cite>: Width of the figure. Default is 8.</p></li>
+<li><p><cite>xmin (float, optional)</cite>: Minimum x-axis limit. Default is None (auto-calculated).</p></li>
+<li><p><cite>xmax (float, optional)</cite>: Maximum x-axis limit. Default is None (auto-calculated).</p></li>
+<li><p><cite>plot_all (bool, optional)</cite>: Whether to plot all points (including non-significant). Default is True.</p></li>
+<li><p><cite>legend_loc (str, optional)</cite>: Location of the legend. Default is None (no legend).</p></li>
+<li><p><cite>output_filename (str, optional)</cite>: Filepath to save the plot. Default is None (show the plot).</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>None: Displays the volcano plot.</p></li>
+</ul>
+</dd>
+<dt>Note:</dt><dd><ul class="simple">
+<li><p>The function uses ‘-log10(P-value)’ for the y-axis.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="danrerlib.enrichplots.dotplot">
-<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichplots.</span></span><span class="sig-name descname"><span class="pre">dotplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_to_plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#danrerlib.enrichplots.dotplot" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">danrerlib.enrichplots.</span></span><span class="sig-name descname"><span class="pre">dotplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_to_plot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#danrerlib.enrichplots.dotplot" title="Permalink to this definition"></a></dt>
+<dd><p>Generate a dot plot for visualization of pathway enrichment results.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p><cite>data_in (pd.DataFrame)</cite>: DataFrame containing pathway enrichment results.</p></li>
+<li><p><cite>num_to_plot (int)</cite>: Number of pathways to plot.</p></li>
+<li><p><cite>direction (str)</cite>: Specifies the direction of pathways to be plotted (‘up’, ‘down’, or ‘both’).</p></li>
+<li><p><cite>output_filename (str, optional)</cite>: Filepath to save the plot. Default is None (show the plot).</p></li>
+<li><p><cite>title (str, optional)</cite>: Title of the plot. Default is None.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>None: Displays the dot plot.</p></li>
+</ul>
+</dd>
+<dt>Note:</dt><dd><ul class="simple">
+<li><p>The dot plot visualizes odds ratio, proportion of significant genes, and p-values for each pathway.</p></li>
+<li><p>For ‘both’ direction, the plot shows both upregulated and downregulated pathways.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>

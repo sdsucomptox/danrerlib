@@ -84,7 +84,7 @@ def get_genes_in_pathway(pathway_id: str, org=None, do_check = True):
             if org:
                 org = utils.normalize_organism_name(org)
             org, pathway_id = _check_for_organism(pathway_id, org)
-            result = _check_if_pathway_id_exists(pathway_id, org)
+            result = _check_if_pathway_id_exists(pathway_id, org, error_message=True)
             if result:
                 file_name = KEGG_DATA_DIR / Path(org) / Path(pathway_id + '.txt')
                 df = pd.read_csv(file_name, sep='\t')
@@ -141,8 +141,12 @@ def get_genes_in_disease(disease_id: str,
             return genes
     else:
         if do_check:
-            org = utils.normalize_organism_name(org)
-
+            if org:
+                org = utils.normalize_organism_name(org)
+            result = _check_if_disease_id_exists(disease_id, org, error_message=True)
+            if not result:
+                raise ValueError
+            
         file_dict_by_org = {
             'hsa': human_disease_genes_path,
             'dre': dre_disease_genes_path,
@@ -244,7 +248,8 @@ def _check_for_organism(pathway_id: str,
         return org, pathway_id
 
 def _check_if_pathway_id_exists(pathway_id: str, 
-                                org: str
+                                org: str,
+                                error_message = False
                                 ) -> bool:
     """
     Check if a KEGG pathway ID exists for the specified organism.
@@ -266,6 +271,9 @@ def _check_if_pathway_id_exists(pathway_id: str,
     """
     result = False
     if org == 'dreM':
+        if not pathway_id.startswith('dreM'):
+            pathway_id_nums = pathway_id[3:]
+            pathway_id = 'dreM'+pathway_id_nums
         df = pd.read_csv(mapped_zebrafish_pathways_path, sep='\t')
         result = True if pathway_id in df['Pathway ID'].values else False
     elif org == 'hsa':
@@ -274,7 +282,7 @@ def _check_if_pathway_id_exists(pathway_id: str,
     elif org == 'dre':
         df = pd.read_csv(zebrafish_pathways_path, sep='\t')
         result = True if pathway_id in df['Pathway ID'].values else False
-    if not result:
+    if error_message and not result:
         print('The Pathway ID you gave does not exist for the organism you specified.')
         print('A Pathway ID is identified by the combination of a 3-4 letter prefix')
         print('code and a 5 digit number.\n')
@@ -282,6 +290,44 @@ def _check_if_pathway_id_exists(pathway_id: str,
         print('reminder - python does not support integers that start with a 0;')
         print('           therefore, Pathway IDs must be entered as strings if')
         print('           the organism prefix is omitted.')
+    return result
+
+def _check_if_disease_id_exists(disease_id: str, 
+                                org: str,
+                                error_message = False) -> bool:
+    """
+    Check if a KEGG disease ID exists for the specified organism.
+
+    Parameters:
+        disease_id (str): The KEGG disease ID to be validated.
+        org (str): The specified organism code (e.g., 'dre', 'dreM', or 'hsa').
+
+    Returns:
+        bool: True if the disease ID exists for the specified organism, False otherwise.
+
+    Notes:
+        - This internal function checks whether a given KEGG disease ID exists for the specified organism.
+        - It reads relevant disease data files based on the organism code and checks if the disease ID is present.
+        - Returns True if the disease ID exists, False otherwise.
+        - Provides an error message if the disease ID or organism code is invalid.
+        - Organism code options include: 'dre' (Danio rerio), 'dreM' (Mapped Danio rerio from Human), or 'hsa' (Human).
+        - Disease IDs must be entered as strings if the organism prefix is omitted.
+    """
+    result = False
+    disease_id = disease_id.strip()
+    orgs = ['dreM', 'dre', 'hsa']
+    if org in ['dreM', 'dre']:
+        df = pd.read_csv(dre_disease_genes_path, sep='\t')
+        result = True if disease_id in df['Disease ID'].values else False
+    elif org == 'hsa':
+        df = pd.read_csv(human_disease_genes_path, sep='\t')
+        result = True if disease_id in df['Disease ID'].values else False       
+    if error_message and not result:
+        print('The Disease ID you gave does not exist for the organism you specified.')
+        print('A Disease ID is identified by the prefix H and a 5 digit number.\n')
+        print('reminder - python does not support integers that start with a 0;')
+        print('           therefore, Dathway IDs must be entered as strings if')
+        print('           the prefix is omitted.')
     return result
 
 # DATABASE BUILDING FUNCTIONS

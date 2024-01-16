@@ -3,6 +3,32 @@
 
 .. py:module:: danrerlib.enrichplots
 
+.. autoapi-nested-parse::
+
+   Enrichment Plots Module
+   =======================
+
+   The Enrichment Plots module provides functions for visualizing results from gene enrichment analyses. These functions generate various types of plots, allowing users to gain insights into the enriched pathways or concepts.
+
+   Functions:
+       - ``bar_chart``: Generate a bar chart to visualize enrichment analysis results. The chart displays pathway names on the x-axis and -log10(p-value) on the y-axis.
+       
+       - ``volcano``: Create a volcano plot to visualize the relationship between odds ratio and -log10(p-value) for enriched pathways. The plot highlights significant upregulated and downregulated pathways.
+
+       - ``dotplot``: Generate a dot plot to visualize odds ratio, proportion of significant genes, and p-values for enriched pathways. The size of each dot represents the proportion of significant genes, and color indicates the p-value.
+
+   Example:
+       To generate a bar chart for enrichment analysis results:
+
+       ```python
+       bar_chart(data, title='Enrichment Analysis Results', xlab='Pathways')
+       ```
+
+       This example creates a bar chart displaying pathway names on the x-axis and -log10(p-value) on the y-axis.
+
+   For detailed information on each function's parameters and usage examples, refer to the documentation. Tutorials demonstrating the use of Enrichment Plots functions are also available.
+
+
 
 Module Contents
 ---------------
@@ -19,12 +45,67 @@ Functions
 
 
 
-.. py:function:: bar_chart(data, title, xlab, ylab='-log10(p-value)', label_font_size=16, max_num_pathways=None)
+.. py:function:: bar_chart(data: pandas.DataFrame, title: str, xlab: str, ylab: str = '-log10(p-value)', label_font_size: int = 16, max_num_pathways: int = None) -> None
+
+   Generate a bar chart from enrichment analysis results.
+
+   Parameters:
+     - `data (pd.DataFrame)`: DataFrame containing enrichment analysis results, including 'Concept Name' and 'P-value'.
+     - `title (str)`: Title of the bar chart.
+     - `xlab (str)`: Label for the x-axis.
+     - `ylab (str, optional)`: Label for the y-axis. Default is '-log10(p-value)'.
+     - `label_font_size (int, optional)`: Font size for axis labels and title. Default is 16.
+     - `max_num_pathways (Optional[int], optional)`: Maximum number of pathways to display. Default is None (display all).
+
+   Raises:
+     - `ValueError`: If required columns ('Concept Name', 'P-value') are missing in the input DataFrame.
+
+   Returns:
+     - None: Displays the bar chart.
+
+   Note:
+     - The function uses the '-log10(p-value)' for the y-axis.
 
 
-.. py:function:: volcano(data, significance_threshold=0.05, top_n=5, fig_height=9, fig_width=8, xmin=None, xmax=None, plot_all=True, legend_loc=None, output_filename=None)
+.. py:function:: volcano(data: pandas.DataFrame, significance_threshold: float = 0.05, top_n: int = 5, fig_height: int = 9, fig_width: int = 8, xmin: float = None, xmax: float = None, plot_all: bool = True, legend_loc: str = None, output_filename: str = None) -> None
+
+   Generate a volcano plot from enrichment analysis results.
+
+   Parameters:
+     - `data (pd.DataFrame)`: DataFrame containing enrichment analysis results, including 'Odds Ratio', 'P-value', and 'Concept Name'.
+     - `significance_threshold (float, optional)`: Threshold for considering a point as significant. Default is 0.05.
+     - `top_n (int, optional)`: Number of top pathways to label based on p-value. Default is 5.
+     - `fig_height (int, optional)`: Height of the figure. Default is 9.
+     - `fig_width (int, optional)`: Width of the figure. Default is 8.
+     - `xmin (float, optional)`: Minimum x-axis limit. Default is None (auto-calculated).
+     - `xmax (float, optional)`: Maximum x-axis limit. Default is None (auto-calculated).
+     - `plot_all (bool, optional)`: Whether to plot all points (including non-significant). Default is True.
+     - `legend_loc (str, optional)`: Location of the legend. Default is None (no legend).
+     - `output_filename (str, optional)`: Filepath to save the plot. Default is None (show the plot).
+
+   Returns:
+     - None: Displays the volcano plot.
+
+   Note:
+     - The function uses '-log10(P-value)' for the y-axis.
 
 
-.. py:function:: dotplot(data_in, num_to_plot, direction, output_filename=None)
+.. py:function:: dotplot(data_in: pandas.DataFrame, num_to_plot: int, direction: str, output_filename: str = None, title: str = None) -> None
+
+   Generate a dot plot for visualization of pathway enrichment results.
+
+   Parameters:
+     - `data_in (pd.DataFrame)`: DataFrame containing pathway enrichment results.
+     - `num_to_plot (int)`: Number of pathways to plot.
+     - `direction (str)`: Specifies the direction of pathways to be plotted ('up', 'down', or 'both').
+     - `output_filename (str, optional)`: Filepath to save the plot. Default is None (show the plot).
+     - `title (str, optional)`: Title of the plot. Default is None.
+
+   Returns:
+     - None: Displays the dot plot.
+
+   Note:
+     - The dot plot visualizes odds ratio, proportion of significant genes, and p-values for each pathway.
+     - For 'both' direction, the plot shows both upregulated and downregulated pathways.
 
 
