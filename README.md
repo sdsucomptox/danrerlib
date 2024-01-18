@@ -6,7 +6,7 @@ danRerLib, short for Danio rerio library, is a comprehensive toolkit designed in
 
 ## Documentation
 
-The documentation for the library is currently being hosted on [San Diego State University's Computational Toxicology Laboratory website](https://sdsucomptox.github.io/danrerlib/index.html). 
+The documentation for the library is currently being hosted on [San Diego State University's Computational Toxicology Laboratory website](https://sdsucomptox.github.io/danrerlib/index.html). The full GitHub repository is located [here](https://github.com/sdsucomptox/danrerlib).
 
 ### Installation
 
@@ -14,12 +14,12 @@ The package requires Python>3.9 and < 3.13; we recommend Python 3.9. Please see 
 
 Via pip:
 ~~~~
-pip install 
+pip install danrerlib
 ~~~~
 
 Via conda: 
 ~~~~
-conda install 
+conda install danrerlib
 ~~~~
 
 ### Examples
