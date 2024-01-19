@@ -3,3 +3,4 @@ tests/notes.txt
 tests/scratch.ipynb
 tutorials/
 dist/
+.pytest_cache/

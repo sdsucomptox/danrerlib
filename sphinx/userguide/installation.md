@@ -16,7 +16,7 @@ Please see respective package information if dependencies are not already instal
 If you use `conda`, you can install `danRerLib` as:
 
 ```
-conda install danrerlib
+conda install sdsu_comptox::danrerlib
 ```
 
 ### PyPi/pip

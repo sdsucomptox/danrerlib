@@ -19,7 +19,7 @@ pip install danrerlib
 
 Via conda: 
 ~~~~
-conda install danrerlib
+conda install sdsu_comptox::danrerlib
 ~~~~
 
 ### Examples

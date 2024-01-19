@@ -1,0 +1,21 @@
+package:
+  name: danrerlib
+  version: 0.1.1
+
+source:
+  path: ..
+
+build:
+  number: 0
+  noarch: python
+
+requirements:
+  build:
+    - python
+  run:
+    - python
+    - python
+    - numpy
+    - pandas
+    - pathlib
+    - matplotlib
