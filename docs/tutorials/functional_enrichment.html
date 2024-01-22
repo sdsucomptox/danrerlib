@@ -17,12 +17,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -137,11 +136,11 @@
            <div itemprop="articleBody">
              
   <section class="tex2jax_ignore mathjax_ignore" id="functional-enrichment-analysis">
-<h1>Functional Enrichment Analysis<a class="headerlink" href="#functional-enrichment-analysis" title="Permalink to this heading"></a></h1>
+<h1>Functional Enrichment Analysis<a class="headerlink" href="#functional-enrichment-analysis" title="Link to this heading"></a></h1>
 <p>Author: Ashley Schwartz</p>
 <p>Date: October 2023</p>
 <section id="purpose-and-background">
-<h2>Purpose and Background<a class="headerlink" href="#purpose-and-background" title="Permalink to this heading"></a></h2>
+<h2>Purpose and Background<a class="headerlink" href="#purpose-and-background" title="Link to this heading"></a></h2>
 <p>This tutorial goes over how to retrieve the genes in a particular pathway from the Kyoto Encyclopedia of Genes and Genomes (KEGG), retrieve the genes in a particular function from Gene Ontology (GO), and perform gene enrichment analysis on these gene sets using a variety of different methods.</p>
 <p><strong>Databases Supported</strong></p>
 <table class="docutils align-default">
@@ -269,7 +268,7 @@
 </table>
 </section>
 <section id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
 <p>In this tutorial we will be utilizing:</p>
 <ul class="simple">
 <li><p>the required python package</p>
@@ -292,10 +291,10 @@
 </div>
 </section>
 <section id="download-gene-sets">
-<h2>Download Gene Sets<a class="headerlink" href="#download-gene-sets" title="Permalink to this heading"></a></h2>
+<h2>Download Gene Sets<a class="headerlink" href="#download-gene-sets" title="Link to this heading"></a></h2>
 <p>If you are interested in identifying the genes within a gene set, you can download genes for a given KEGG pathway id, KEGG disease id, or GO id (BP, CC, or MF). A key benefit and advantage to <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> is we can also generate the gene list for a pathway that might not exist for zebrafish, but does exist for human. We can then map the genes to zebrafish genes if desired.</p>
 <section id="kegg-pathway">
-<h3>KEGG Pathway<a class="headerlink" href="#kegg-pathway" title="Permalink to this heading"></a></h3>
+<h3>KEGG Pathway<a class="headerlink" href="#kegg-pathway" title="Link to this heading"></a></h3>
 <p><em>Purpose: Given a KEGG pathway id, retrieve a list of all genes in said pathway.</em></p>
 <p>As a reminder, <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> supports three organism types (see background for more information): hsa, dre, and dreM. Of course, you are likely most interested in the zebrafish genes, but human genes are also provided for comparisons. Lets look at the KEGG pathway <code class="docutils literal notranslate"><span class="pre">00400</span></code> which is defined as phenylalanine, tyrosine and tryptophan biosynthesis. This pathway exists for human <code class="docutils literal notranslate"><span class="pre">hsa00400</span></code> and zebrafish <code class="docutils literal notranslate"><span class="pre">dre00400</span></code>. Here are a few examples of gathering the genes in this pathway for different organisms:</p>
 <div class="cell docutils container">
@@ -541,7 +540,7 @@
 </div>
 </section>
 <section id="kegg-disease">
-<h3>KEGG Disease<a class="headerlink" href="#kegg-disease" title="Permalink to this heading"></a></h3>
+<h3>KEGG Disease<a class="headerlink" href="#kegg-disease" title="Link to this heading"></a></h3>
 <p><em>Purpose: Given a KEGG disease id, retrieve a list of all genes in said disease.</em></p>
 <p>We can also get the list of genes for a particular disease listed in the KEGG database. This function takes the disease id and the organism. Not that the zebrafish organism in this case comes from mapped values as the disease gene lists are not annotated for zebrafish within the KEGG database.</p>
 <div class="cell docutils container">
@@ -699,7 +698,7 @@
 <p>It is expected, as described in the mapping tutorial, that the number of genes in the human gene set may not always be equal to the number of genes in the zebrafish set. This is because there is not always a 1:1 mapping in orthology between human ans zebrafish taxonomy.</p>
 </section>
 <section id="gene-ontology">
-<h3>Gene Ontology<a class="headerlink" href="#gene-ontology" title="Permalink to this heading"></a></h3>
+<h3>Gene Ontology<a class="headerlink" href="#gene-ontology" title="Link to this heading"></a></h3>
 <p><em>Purpose: Given a Go concept id, retrieve a list of all genes in said GO concept.</em></p>
 <p><code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> supports Gene Ontology Biological Processes (BP), Cellular Components (CC), and Molecular Functions (MF). There is one primary function for the GO module that will retrieve the genes in any given concept, regardless if it comes from BP, CC, or MF. This can be done for either organism (hsa, dre, or dreM). Retrieval of the GO id <code class="docutils literal notranslate"><span class="pre">GO:0033554</span></code>, cellular response to stress, is shown below for the zebrafish.</p>
 <div class="cell docutils container">
@@ -787,10 +786,10 @@
 </section>
 </section>
 <section id="conduct-functional-enrichment-analysis">
-<h2>Conduct Functional Enrichment Analysis<a class="headerlink" href="#conduct-functional-enrichment-analysis" title="Permalink to this heading"></a></h2>
+<h2>Conduct Functional Enrichment Analysis<a class="headerlink" href="#conduct-functional-enrichment-analysis" title="Link to this heading"></a></h2>
 <p>Functional enrichment analysis is a powerful method for uncovering biological insights from a set of genes. Whether you have a specific gene set of interest or an entire dataset, you are able to perform functional enrichment analysis on pathways from KEGG and Gene Ontology. In this section, we’ll explore different scenarios, from analyzing a small gene set to conducting enrichment analysis on a larger scale using the danRerLib package.</p>
 <section id="enrichment-module-overview">
-<h3>Enrichment Module Overview<a class="headerlink" href="#enrichment-module-overview" title="Permalink to this heading"></a></h3>
+<h3>Enrichment Module Overview<a class="headerlink" href="#enrichment-module-overview" title="Link to this heading"></a></h3>
 <p><strong>Import Enrichment Module</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -901,11 +900,11 @@
 </table>
 </section>
 <section id="functional-enrichment-with-fisher-s-exact-test">
-<h3>Functional Enrichment with Fisher’s Exact Test<a class="headerlink" href="#functional-enrichment-with-fisher-s-exact-test" title="Permalink to this heading"></a></h3>
+<h3>Functional Enrichment with Fisher’s Exact Test<a class="headerlink" href="#functional-enrichment-with-fisher-s-exact-test" title="Link to this heading"></a></h3>
 <p><em>Purpose: Conduct functional enrichment analysis using Fisher’s Exact Test to identify overrepresented pathways associated with a set of genes.</em></p>
 <p>This method is ideal for scenarios where you have a gene set of interest and want to explore the significant enrichment of pathways from databases like KEGG and Gene Ontology. The Fisher’s Exact Test helps reveal statistically significant relationships between the gene set and specific pathways.</p>
 <section id="overview-of-fisher-s-exact-test-for-overrepresentation">
-<h4>Overview of Fisher’s Exact Test for Overrepresentation<a class="headerlink" href="#overview-of-fisher-s-exact-test-for-overrepresentation" title="Permalink to this heading"></a></h4>
+<h4>Overview of Fisher’s Exact Test for Overrepresentation<a class="headerlink" href="#overview-of-fisher-s-exact-test-for-overrepresentation" title="Link to this heading"></a></h4>
 <p><strong>Contingency Table:</strong></p>
 <p>Consider a scenario where we are assessing the enrichment of a specific KEGG Pathway (let’s call it “Pathway A”) in a set of differentially expressed genes. The contingency table could look like this:</p>
 <div class="math notranslate nohighlight">
@@ -946,7 +945,7 @@
 </ol>
 </section>
 <section id="primary-function-and-unique-parameters">
-<h4>Primary Function and Unique Parameters<a class="headerlink" href="#primary-function-and-unique-parameters" title="Permalink to this heading"></a></h4>
+<h4>Primary Function and Unique Parameters<a class="headerlink" href="#primary-function-and-unique-parameters" title="Link to this heading"></a></h4>
 <p>The primary function is <code class="docutils literal notranslate"><span class="pre">enrich_fishers</span></code> with all the required and advanced parameters discussed above in addition to one unique parameter, <code class="docutils literal notranslate"><span class="pre">direction</span></code>.</p>
 <table class="docutils align-default">
 <thead>
@@ -964,7 +963,7 @@
 </table>
 </section>
 <section id="conduct-fishers-exact-test-for-enrichment-analysis-enriched-depleted">
-<h4>Conduct Fishers Exact Test for Enrichment Analysis (enriched/depleted)<a class="headerlink" href="#conduct-fishers-exact-test-for-enrichment-analysis-enriched-depleted" title="Permalink to this heading"></a></h4>
+<h4>Conduct Fishers Exact Test for Enrichment Analysis (enriched/depleted)<a class="headerlink" href="#conduct-fishers-exact-test-for-enrichment-analysis-enriched-depleted" title="Link to this heading"></a></h4>
 <p><strong>Step 1:</strong> Loading Data. Data should be loaded into a Pandas Dataframe with the structure as describes above. This is defined as your <code class="docutils literal notranslate"><span class="pre">gene_universe_tpp</span></code> as is contains all genes detected in your study.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1183,7 +1182,7 @@
 <p>For example, the Pentose phosphate pathway is significantly enriched in the set of genes that are differentially expressed in zebrafish exposed to TPP. The odds ratio of 4.87 and a very low p-value (0.000041) suggest a strong association between the pathway and the significant genes. The term “enriched” indicates that there is an overrepresentation of significant genes in this pathway compared to what would be expected by chance.</p>
 </section>
 <section id="testing-for-upregulated-pathways">
-<h4>Testing for Upregulated Pathways<a class="headerlink" href="#testing-for-upregulated-pathways" title="Permalink to this heading"></a></h4>
+<h4>Testing for Upregulated Pathways<a class="headerlink" href="#testing-for-upregulated-pathways" title="Link to this heading"></a></h4>
 <p><strong>Contingency Table for Upregulated Genes:</strong></p>
 <p>Assume we are interested in assessing whether a KEGG Pathway (let’s call it “Pathway A”) is enriched with <em>upregulated genes</em>. The contingency table for this scenario would be:</p>
 <div class="math notranslate nohighlight">
@@ -1352,7 +1351,7 @@
 </div>
 </section>
 <section id="testing-for-downregulated-pathways">
-<h4>Testing for Downregulated Pathways<a class="headerlink" href="#testing-for-downregulated-pathways" title="Permalink to this heading"></a></h4>
+<h4>Testing for Downregulated Pathways<a class="headerlink" href="#testing-for-downregulated-pathways" title="Link to this heading"></a></h4>
 <p><strong>Contingency Table for Downregulated Genes:</strong></p>
 <p>Assume we are interested in assessing whether a KEGG Pathway (let’s call it “Pathway A”) is enriched with <em>downregulated genes</em>. The contingency table for this scenario would be:</p>
 <div class="math notranslate nohighlight">
@@ -1409,7 +1408,7 @@
 </div>
 </section>
 <section id="advanced-options">
-<h4>Advanced Options<a class="headerlink" href="#advanced-options" title="Permalink to this heading"></a></h4>
+<h4>Advanced Options<a class="headerlink" href="#advanced-options" title="Link to this heading"></a></h4>
 <p>The Fisher’s Exact Method, as described in the overview, is greatly dependent on the significance threshold. The definition of a gene that is condisered to be significant can depend on a variety of different factors related to your study. A common significane threshold for determining if a gene is considered to be significantly differentially expressed is a combination of both the adjusted p-value (0.05) and the log2FC (|log2FC|&gt;1). If you would like to incorpoorate this into the analysis, you can!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1437,11 +1436,11 @@
 </section>
 </section>
 <section id="functional-enrichment-with-logistic-regression">
-<h3>Functional Enrichment with Logistic Regression<a class="headerlink" href="#functional-enrichment-with-logistic-regression" title="Permalink to this heading"></a></h3>
+<h3>Functional Enrichment with Logistic Regression<a class="headerlink" href="#functional-enrichment-with-logistic-regression" title="Link to this heading"></a></h3>
 <p><em>Purpose: Conduct functional enrichment analysis using logistic regression to identify overrepresented pathways associated with a set of genes.</em></p>
 <p>This method is ideal for scenarios where you have a gene set of interest and want to explore the significant enrichment of pathways from databases like KEGG and Gene Ontology. Logistic Regression helps reveal statistically significant relationships between the gene set and specific pathways. The logistic regression method is known to have better statistical power than fishers exact test (<em>Sartor et. al., 2009.</em>)</p>
 <section id="overview-of-logistic-regression-for-enrichment-analysis">
-<h4>Overview of Logistic Regression for Enrichment Analysis<a class="headerlink" href="#overview-of-logistic-regression-for-enrichment-analysis" title="Permalink to this heading"></a></h4>
+<h4>Overview of Logistic Regression for Enrichment Analysis<a class="headerlink" href="#overview-of-logistic-regression-for-enrichment-analysis" title="Link to this heading"></a></h4>
 <p><strong>Logistic Regression Model:</strong></p>
 <p>The logistic regression method for gene set enrichment analysis involves modeling the log-odds of a gene belonging to a specific category (gene set) as a linear function of the statistical significance (measured by -log(P-values)).</p>
 <p><strong>Statistical Formulas:</strong></p>
@@ -1485,7 +1484,7 @@
 <p>This method aims to identify enriched or depleted gene sets based on the statistical significance of their association with differential expression. The odds ratio and P-value provide insights into the strength and significance of this association.</p>
 </section>
 <section id="id1">
-<h4>Primary Function and Unique Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h4>
+<h4>Primary Function and Unique Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
 <p>The primary function is <code class="docutils literal notranslate"><span class="pre">enrich_logistic</span></code> with all the required and advanced parameters discussed above in addition to one unique parameter, <code class="docutils literal notranslate"><span class="pre">directional_test</span></code>.</p>
 <table class="docutils align-default">
 <thead>
@@ -1503,7 +1502,7 @@
 </table>
 </section>
 <section id="logistic-regression-for-the-identification-of-up-and-down-regulated-pathways">
-<h4>Logistic Regression for the Identification of Up and Down Regulated Pathways<a class="headerlink" href="#logistic-regression-for-the-identification-of-up-and-down-regulated-pathways" title="Permalink to this heading"></a></h4>
+<h4>Logistic Regression for the Identification of Up and Down Regulated Pathways<a class="headerlink" href="#logistic-regression-for-the-identification-of-up-and-down-regulated-pathways" title="Link to this heading"></a></h4>
 <p>This is the recommended method for analyzing your gene expression data.</p>
 <p><strong>Step 1:</strong> Loading Data. Data should be loaded into a Pandas Dataframe with the structure as describes above. This is defined as your <code class="docutils literal notranslate"><span class="pre">gene_universe_tpp</span></code> as is contains all genes detected in your study.</p>
 <div class="cell docutils container">
@@ -1736,7 +1735,7 @@
 </div>
 </section>
 <section id="conduct-logistic-regression-for-enrichment-analysis-enriched-depleted">
-<h4>Conduct Logistic Regression for Enrichment Analysis (enriched/depleted)<a class="headerlink" href="#conduct-logistic-regression-for-enrichment-analysis-enriched-depleted" title="Permalink to this heading"></a></h4>
+<h4>Conduct Logistic Regression for Enrichment Analysis (enriched/depleted)<a class="headerlink" href="#conduct-logistic-regression-for-enrichment-analysis-enriched-depleted" title="Link to this heading"></a></h4>
 <p><strong>Step 1:</strong> Loading Data. Data should be loaded into a Pandas Dataframe with the structure as describes above. This is defined as your <code class="docutils literal notranslate"><span class="pre">gene_universe_tpp</span></code> as is contains all genes detected in your study.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1890,12 +1889,12 @@
 </section>
 </section>
 <section id="functional-enrichment-via-orthology">
-<h3>Functional Enrichment via Orthology<a class="headerlink" href="#functional-enrichment-via-orthology" title="Permalink to this heading"></a></h3>
+<h3>Functional Enrichment via Orthology<a class="headerlink" href="#functional-enrichment-via-orthology" title="Link to this heading"></a></h3>
 <p><em>Purpose: Conduct functional enrichment analysis via orthology to identify overrepresented pathways in zebrafish associated with a set of genes that have been originally annotated for human.</em></p>
 <p>This method is ideal for scenarios where you want to leverage existing knowledge from the well-annotated species, humans, and apply it to the less-studied organism, zebrafish. Orthology-based functional enrichment allows you to transfer annotations and pathway information from humamns, where extensive functional genomics studies have been conducted, to the target species of zebrafish. In the context of zebrafish, which may have fewer experimentally validated annotations, leveraging orthologous relationships helps bridge the gap in functional understanding.</p>
 <p>In <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code>, the organism <code class="docutils literal notranslate"><span class="pre">dreM</span></code> stands for <em>Danio rerio</em> mapped, meaning the zebrafish genome has been mapped to human via orthology. Therefore, we can conduct the same steps as shown above but choose the <code class="docutils literal notranslate"><span class="pre">dreM</span></code> organism to conduct functional enrichment via orthology.</p>
 <section id="conduct-logistic-regression-for-enrichment-analysis">
-<h4>Conduct Logistic Regression for Enrichment Analysis<a class="headerlink" href="#conduct-logistic-regression-for-enrichment-analysis" title="Permalink to this heading"></a></h4>
+<h4>Conduct Logistic Regression for Enrichment Analysis<a class="headerlink" href="#conduct-logistic-regression-for-enrichment-analysis" title="Link to this heading"></a></h4>
 <p><strong>Step 1:</strong> Loading Data. Data should be loaded into a Pandas Dataframe with the structure as describes above. This is defined as your <code class="docutils literal notranslate"><span class="pre">gene_universe_tpp</span></code> as is contains all genes detected in your study.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2088,14 +2087,14 @@ Total Number hsa: 355
 </section>
 </section>
 <section id="glossary">
-<h2>Glossary<a class="headerlink" href="#glossary" title="Permalink to this heading"></a></h2>
+<h2>Glossary<a class="headerlink" href="#glossary" title="Link to this heading"></a></h2>
 <p><em>Enriched Pathway</em>: An enriched pathway refers to a biological pathway that contains a statistically significant number of genes that show altered expression under a particular experimental condition, irregardless of the gene being up or down regulated. For example, if you perform gene expression analysis comparing two conditions (e.g., control vs. treatment) and find that a specific biological pathway has a higher-than-expected number of genes with altered expression, you would say that pathway is enriched.</p>
 <p><em>Depleted Pathway</em>: A depleted pathway is the opposite of an enriched pathway. It refers to a biological pathway that contains a statistically significant number of genes with lower expression than expected under the given experimental condition, irregardless of the gene being up or down regulated. For example, if a biological pathway shows a lower-than-expected number of genes with altered expression in your analysis, that pathway is considered depleted.</p>
 <p><em>Upregulated Pathway</em>: An upregulated pathway refers to a biological pathway where the majority of genes have increased expression levels under a specific experimental condition. For example, if you find that most genes in a particular pathway have higher expression levels in the treatment group compared to the control group, that pathway is considered upregulated.</p>
 <p><em>Downregulated Pathway</em>: A downregulated pathway is the opposite of an upregulated pathway. It indicates a biological pathway where the majority of genes have decreased expression levels under the experimental condition being studied. For example, if most genes in a pathway exhibit lower expression levels in the treatment group compared to the control group, that pathway is considered downregulated.</p>
 </section>
 <section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
 <p>This concludes the functional enrichment tutorial! In summary, the key functions in this library for enrichment are:</p>
 <table class="docutils align-default">
 <thead>
@@ -2114,7 +2113,7 @@ Total Number hsa: 355
 </table>
 <p>For more information about the full functionality of each function, please refer to the API Reference.</p>
 <section id="references">
-<h3>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h3>
+<h3>References<a class="headerlink" href="#references" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Sartor, M. A., Leikauf, G. D., &amp; Medvedovic, M. (2009). LRpath: a logistic regression approach for identifying enriched biological groups in gene expression data. Bioinformatics (Oxford, England), 25(2), 211–217.</p></li>
 </ul>

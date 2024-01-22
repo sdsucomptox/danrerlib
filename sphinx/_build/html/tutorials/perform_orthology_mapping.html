@@ -17,12 +17,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -122,11 +121,11 @@
            <div itemprop="articleBody">
              
   <section class="tex2jax_ignore mathjax_ignore" id="orthology-mapping">
-<h1>Orthology Mapping<a class="headerlink" href="#orthology-mapping" title="Permalink to this heading"></a></h1>
+<h1>Orthology Mapping<a class="headerlink" href="#orthology-mapping" title="Link to this heading"></a></h1>
 <p>Author: Ashley Schwartz</p>
 <p>Date: September 2023</p>
 <section id="purpose-and-background">
-<h2>Purpose and Background<a class="headerlink" href="#purpose-and-background" title="Permalink to this heading"></a></h2>
+<h2>Purpose and Background<a class="headerlink" href="#purpose-and-background" title="Link to this heading"></a></h2>
 <p>This tutorial goes over how to get the zebrafish or human gene orthologs from one organism to another. Gene orthology is useful when you want to determine which genes in zebrafish map to genes in the human genome and vice versa. As this is a zebrafish library, there are four different Gene ID options available. Human Gene IDs are only reported as NCBI Entrez Gene IDs. The Gene ID options are:</p>
 <table class="docutils align-default">
 <thead>
@@ -145,7 +144,7 @@
 <tr class="row-odd"><td><p>NCBI Gene ID</p></td>
 <td><p>integer gene id managed by NCBI: also known as Entrez Gene ID</p></td>
 <td><p>140634</p></td>
-<td><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/gene?Db=gene&amp;Cmd=DetailsSearch&amp;Term=140634">link</a></p></td>
+<td><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/gene?Db=gene&amp;amp;Cmd=DetailsSearch&amp;amp;Term=140634">link</a></p></td>
 </tr>
 <tr class="row-even"><td><p>Symbol</p></td>
 <td><p>descriptive symbol/name: RefSeq symbol used in RefSeq genome build</p></td>
@@ -166,7 +165,7 @@
 </table>
 </section>
 <section id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
 <p>In this tutorial we will be utilizing two key elements:</p>
 <ul class="simple">
 <li><p>a sample Gene ID list (format: .csv, .tsv, .txt) for reading in the Gene IDs, otherwise typing or copy/pasting Gene IDs is also supported. The Gene ID list can either be zebrafish Gene IDs in any of the supported formats or human Gene IDs in NCI Entrez format.</p>
@@ -195,14 +194,14 @@
 </div>
 </section>
 <section id="execute-orthology-mappings">
-<h2>Execute Orthology Mappings<a class="headerlink" href="#execute-orthology-mappings" title="Permalink to this heading"></a></h2>
+<h2>Execute Orthology Mappings<a class="headerlink" href="#execute-orthology-mappings" title="Link to this heading"></a></h2>
 <p>Gathering human and zebrafish orthology are especially useful when a mechanism has been characterized in humans but has yet to be looked at in zebrafish. We know that approximately 70% of human genes have zebrafish orthologs, meaning 70% of human genes also exist in zebrafish. We can use this to our advantage in various research scenarios. In some cases, you might just be interested in gathering the orthologs from a few genes. In other scenarios, you might want to get the orthology for a large list of genes. We will go through a variety of those scenarios here.</p>
 <section id="simple-case-get-orthologs">
-<h3>Simple Case: Get orthologs<a class="headerlink" href="#simple-case-get-orthologs" title="Permalink to this heading"></a></h3>
+<h3>Simple Case: Get orthologs<a class="headerlink" href="#simple-case-get-orthologs" title="Link to this heading"></a></h3>
 <p><em>Purpose: given a small list Gene IDs that are of type A in organism x, convert to Gene ID type A in organism B.</em></p>
 <p>The simple case is useful for a quick ortholog investigation if you have a small list you can easily paste.</p>
 <section id="zebrafish-to-human">
-<h4>Zebrafish to Human<a class="headerlink" href="#zebrafish-to-human" title="Permalink to this heading"></a></h4>
+<h4>Zebrafish to Human<a class="headerlink" href="#zebrafish-to-human" title="Link to this heading"></a></h4>
 <p><strong>Step 1</strong>: Define your list of Gene IDs. In this case, you would have a list of Gene IDs in any of the supported zebrafish formats. I named the python list <code class="docutils literal notranslate"><span class="pre">list_of_zfish_ids</span></code> and included all the Gene IDs I want to find human orthologs for. I chose to use ZFIN IDs here, but any of the supported zebrafish Gene ID types will suffice.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -260,7 +259,7 @@
 </div>
 </section>
 <section id="human-to-zebrafish">
-<h4>Human to Zebrafish<a class="headerlink" href="#human-to-zebrafish" title="Permalink to this heading"></a></h4>
+<h4>Human to Zebrafish<a class="headerlink" href="#human-to-zebrafish" title="Link to this heading"></a></h4>
 <p>To convert from human Gene IDs to zebrafish, you follow the same steps except we will use the <code class="docutils literal notranslate"><span class="pre">convert_to_zebrafish</span></code> function in the `mapping module.</p>
 <p><strong>Step 1:</strong> Define your list of Gene IDs. Reminder again that the only supported human Gene ID type is currently NCBI Gene ID. These are also known as Entrez Gene IDs and are of integer format. My list of Gene IDs is names <code class="docutils literal notranslate"><span class="pre">list_of_human_ids</span></code>.</p>
 <div class="cell docutils container">
@@ -314,10 +313,10 @@ tmprss7
 </section>
 </section>
 <section id="simple-case-get-orthologs-and-keep-mapping">
-<h3>Simple Case: Get Orthologs and Keep Mapping<a class="headerlink" href="#simple-case-get-orthologs-and-keep-mapping" title="Permalink to this heading"></a></h3>
+<h3>Simple Case: Get Orthologs and Keep Mapping<a class="headerlink" href="#simple-case-get-orthologs-and-keep-mapping" title="Link to this heading"></a></h3>
 <p><em>Purpose: given a small list Gene IDs that are of type A in organism x, convert to Gene ID type A in organism B and keep mapping.</em></p>
 <section id="id1">
-<h4>Zebrafish to Human<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h4>
+<h4>Zebrafish to Human<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
 <p><strong>Step 1</strong>: Define your list of Gene IDs. In this case, you would have a list of Gene IDs in any of the supported zebrafish formats. I am using the same <code class="docutils literal notranslate"><span class="pre">list_of_zfish_ids</span></code> as before.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -569,7 +568,7 @@ tmprss7
 </div>
 </section>
 <section id="id2">
-<h4>Human to Zebrafish<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h4>
+<h4>Human to Zebrafish<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
 <p>The steps for human to zebrafish are nearly the same. The repeated steps are shown below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -611,8 +610,8 @@ tmprss7
   <tbody>
     <tr>
       <th>0</th>
-      <td>55585</td>
-      <td>ube2q1</td>
+      <td>4192</td>
+      <td>mdkb</td>
     </tr>
     <tr>
       <th>1</th>
@@ -621,23 +620,23 @@ tmprss7
     </tr>
     <tr>
       <th>2</th>
-      <td>4192</td>
-      <td>mdkb</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4192</td>
-      <td>mdka</td>
-    </tr>
-    <tr>
-      <th>4</th>
       <td>5686</td>
       <td>psma5</td>
     </tr>
     <tr>
-      <th>5</th>
+      <th>3</th>
       <td>197021</td>
       <td>lctla</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>390</td>
+      <td>rnd3b</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>55585</td>
+      <td>ube2q1</td>
     </tr>
     <tr>
       <th>6</th>
@@ -646,8 +645,8 @@ tmprss7
     </tr>
     <tr>
       <th>7</th>
-      <td>390</td>
-      <td>rnd3b</td>
+      <td>2623</td>
+      <td>gata1b</td>
     </tr>
     <tr>
       <th>8</th>
@@ -657,12 +656,12 @@ tmprss7
     <tr>
       <th>9</th>
       <td>2623</td>
-      <td>gata1b</td>
+      <td>gata1a</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>2623</td>
-      <td>gata1a</td>
+      <td>4192</td>
+      <td>mdka</td>
     </tr>
   </tbody>
 </table>
@@ -672,10 +671,10 @@ tmprss7
 </section>
 </section>
 <section id="get-orthologs-for-genes-from-file">
-<h3>Get Orthologs for Genes from File<a class="headerlink" href="#get-orthologs-for-genes-from-file" title="Permalink to this heading"></a></h3>
+<h3>Get Orthologs for Genes from File<a class="headerlink" href="#get-orthologs-for-genes-from-file" title="Link to this heading"></a></h3>
 <p><em>Purpose: given a list of Gene IDs from a file that are of type A in organism x, convert to Gene ID type A in organism B and save to file.</em></p>
 <section id="id3">
-<h4>Zebrafish to Human<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h4>
+<h4>Zebrafish to Human<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
 <p><strong>Step 1</strong>: Read in your list of Gene IDs.  The data in the <code class="docutils literal notranslate"><span class="pre">test_data</span></code> sub-directory is in a <code class="docutils literal notranslate"><span class="pre">tsv</span></code> type format with a <code class="docutils literal notranslate"><span class="pre">.txt</span></code> extension. The <code class="docutils literal notranslate"><span class="pre">pandas</span></code> package can read this without an issue (same with <code class="docutils literal notranslate"><span class="pre">excel</span></code> or a <code class="docutils literal notranslate"><span class="pre">csv</span></code> file), we just need to specify the separator. <code class="docutils literal notranslate"><span class="pre">\t</span></code> is really the best for this type of data. Note that any excel file or csv file should work here. I am using a file named <code class="docutils literal notranslate"><span class="pre">dre04910.txt</span></code> which is a list of zebrafish genes in the KEGG pathway <code class="docutils literal notranslate"><span class="pre">04910</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -744,7 +743,7 @@ tmprss7
 </div>
 </section>
 <section id="id4">
-<h4>Human to Zebrafish<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h4>
+<h4>Human to Zebrafish<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
 <p>Below is a quick run-though of the human to zebrafish case. The dataset used is a file named <code class="docutils literal notranslate"><span class="pre">hsa04911.txt</span></code> which contains all human genes in the KEGG pathway 04911.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -803,7 +802,7 @@ Name: NCBI Gene ID, dtype: object
 </section>
 </section>
 <section id="get-orthologs-for-a-column-of-a-larger-dataset">
-<h3>Get Orthologs for a Column of a Larger Dataset<a class="headerlink" href="#get-orthologs-for-a-column-of-a-larger-dataset" title="Permalink to this heading"></a></h3>
+<h3>Get Orthologs for a Column of a Larger Dataset<a class="headerlink" href="#get-orthologs-for-a-column-of-a-larger-dataset" title="Link to this heading"></a></h3>
 <p><em>Purpose: you have a dataset with columns x, y, z. Column x has Gene IDs in from organism <span class="math notranslate nohighlight">\(\alpha\)</span> in type A. You would like to get orthologs for these Gene IDs to organism <span class="math notranslate nohighlight">\(\beta\)</span> in type B while maintaining the information of columns y, z.</em></p>
 <p>In this scenario, you might have some data that looks like:</p>
 <table class="docutils align-default">
@@ -997,7 +996,7 @@ Name: NCBI Gene ID, dtype: object
 </section>
 </section>
 <section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
 <p>This concludes the mapping tutorial! In summary, the key functions in this library for mapping are:</p>
 <table class="docutils align-default">
 <thead>

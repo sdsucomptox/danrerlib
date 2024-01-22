@@ -1,11 +1,12 @@
 # Installation
 
-`danRerLib` was built with some dependencies. Therefore, to install `danRerLib`, you will need a proper version of Python and the required dependencies. The current dependencies are:
+`danRerLib` was built with some dependencies. Therefore, to install `danRerLib`, you will need a proper version of Python and the required dependencies. If you do not have these dependencies upon install, installing `danRerLib` will take care of it for you. The current dependencies are:
 
 - python >=3.9,<3.13
 - numpy 1.26.0
 - pandas 2.1.1
 - matplotlib 3.8.2
+- statsmodels 0.14.1
 
 Please see respective package information if dependencies are not already installed.
 
@@ -40,7 +41,7 @@ It is recommended to use a python virtual environment or conda environment to ma
 On all of Windows, macOS, and Linux:
 
 - Install Anaconda (it installs all packages you need and all other tools mentioned below).
-- Utilize the Anaconda App to manage environments and package downloads
+- Utilize the Anaconda App to manage environments and package downloads.
 
 ### Advanced users (recommended method)
 
@@ -50,13 +51,10 @@ On all of Windows, macOS, and Linux:
 
 ```
 # Best practice, use an environment rather than install in the base env
-conda create -n my-env
+conda create -n my-env python=3.10
 conda activate my-env
-# install dependencies
-conda install numpy
-conda install pandas
 # install library
-conda install danrerlib
+conda install sdsu_comptox::danrerlib
 ```
 
 **pip**
@@ -70,7 +68,5 @@ mkdir src
 # Activate virtual environment and install
 cd bin
 source activate
-pip install numpy
-pip install pandas
 pip install danrerlib
 ```

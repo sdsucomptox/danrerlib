@@ -17,12 +17,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -109,61 +108,59 @@
            <div itemprop="articleBody">
              
   <section class="tex2jax_ignore mathjax_ignore" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
-<p><code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> was built with some dependencies. Therefore, to install <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code>, you will need a proper version of Python and the required dependencies. The current dependencies are:</p>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> was built with some dependencies. Therefore, to install <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code>, you will need a proper version of Python and the required dependencies. If you do not have these dependencies upon install, installing <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> will take care of it for you. The current dependencies are:</p>
 <ul class="simple">
 <li><p>python &gt;=3.9,&lt;3.13</p></li>
 <li><p>numpy 1.26.0</p></li>
 <li><p>pandas 2.1.1</p></li>
 <li><p>matplotlib 3.8.2</p></li>
+<li><p>statsmodels 0.14.1</p></li>
 </ul>
 <p>Please see respective package information if dependencies are not already installed.</p>
 <section id="quick-install">
-<h2>Quick Install<a class="headerlink" href="#quick-install" title="Permalink to this heading"></a></h2>
+<h2>Quick Install<a class="headerlink" href="#quick-install" title="Link to this heading"></a></h2>
 <section id="conda">
-<h3>Conda<a class="headerlink" href="#conda" title="Permalink to this heading"></a></h3>
+<h3>Conda<a class="headerlink" href="#conda" title="Link to this heading"></a></h3>
 <p>If you use <code class="docutils literal notranslate"><span class="pre">conda</span></code>, you can install <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> as:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">danrerlib</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">sdsu_comptox</span><span class="p">::</span><span class="n">danrerlib</span>
 </pre></div>
 </div>
 </section>
 <section id="pypi-pip">
-<h3>PyPi/pip<a class="headerlink" href="#pypi-pip" title="Permalink to this heading"></a></h3>
+<h3>PyPi/pip<a class="headerlink" href="#pypi-pip" title="Link to this heading"></a></h3>
 <p>If you use <code class="docutils literal notranslate"><span class="pre">pip</span></code>, you can install <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> with:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">danrerlib</span>
 </pre></div>
 </div>
 </section>
 <section id="development-version">
-<h3>Development Version<a class="headerlink" href="#development-version" title="Permalink to this heading"></a></h3>
-<p>If you would like to make changes to the library, either for your own purposes or to contribute, you should install the development version of this package. Please see the <a class="reference internal" href="../devguide/contributing.html"><span class="doc std std-doc">Contributing Guidelines</span></a> in the Developer’s Guide to follow the recommended steps.</p>
+<h3>Development Version<a class="headerlink" href="#development-version" title="Link to this heading"></a></h3>
+<p>If you would like to make changes to the library, either for your own purposes or to contribute, you should install the development version of this package. Please see the <a class="reference internal" href="../devguide/contributing.html"><span class="std std-doc">Contributing Guidelines</span></a> in the Developer’s Guide to follow the recommended steps.</p>
 </section>
 </section>
 <section id="installation-guide">
-<h2>Installation Guide<a class="headerlink" href="#installation-guide" title="Permalink to this heading"></a></h2>
+<h2>Installation Guide<a class="headerlink" href="#installation-guide" title="Link to this heading"></a></h2>
 <p>It is recommended to use a python virtual environment or conda environment to manage all python packages and projects. If you are a new Python user, installing and managing Python packages can be complicated. We recommend using a package management software such as <a class="reference external" href="https://www.anaconda.com/">Anaconda</a>. We refer the user elsewhere to make further installation decisions about Python packages in general.</p>
 <section id="beginning-users">
-<h3>Beginning users<a class="headerlink" href="#beginning-users" title="Permalink to this heading"></a></h3>
+<h3>Beginning users<a class="headerlink" href="#beginning-users" title="Link to this heading"></a></h3>
 <p>On all of Windows, macOS, and Linux:</p>
 <ul class="simple">
 <li><p>Install Anaconda (it installs all packages you need and all other tools mentioned below).</p></li>
-<li><p>Utilize the Anaconda App to manage environments and package downloads</p></li>
+<li><p>Utilize the Anaconda App to manage environments and package downloads.</p></li>
 </ul>
 </section>
 <section id="advanced-users-recommended-method">
-<h3>Advanced users (recommended method)<a class="headerlink" href="#advanced-users-recommended-method" title="Permalink to this heading"></a></h3>
+<h3>Advanced users (recommended method)<a class="headerlink" href="#advanced-users-recommended-method" title="Link to this heading"></a></h3>
 <p><strong>Conda</strong></p>
 <ul class="simple">
 <li><p>Create a conda environment specifically for the task or project you’re working on.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Best practice, use an environment rather than install in the base env</span>
-<span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">my</span><span class="o">-</span><span class="n">env</span>
+<span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">my</span><span class="o">-</span><span class="n">env</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.10</span>
 <span class="n">conda</span> <span class="n">activate</span> <span class="n">my</span><span class="o">-</span><span class="n">env</span>
-<span class="c1"># install dependencies</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="n">numpy</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="n">pandas</span>
 <span class="c1"># install library</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="n">danrerlib</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="n">sdsu_comptox</span><span class="p">::</span><span class="n">danrerlib</span>
 </pre></div>
 </div>
 <p><strong>pip</strong></p>
@@ -176,8 +173,6 @@
 <span class="c1"># Activate virtual environment and install</span>
 <span class="n">cd</span> <span class="nb">bin</span>
 <span class="n">source</span> <span class="n">activate</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">pandas</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="n">danrerlib</span>
 </pre></div>
 </div>

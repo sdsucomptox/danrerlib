@@ -17,12 +17,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -103,9 +102,9 @@
            <div itemprop="articleBody">
              
   <section class="tex2jax_ignore mathjax_ignore" id="usage-principles">
-<h1>Usage Principles<a class="headerlink" href="#usage-principles" title="Permalink to this heading"></a></h1>
+<h1>Usage Principles<a class="headerlink" href="#usage-principles" title="Link to this heading"></a></h1>
 <section id="workflow">
-<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this heading"></a></h2>
+<h2>Workflow<a class="headerlink" href="#workflow" title="Link to this heading"></a></h2>
 <p>To import and begin using <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> in your Python project, import <code class="docutils literal notranslate"><span class="pre">danrerlib</span></code> as:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">danrerlib</span> <span class="k">as</span> <span class="nn">drl</span>
 </pre></div>
@@ -114,10 +113,10 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">danrerlib</span> <span class="kn">import</span> <span class="n">mapping</span>
 </pre></div>
 </div>
-<p>A typical workflow of <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> depends on the feature you wish to use (see <a class="reference internal" href="introduction.html"><span class="doc std std-doc">Introduction</span></a>). Please the <a class="reference internal" href="../tutorials/index.html#tutorials"><span class="std std-ref">tutorial page</span></a> for some typical workflows.</p>
+<p>A typical workflow of <code class="docutils literal notranslate"><span class="pre">danRerLib</span></code> depends on the feature you wish to use (see <a class="reference internal" href="introduction.html"><span class="std std-doc">Introduction</span></a>). Please the <a class="reference internal" href="../tutorials/index.html#tutorials"><span class="std std-ref">tutorial page</span></a> for some typical workflows.</p>
 </section>
 <section id="zebrafish-gene-id-types">
-<h2>Zebrafish Gene ID Types<a class="headerlink" href="#zebrafish-gene-id-types" title="Permalink to this heading"></a></h2>
+<h2>Zebrafish Gene ID Types<a class="headerlink" href="#zebrafish-gene-id-types" title="Link to this heading"></a></h2>
 <p>This toolkit supports conversions between a variety of gene id types for the zebrafish. To properly identify the correct gene id, please utilize the following reference. The currently supported zebrafish Gene ID types are:</p>
 <table class="docutils align-default">
 <thead>
@@ -153,7 +152,7 @@
 <p>Mor information can also be found in <a class="reference internal" href="../tutorials/index.html#tutorials"><span class="std std-ref">Tutorials</span></a> and the <a class="reference internal" href="../autoapi/index.html#apiref"><span class="std std-ref">API Reference</span></a>.</p>
 </section>
 <section id="human-gene-id-type">
-<h2>Human Gene ID Type<a class="headerlink" href="#human-gene-id-type" title="Permalink to this heading"></a></h2>
+<h2>Human Gene ID Type<a class="headerlink" href="#human-gene-id-type" title="Link to this heading"></a></h2>
 <p>This toolkit supports orthology mapping between zebrafish and human. It is possible to map to and from any of the above zebrafish gene id types listed and the supported human gene id type. The currently supported human gene ID type:</p>
 <table class="docutils align-default">
 <thead>
@@ -166,7 +165,7 @@
 <tbody>
 <tr class="row-even"><td><p>NCBI Gene ID</p></td>
 <td><p>‘NCBI Gene ID’ (<em>str</em>) or NCBI_ID</p></td>
-<td><p>Integer Gene IF managed by NCBI, also known as Entrez Gene ID</p></td>
+<td><p>Integer Gene ID managed by NCBI, also known as Entrez Gene ID</p></td>
 <td><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/">NCBI Website</a></p></td>
 </tr>
 </tbody>
@@ -174,7 +173,7 @@
 <p>More information can also be found in <a class="reference internal" href="../tutorials/index.html#tutorials"><span class="std std-ref">Tutorials</span></a> and the <a class="reference internal" href="../autoapi/index.html#apiref"><span class="std std-ref">API Reference</span></a> for the mapping module.</p>
 </section>
 <section id="pathway-databases">
-<h2>Pathway Databases<a class="headerlink" href="#pathway-databases" title="Permalink to this heading"></a></h2>
+<h2>Pathway Databases<a class="headerlink" href="#pathway-databases" title="Link to this heading"></a></h2>
 <p>This toolkit supports the retrieval and usage of a variety of pathway and annotation databases. Each database has been developed using unique modules within the toolkit. The currently supported databases are:</p>
 <table class="docutils align-default">
 <thead>
@@ -214,7 +213,7 @@
 </table>
 </section>
 <section id="enrichment-types">
-<h2>Enrichment Types<a class="headerlink" href="#enrichment-types" title="Permalink to this heading"></a></h2>
+<h2>Enrichment Types<a class="headerlink" href="#enrichment-types" title="Link to this heading"></a></h2>
 <p>This toolkit supports enrichment testing for the pathway and annotation databases listed above. Enrichment testing, also known as pathway enrichment analysis or functional enrichment analysis, is used to determine if a set of genes associated with a specific biological process, function, or pathway is statistically overrepresented or underrepresented compared to what would be expected by chance. A variety of statistical tests can be used to determine over or under representation. The currently supported methods are:</p>
 <table class="docutils align-default">
 <thead>
@@ -226,14 +225,14 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Fisher’s Exact Test</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">danrerlib.enrichment.fishers()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">danrerlib.enrichment.enrich_fishers()</span></code></p></td>
 <td><p>Statistical test for pathway enrichment</p></td>
-<td><p><span class="xref myst">More Info</span></p></td>
+<td><p><a class="reference internal" href="#../tutorials/functional_enrichment.md"><span class="xref myst">More Info</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>Logistic Regression</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">danrerlib.enrichment.logistic()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">danrerlib.enrichment.enrich_logistic()</span></code></p></td>
 <td><p>Regression-based method for enrichment</p></td>
-<td><p><span class="xref myst">More Info</span></p></td>
+<td><p><a class="reference internal" href="#../tutorials/functional_enrichment.md"><span class="xref myst">More Info</span></a></p></td>
 </tr>
 </tbody>
 </table>

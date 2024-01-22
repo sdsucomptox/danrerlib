@@ -1,6 +1,6 @@
 package:
   name: danrerlib
-  version: 0.1.1
+  version: 0.1.2
 
 source:
   path: ..
@@ -19,3 +19,4 @@ requirements:
     - pandas
     - pathlib
     - matplotlib
+    - statsmodels

@@ -35,7 +35,7 @@ This toolkit supports orthology mapping between zebrafish and human. It is possi
 
 | Gene ID Type | Referenced as | Description | More Information |
 | --| --| --|  -- | 
-| NCBI Gene ID | 'NCBI Gene ID' (_str_) or NCBI_ID | Integer Gene IF managed by NCBI, also known as Entrez Gene ID | [NCBI Website](https://www.ncbi.nlm.nih.gov/) |
+| NCBI Gene ID | 'NCBI Gene ID' (_str_) or NCBI_ID | Integer Gene ID managed by NCBI, also known as Entrez Gene ID | [NCBI Website](https://www.ncbi.nlm.nih.gov/) |
 
 More information can also be found in {ref}`Tutorials <tutorials>` and the {ref}`API Reference <APIRef>` for the mapping module. 
 
@@ -57,5 +57,5 @@ This toolkit supports enrichment testing for the pathway and annotation database
 
 | Enrichment Analysis Method| Function | Short Description | More Information|
 |-------|---------|--------|---------|
-| Fisher's Exact Test | `danrerlib.enrichment.fishers()`  | Statistical test for pathway enrichment  | [More Info](#)|
-| Logistic Regression  | `danrerlib.enrichment.logistic()`| Regression-based method for enrichment | [More Info](#)  |
+| Fisher's Exact Test | `danrerlib.enrichment.enrich_fishers()`  | Statistical test for pathway enrichment  | [More Info](../tutorials/functional_enrichment.md)|
+| Logistic Regression  | `danrerlib.enrichment.enrich_logistic()`| Regression-based method for enrichment | [More Info](../tutorials/functional_enrichment.md)  |

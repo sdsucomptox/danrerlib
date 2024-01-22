@@ -17,12 +17,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -111,11 +110,11 @@
            <div itemprop="articleBody">
              
   <section class="tex2jax_ignore mathjax_ignore" id="gene-id-mapping">
-<h1>Gene ID Mapping<a class="headerlink" href="#gene-id-mapping" title="Permalink to this heading"></a></h1>
+<h1>Gene ID Mapping<a class="headerlink" href="#gene-id-mapping" title="Link to this heading"></a></h1>
 <p>Author: Ashley Schwartz</p>
 <p>Date: September 2023</p>
 <section id="purpose-and-background">
-<h2>Purpose and Background<a class="headerlink" href="#purpose-and-background" title="Permalink to this heading"></a></h2>
+<h2>Purpose and Background<a class="headerlink" href="#purpose-and-background" title="Link to this heading"></a></h2>
 <p>This tutorial goes over how to simply convert a list of zebrafish Gene IDs to another Gene ID type. Gene IDs come in very different forms depending on the database or genome build you are using. This can get confusing! The Gene ID options are:</p>
 <table class="docutils align-default">
 <thead>
@@ -134,7 +133,7 @@
 <tr class="row-odd"><td><p>NCBI Gene ID</p></td>
 <td><p>integer gene id managed by NCBI: also known as Entrez Gene ID</p></td>
 <td><p>140634</p></td>
-<td><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/gene?Db=gene&amp;Cmd=DetailsSearch&amp;Term=140634">link</a></p></td>
+<td><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/gene?Db=gene&amp;amp;Cmd=DetailsSearch&amp;amp;Term=140634">link</a></p></td>
 </tr>
 <tr class="row-even"><td><p>Symbol</p></td>
 <td><p>descriptive symbol/name: RefSeq symbol used in RefSeq genome build</p></td>
@@ -150,7 +149,7 @@
 </table>
 </section>
 <section id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
 <p>In this tutorial we will be utilizing two key elements:</p>
 <ul class="simple">
 <li><p>a sample Gene ID list (format: .csv, .tsv, .txt) for reading in the Gene IDs, otherwise typing or copy/pasting Gene IDs is also supported</p>
@@ -178,10 +177,10 @@
 </div>
 </section>
 <section id="execute-mappings">
-<h2>Execute Mappings<a class="headerlink" href="#execute-mappings" title="Permalink to this heading"></a></h2>
+<h2>Execute Mappings<a class="headerlink" href="#execute-mappings" title="Link to this heading"></a></h2>
 <p>There are a variety of scenarios when you might need to map Gene IDs. In the most simplest case, you might have a few IDs you would like to map to Entrez NCBI Gene IDs since that is a common Gene ID used in pathway databases. Other times, you might want to convert an entire column in an excel fil you have. We will go through a few different options.</p>
 <section id="simple-case-convert-a-list-of-gene-ids">
-<h3>Simple Case: Convert a list of Gene IDs<a class="headerlink" href="#simple-case-convert-a-list-of-gene-ids" title="Permalink to this heading"></a></h3>
+<h3>Simple Case: Convert a list of Gene IDs<a class="headerlink" href="#simple-case-convert-a-list-of-gene-ids" title="Link to this heading"></a></h3>
 <p><em>Purpose: Given a small list of Gene IDs that are of Gene ID type A, convert to Gene ID type B.</em></p>
 <p>You would most likely use the simple case if you have a small list of gene ids that you need to convert. Especially useful if you just want to copy and paste and retrieve your converted ids!</p>
 <p><strong>Step 1</strong>: Define your list of ids. In this case, I have NCBI Gene IDs. I named the python list <code class="docutils literal notranslate"><span class="pre">list_of_gene_ids</span></code> and include all the Gene IDs I want to convert.</p>
@@ -251,7 +250,7 @@ ZDB-GENE-120215-92
 </div>
 </section>
 <section id="simple-case-convert-a-list-of-gene-ids-from-a-file">
-<h3>Simple Case: Convert a list of Gene IDs From a File<a class="headerlink" href="#simple-case-convert-a-list-of-gene-ids-from-a-file" title="Permalink to this heading"></a></h3>
+<h3>Simple Case: Convert a list of Gene IDs From a File<a class="headerlink" href="#simple-case-convert-a-list-of-gene-ids-from-a-file" title="Link to this heading"></a></h3>
 <p><em>Purpose: Given a list of Gene IDs from a file that are of Gene ID type A, convert to Gene ID type B.</em></p>
 <p>If you have a file that contains a list of Gene IDs, you can easily repeat these steps by reading in that file first. Check it out:</p>
 <div class="cell docutils container">
@@ -335,7 +334,7 @@ ZDB-GENE-991229-12
 <p>If you would like to keep the old Gene IDs along with the mapping, follow the next set of instructions!</p>
 </section>
 <section id="simple-case-convert-a-list-of-gene-ids-and-keep-mapping">
-<h3>Simple Case: Convert a list of Gene IDs and Keep Mapping<a class="headerlink" href="#simple-case-convert-a-list-of-gene-ids-and-keep-mapping" title="Permalink to this heading"></a></h3>
+<h3>Simple Case: Convert a list of Gene IDs and Keep Mapping<a class="headerlink" href="#simple-case-convert-a-list-of-gene-ids-and-keep-mapping" title="Link to this heading"></a></h3>
 <p><em>Purpose: Given a list of Gene IDs that are of Gene ID type A, convert to Gene ID type B and keep both Gene ID A and Gene ID B in a table.</em></p>
 <p><strong>Step 1</strong>: Define your list of ids. This is the same list I used above, and remember they are NCBI Gene IDs. I am also defining my current Gene ID type and the Gene ID type I would like to convert to here.</p>
 <div class="cell docutils container">
@@ -526,7 +525,7 @@ ZDB-GENE-991229-12
 <p>The above methodologies are great if you have list of Gene IDs you would like to convert. There are cases where you might have a large dataset and one column in that dataset has the Gene IDs that you would like to convert. In this scenario, keeping all columns properly sorted is extremely important.</p>
 </section>
 <section id="convert-gene-ids-in-a-column-of-a-larger-dataset">
-<h3>Convert Gene IDs in a Column of a Larger Dataset<a class="headerlink" href="#convert-gene-ids-in-a-column-of-a-larger-dataset" title="Permalink to this heading"></a></h3>
+<h3>Convert Gene IDs in a Column of a Larger Dataset<a class="headerlink" href="#convert-gene-ids-in-a-column-of-a-larger-dataset" title="Link to this heading"></a></h3>
 <p><em>Purpose: you have a dataset with columns x, y, z. Column x has Gene IDs in type A. You would like to convert these Gene IDs to type B while maintaining the information of columns y, z.</em></p>
 <p>In this scenario, you might have some data that looks like:</p>
 <table class="docutils align-default">
@@ -644,7 +643,7 @@ ZDB-GENE-991229-12
 </div>
 </div>
 <section id="special-cases">
-<h4>Special Cases<a class="headerlink" href="#special-cases" title="Permalink to this heading"></a></h4>
+<h4>Special Cases<a class="headerlink" href="#special-cases" title="Link to this heading"></a></h4>
 <p>Reminder that the <code class="docutils literal notranslate"><span class="pre">id_from</span></code> and <code class="docutils literal notranslate"><span class="pre">id_to</span></code> must match the specificed options: NCBI Gene ID, Symbol, ZFIN ID, or Ensembl Gene ID. If the column in your dataset does not match one of the ID type options, that is fine. The <code class="docutils literal notranslate"><span class="pre">add_mapped_column</span></code> function has an option to deal with that.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -825,7 +824,7 @@ ZDB-GENE-991229-12
 </section>
 </section>
 <section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
 <p>This concludes the mapping tutorial! In summary, the key functions in this library for mapping are:</p>
 <table class="docutils align-default">
 <thead>

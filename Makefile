@@ -4,6 +4,7 @@ clean:
 	@echo "Cleaning generated files"
 	cd sphinx && make clean
 	rm -rf docs/*
+	rm -f docs/.buildinfo
 
 html:
 	@echo "Building HTML documentation"

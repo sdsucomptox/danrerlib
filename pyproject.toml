@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "danrerlib"
-version = "0.1.1"
+version = "0.1.2"
 description = "Zebrafish gene mapping and functional enrichment library"
 authors = ["Ashley Schwartz"]
 license = "MIT"
@@ -12,6 +12,7 @@ numpy = "^1.26.0"
 pandas = "^2.1.1"
 pathlib = "^1.0.1"
 matplotlib = "^3.8.2"
+statsmodels = "^0.14.1"
 
 [tool.poetry.dev-dependencies]
 
